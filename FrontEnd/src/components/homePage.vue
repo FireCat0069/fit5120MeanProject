@@ -34,6 +34,7 @@
 
   <!-- 第二屏：白色卡片区域 -->
   <div class="page-container second-section">
+    <p class="quiz-title">Quiz Bank</p>
     <div class="red-card-container">
       <div class="red-card">1</div>
       <div class="red-card">2</div>
@@ -72,8 +73,18 @@ export default {
   top: 100vh;
   background-color: #ffffff;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 10vh; /* 让内容从第二屏顶部 10vh 开始 */
+}
+
+/* 第二屏标题 */
+.quiz-title {
+  font-size: 48px;
+  font-weight: 700;
+  color: #050C26;
+  margin-bottom: 40px;
 }
 
 /* 卡片容器 */
