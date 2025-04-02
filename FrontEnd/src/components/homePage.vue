@@ -32,9 +32,13 @@
     </div>
   </div>
 
-  <!-- 第二屏：空白区域 -->
+  <!-- 第二屏：白色卡片区域 -->
   <div class="page-container second-section">
-    <!-- 留空，后续内容可以放在这里 -->
+    <div class="red-card-container">
+      <div class="red-card">1</div>
+      <div class="red-card">2</div>
+      <div class="red-card">3</div>
+    </div>
   </div>
 </template>
 
@@ -72,6 +76,28 @@ export default {
   justify-content: center;
 }
 
+/* 卡片容器 */
+.red-card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3vw;
+}
+
+/* 单个白卡片 */
+.red-card {
+  width: 200px;
+  height: 200px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-size: 48px;
+  font-weight: bold;
+  color: #3E245F;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* 导航栏 */
 .nav-bar {
