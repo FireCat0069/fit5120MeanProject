@@ -34,7 +34,8 @@
 
   <!-- 第二屏：白色卡片区域 -->
   <div class="page-container second-section">
-    <p class="quiz-title">Quiz Bank</p>
+    <p class="quiz-title">Foster Digital Citizenship </p>
+    <p class="quiz-subtitle">Work together to create a safe and better online world.</p>
     <div class="red-card-container">
       <div class="red-card">1</div>
       <div class="red-card">2</div>
@@ -76,7 +77,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding-top: 10vh; /* 让内容从第二屏顶部 10vh 开始 */
+  padding-top: 5vh;
 }
 
 /* 第二屏标题 */
@@ -84,6 +85,14 @@ export default {
   font-size: 48px;
   font-weight: 700;
   color: #050C26;
+  margin-bottom: 10px;
+}
+
+/* 新增副标题样式 */
+.quiz-subtitle {
+  font-size: 20px;
+  font-weight: 500;
+  color: #4a4a4a;
   margin-bottom: 40px;
 }
 
@@ -97,8 +106,8 @@ export default {
 
 /* 单个白卡片 */
 .red-card {
-  width: 200px;
-  height: 200px;
+  width: 490px;
+  height: 485px;
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
