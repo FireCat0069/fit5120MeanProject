@@ -2,6 +2,7 @@ require('dotenv').config(); // Load environment variables from .env file
 const express = require('express'); // Import Express framework
 const connectDB = require('./config/db'); // Import database connection function
 const usageRoutes = require('./routes/screenUsageRoutes'); // Import screen usage routes
+const quizRoutes = require('./routes/quizQuestionRoutes');
 
 const app = express(); // Initialize Express application
 
@@ -14,6 +15,7 @@ app.use(express.json());
 // Routes for screen usage data
 // All routes under /api/usage will be handled by usageRoutes
 app.use('/api/usage', usageRoutes);
+app.use('/api/quiz', quizRoutes);
 
 // Handle 404 errors for undefined routes
 app.use((req, res, next) => {
