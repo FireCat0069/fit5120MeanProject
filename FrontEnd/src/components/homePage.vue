@@ -3,7 +3,7 @@
   <div class="page-container first-section">
     <div class="nav-bar">
       <span>Home</span>
-      <span>Quiz Bank</span>
+      <router-link to="/quiz-bank" class="nav-link">Quiz Bank</router-link>
       <span>Contact us</span>
     </div>
 
@@ -70,6 +70,9 @@
         </div>
       </div>
     </div>
+    <router-link to="/quiz-bank">
+      <button class="learn-more-btn">Learn More</button>
+    </router-link>
   </div>
 </template>
 
@@ -197,7 +200,7 @@ export default {
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease-in-out;
-  margin-top: 70px;
+  margin-top: 16px;
 }
 
 .start-quiz-btn:hover {
@@ -262,7 +265,7 @@ export default {
 }
 
 .go-button {
-  background-color: #3E245F;
+  background-color: #F18829;
   color: white;
   border: none;
   padding: 14px 30px;
@@ -271,4 +274,32 @@ export default {
   font-size: 20px;
   font-weight: bold;
 }
+
+.learn-more-btn {
+  background-color: #FF7426;
+  color: #ffffff;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 28px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 70px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.learn-more-btn:hover {
+  background-color: #e65f14;
+}
+
+.nav-link {
+  font-size: 24px;
+  color: #1D1D1D;
+  text-decoration: none;
+}
+.nav-link:hover {
+  text-decoration: underline;
+}
+
 </style>
