@@ -76,7 +76,9 @@
                       </div>
           
                       <!-- Start Quiz button -->
-                      <button class="start-quiz-btn">Start Quiz</button>
+                      <router-link to="/Quiz-Content">
+                        <button class="start-quiz-btn">Start Quiz</button>
+                      </router-link>
                   </div>
               </div>
           </div>

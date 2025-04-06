@@ -24,7 +24,9 @@
 
       <div class="fake-search">
         <span class="search-label">Are You a Smart Digital Citizen?</span>
-        <button class="go-button">Go test</button>
+        <router-link to="/Quiz-Introduction">
+          <button class="go-button">Go test</button>
+        </router-link>
       </div>
     </div>
   </div>
