@@ -197,7 +197,7 @@ export default {
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease-in-out;
-  margin-top: 70px;
+  margin-top: 16px;
 }
 
 .start-quiz-btn:hover {
