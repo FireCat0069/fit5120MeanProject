@@ -1,14 +1,12 @@
 <template>
   <!-- 第一屏 -->
   <div class="page-container first-section">
-    <!-- 顶部右侧导航 -->
     <div class="nav-bar">
       <span>Home</span>
       <span>Quiz Bank</span>
       <span>Contact us</span>
     </div>
 
-    <!-- 左侧大标题和描述 -->
     <div class="main-title">
       <div>
         <span class="title-black">Digital Safe </span>
@@ -24,7 +22,6 @@
         equips university students with the tools to stay safe, spot misinformation, and become responsible digital citizens.
       </p>
 
-      <!-- 假搜索框 -->
       <div class="fake-search">
         <span class="search-label">Are You a Smart Digital Citizen?</span>
         <button class="go-button">Go test</button>
@@ -34,12 +31,44 @@
 
   <!-- 第二屏：白色卡片区域 -->
   <div class="page-container second-section">
-    <p class="quiz-title">Foster Digital Citizenship </p>
+    <p class="quiz-title">Foster Digital Citizenship</p>
     <p class="quiz-subtitle">Work together to create a safe and better online world.</p>
     <div class="red-card-container">
-      <div class="red-card">1</div>
-      <div class="red-card">2</div>
-      <div class="red-card">3</div>
+      <!-- 卡片 1 -->
+      <div class="red-card">
+        <div class="card-content">
+          <img class="quiz-img" src="@/assets/quiz1.png" alt="Quiz 1" />
+          <p class="category-text">Online Safety</p>
+          <p class="quiz-name">Can You Outsmart the Internet Threats?</p>
+          <div class="divider"></div>
+          <p class="quiz-meta">15 mins · 34 questions · 521 times</p>
+          <button class="start-quiz-btn">Start Quiz</button>
+        </div>
+      </div>
+
+      <!-- 卡片 2 -->
+      <div class="red-card">
+        <div class="card-content">
+          <img class="quiz-img" src="@/assets/quiz2.png" alt="Quiz 2" />
+          <p class="category-text">Digital Literacy</p>
+          <p class="quiz-name">Think Before You Click</p>
+          <div class="divider"></div>
+          <p class="quiz-meta">12 mins · 25 questions · 780 times</p>
+          <button class="start-quiz-btn">Start Quiz</button>
+        </div>
+      </div>
+
+      <!-- 卡片 3 -->
+      <div class="red-card">
+        <div class="card-content">
+          <img class="quiz-img" src="@/assets/quiz3.png" alt="Quiz 3" />
+          <p class="category-text">Fact-Checking</p>
+          <p class="quiz-name">Spot the Fake News</p>
+          <div class="divider"></div>
+          <p class="quiz-meta">10 mins · 20 questions · 601 times</p>
+          <button class="start-quiz-btn">Start Quiz</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -58,7 +87,6 @@ export default {
   left: 0;
 }
 
-/* 第一屏 Hero 区 */
 .first-section {
   top: 0;
   background-image: url('@/assets/background1.png');
@@ -69,7 +97,6 @@ export default {
   box-sizing: border-box;
 }
 
-/* 第二屏白色页面 */
 .second-section {
   top: 100vh;
   background-color: #ffffff;
@@ -80,7 +107,6 @@ export default {
   padding-top: 5vh;
 }
 
-/* 第二屏标题 */
 .quiz-title {
   font-size: 48px;
   font-weight: 700;
@@ -88,7 +114,6 @@ export default {
   margin-bottom: 10px;
 }
 
-/* 新增副标题样式 */
 .quiz-subtitle {
   font-size: 20px;
   font-weight: 500;
@@ -96,30 +121,89 @@ export default {
   margin-bottom: 40px;
 }
 
-/* 卡片容器 */
 .red-card-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   gap: 3vw;
 }
 
-/* 单个白卡片 */
 .red-card {
   width: 490px;
   height: 485px;
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-size: 48px;
-  font-weight: bold;
-  color: #3E245F;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* 导航栏 */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.quiz-img {
+  width: 464px;
+  height: 238px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.category-text {
+  font-size: 16px;
+  color: #ACACAC;
+  margin-bottom: 4px;
+}
+
+.quiz-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #E0E0E0;
+  margin: 12px 0;
+}
+
+.quiz-meta {
+  font-size: 14px;
+  color: #4a4a4a;
+  margin-bottom: auto;
+}
+
+.start-quiz-btn {
+  background-color: #FF7426;
+  color: #ffffff;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 28px;
+  font-size: 16px;
+  font-weight: bold;
+  align-self: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+  margin-top: 70px;
+}
+
+.start-quiz-btn:hover {
+  background-color: #e65f14;
+}
+
 .nav-bar {
   position: absolute;
   top: 5vh;
@@ -131,7 +215,6 @@ export default {
   white-space: nowrap;
 }
 
-/* 主标题块 */
 .main-title {
   position: absolute;
   top: 30vh;
@@ -139,7 +222,6 @@ export default {
   max-width: 600px;
 }
 
-/* 标题颜色 */
 .title-black {
   font-size: 48px;
   font-weight: 700;
@@ -152,7 +234,6 @@ export default {
   color: #F18829;
 }
 
-/* 描述段落 */
 .sub-text {
   font-size: 16px;
   color: #4a4a4a;
@@ -160,7 +241,6 @@ export default {
   line-height: 1.6;
 }
 
-/* 假搜索框 */
 .fake-search {
   display: flex;
   align-items: center;
