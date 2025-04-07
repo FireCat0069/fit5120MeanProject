@@ -1,10 +1,30 @@
-<script setup>
-
-</script>
-
 <template>
   <router-view />
 </template>
+
+<script>
+import { watch } from 'vue'
+import { useRoute } from 'vue-router'
+
+export default {
+  setup() {
+    const route = useRoute()
+
+    // 监听路由变化
+    watch(
+      () => route.path,
+      (newPath) => {
+        if (newPath === '/quiz-bank') {
+          document.body.style.overflow = 'hidden' // 锁定滚动
+        } else {
+          document.body.style.overflow = 'auto' // 恢复滚动
+        }
+      },
+      { immediate: true }
+    )
+  }
+}
+</script>
 
 <style>
 /* 全局重置样式 */
