@@ -3,6 +3,8 @@ import homePage from '../components/homePage.vue';
 import QuizBank from '../components/QuizBank.vue';
 import QuizIntroduction from '@/components/QuizIntroduction.vue';
 import QuizContent from '@/components/QuizContent.vue';
+import CzQuiz from '../components/CzQuiz.vue';
+
 
 
 const routes = [
@@ -20,6 +22,11 @@ const routes = [
     path: '/Quiz-Introduction',
     name: 'QuizIntroduction',
     component: QuizIntroduction
+  },
+  {
+    path: '/cz-quiz',
+    name: 'CzQuiz',
+    component: CzQuiz
   },
   {
     path: '/Quiz-Content',

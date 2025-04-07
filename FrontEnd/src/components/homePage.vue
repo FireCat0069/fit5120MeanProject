@@ -24,7 +24,7 @@
 
       <div class="fake-search">
         <span class="search-label">Are You a Smart Digital Citizen?</span>
-        <router-link to="/Quiz-Introduction">
+        <router-link to="/cz-quiz">
           <button class="go-button">Go test</button>
         </router-link>
       </div>
@@ -36,17 +36,19 @@
     <p class="quiz-title">Foster Digital Citizenship</p>
     <p class="quiz-subtitle">Work together to create a safe and better online world.</p>
     <div class="red-card-container">
-      <!-- 卡片 1 -->
-      <div class="red-card">
-        <div class="card-content">
-          <img class="quiz-img" src="@/assets/quiz1.png" alt="Quiz 1" />
-          <p class="category-text">Online Safety</p>
-          <p class="quiz-name">Can You Outsmart the Internet Threats?</p>
-          <div class="divider"></div>
-          <p class="quiz-meta">15 mins · 34 questions · 521 times</p>
-          <button class="start-quiz-btn">Start Quiz</button>
-        </div>
+     <!-- 卡片 1 -->
+    <div class="red-card">
+      <div class="card-content">
+      <img class="quiz-img" src="@/assets/quiz1.png" alt="Quiz 1" />
+      <p class="category-text">Online Safety</p>
+      <p class="quiz-name">Can You Outsmart the Internet Threats?</p>
+      <div class="divider"></div>
+      <p class="quiz-meta">15 mins · 34 questions · 521 times</p>
+      <router-link to="/Quiz-Introduction">
+        <button class="start-quiz-btn">Start Quiz</button>
+      </router-link>
       </div>
+    </div>
 
       <!-- 卡片 2 -->
       <div class="red-card">
