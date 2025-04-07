@@ -1,4 +1,4 @@
-const QuizQuestion = require('../models/QuizQuestion');
+const QuizQuestion = require('../models/QuizBank');
 
 exports.getAllQuizQuestions = async (req, res) => {
   try {

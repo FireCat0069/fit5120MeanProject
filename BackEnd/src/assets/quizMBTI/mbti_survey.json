@@ -1,0 +1,173 @@
+[
+  {
+    "question": "What is your primary device for accessing digital content?",
+    "options": ["A. Mobile Phone", "B. Laptop", "C. Other"],
+    "correctAnswer": "",
+    "explanation":""
+  },
+  {
+    "question": "When do you typically spend the most time on screens?",
+    "options": ["A. Evening ", "B. Afternoon", "C. Late Night"],
+    "correctAnswer": "",
+    "explanation":""
+  },
+  {
+    "question": "What is the main purpose of your screen usage?",
+    "options": ["A. Work and Study ", "B. Entertainment"],
+    "correctAnswer": "",
+    "explanation":""
+  },
+  {
+    "question": "On average, how many hours do you use screens daily?",
+    "options": ["A. 0-3 hour ", "B. 3-6 hours", "C. 6-9 hours", "D. 9+ hours"],
+    "correctAnswer": "",
+    "explanation":""
+  },
+  {
+    "question": "Which categories of apps do you commonly use?",
+    "options": ["A. Social Media ", "B. Productivity ", "C. Streaming", "D. Gaming", "E. Messaging "],
+    "correctAnswer": "",
+    "explanation":""
+  },
+  {
+    "question": "Which behavior is most likely to leak your private information?",
+    "options": ["A. Posting a photo of food on social media ", "B. Registering on a public forum with your real name and disclosing your address",
+     "C. Liking a friend’s post", "D. Commenting with an emoji"],
+    "correctAnswer": "B",
+    "explanation":"Disclosing sensitive personal information (such as your real name and address) significantly increases the risk of privacy breaches."
+  },
+  {
+    "question": "Which of the following statements about digital footprints is most accurate?",
+    "options": ["A. Digital footprints are only generated when you log into an account ", "B. You won’t leave any digital footprint if you avoid social media", "C. Digital footprints can be used to analyze your interests and behavior", "D. All records are automatically deleted when browsing in incognito mode"],
+    "correctAnswer": "C",
+    "explanation":"A digital footprint includes all your online activity traces. These are often used for targeted advertising, behavior analysis, and personalized recommendations."
+  },
+  {
+    "question": "When writing an assignment and wanting to cite an article found online, which approach is most appropriate?",
+    "options": ["A. Copy and paste the content without citing the source", 
+    "B. Translate it into your own language without giving credit", 
+    "C. Slightly rephrase and use it directly", 
+    "D. Properly cite and indicate the source"],
+    "correctAnswer": "D",
+    "explanation":"Explanation: Digital literacy includes understanding how to legally use information. Proper citation avoids plagiarism and demonstrates information literacy."
+  },
+  {
+    "question": "Which of the following best demonstrates good digital literacy?",
+    "options": ["A. Giving up on using new software",
+    "B. Believing only popular posts on social media",
+    "C. Independently learning new tools and verifying the authenticity of online information",
+    "D. Using the internet solely for entertainment and avoiding learning or communication"],
+    "correctAnswer": "C",
+    "explanation":"Digital literacy involves the ability to find, evaluate, and use information effectively. It also includes critical thinking and the ability to adapt to new technologies."
+  },
+  {
+    "question": "If you disagree with someone online, what is the most appropriate response?",
+    "options": [
+      "A. Immediately argue and point out their mistake",
+      "B. Stay respectful and express your viewpoint rationally",
+      "C. Publicly mock the other person",
+      "D. Rally your friends to attack the other person"
+    ],
+    "correctAnswer": "B",
+    "explanation":"Respectful disagreement fosters constructive dialogue and helps maintain a positive online environment."
+  },
+  {
+    "question": "Which behavior is the most impolite during an online meeting?",
+    "options": [
+      "A. Interrupting someone while they are speaking",
+      "B. Testing your microphone and camera before the meeting",
+      "C. Using the 'raise hand' feature to ask a question",
+      "D. Sending a thank-you message after the meeting"
+    ],
+    "correctAnswer": "A",
+    "explanation":"Interrupting someone is disrespectful and can disrupt the flow of the meeting. It's important to allow others to finish speaking before responding."
+  },
+  {
+    "question": "Which of the following passwords is the most secure?",
+    "options": [
+      "A. 12345678",
+      "B. password2024",
+      "C. Zm@2024$Xy#l",
+      "D. abc123"
+    ],
+    "correctAnswer": "C",
+    "explanation":"A secure password should be complex, including a mix of uppercase letters, lowercase letters, numbers, and special characters. It should also be at least 12 characters long."
+  },
+  {
+    "question": "Which situation is most likely a phishing attack?",
+    "options": [
+      "A. An official bank website notifying you that your password is about to expire",
+      "B. An email from a stranger containing a link to claim a prize",
+      "C. A pop-up window while browsing a government website",
+      "D. A request for permissions when installing software"
+    ],
+    "correctAnswer": "B",
+    "explanation":"Phishing attacks often involve unsolicited emails or messages that ask for personal information or prompt you to click on suspicious links. Always verify the sender's identity before clicking."
+  },
+  {
+    "question": "If you feel anxious after using your phone for a long time, what should you do?",
+    "options": [
+      "A. Keep using it until you’re exhausted",
+      "B. Completely stop using electronic devices",
+      "C. Set daily usage limits and take breaks",
+      "D. Complain to your friends without changing your habits" 
+    ],
+    "correctAnswer": "C",
+    "explanation":"Setting daily usage limits and taking breaks can help reduce anxiety and improve your overall digital health. It's important to find a balance between screen time and offline activities."
+  },
+  {
+    "question": "Which behavior helps maintain good digital health?",
+    "options": [
+      "A. Scrolling through multiple social media platforms at once",
+      "B. Checking your phone for updates right before bed",
+      "C. Limiting screen time appropriately",
+      "D. Constantly checking notifications while working"
+    ],
+    "correctAnswer": "C",
+    "explanation":"Maintaining good digital health involves setting boundaries for screen time, taking breaks, and ensuring that technology does not interfere with your well-being."
+  },
+  {
+    "question": "Downloading and sharing unauthorized movies online is considered:",
+    "options": [
+      "A. Legal, as long as no money is charged",
+      "B. Legal, as long as the source is credited",
+      "C. Illegal and an infringement of copyright",
+      "D. Free to share, since online resources are meant to be shared"
+    ],
+    "correctAnswer": "C",
+    "explanation":"Downloading and sharing unauthorized movies is a violation of copyright law. It is important to respect intellectual property rights and only share content that you have permission to distribute."
+  },
+  {
+    "question": "Which of the following is a responsibility of a digital citizen?",
+    "options": [
+      "A. Sharing all the information you find",
+      "B. Ignoring platform rules",
+      "C. Respecting others’ privacy and copyright",
+      "D. Only paying attention to content that interests you"
+    ],
+    "correctAnswer": "C",
+    "explanation":"Digital citizenship involves understanding and respecting the rights and responsibilities of being online. This includes respecting others' privacy, copyright, and following platform rules."
+  },
+  {
+    "question": "When you see a shocking “urgent notice” online, what is the correct thing to do?",
+    "options": [
+      "A. Immediately share it with your friends",
+      "B. Click the link and enter your personal information to learn more",
+      "C. Stay calm and verify whether it comes from an official and reliable source",
+      "D. Ask people in the comment section if it’s true"
+    ],
+    "correctAnswer": "C",
+    "explanation":"Before sharing urgent notices, it's important to verify their authenticity. Misinformation can spread quickly, so checking the source is crucial."
+  },
+  {
+    "question": "When encountering conflicting information online, what is the best approach?",
+    "options": [
+      "A. Choose the side you like",
+      "B. Refer to multiple authoritative sources for analysis",
+      "C. Follow the majority opinion",
+      "D. Avoid the topic and say nothing"
+    ],
+    "correctAnswer": "B",
+    "explanation":"When faced with conflicting information, it's best to consult multiple reliable sources to form a well-rounded understanding of the topic. This helps avoid bias and misinformation."
+  }
+]
