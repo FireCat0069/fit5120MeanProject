@@ -37,19 +37,27 @@
                   <!-- Question content section -->
                   <div class="quiz-section-2">
                      <div class="question-content"> 
-                        <h1 class="question-index">Question {{ currentQuestionIndex + 1 }}</h1>
+                          <h1 class="question-index">
+                            Question {{ currentQuestionIndex + 1 }}
+                            <span v-if="currentQuestion.isMultipleChoice"> (Multiple Choice)</span>
+                            <span v-else> (Single Choice)</span>
+                          </h1>
                           <h2 class="question-text">{{ currentQuestion.text }}</h2>
                           
                           <!-- Options list -->
                           <ul class="options-list">
-                              <li 
+                             <li 
                               v-for="(option, index) in currentQuestion.options" 
                               :key="index"
                               @click="selectOption(index)"
-                              :class="{ 'selected': selectedOption === index }"
-                              >
+                              :class="{
+                                'selected': currentQuestion.isMultipleChoice 
+                                            ? selectedOption.includes(index) 
+                                            : selectedOption === index
+                               }"
+                            >
                               {{ option }}
-                              </li>
+                             </li>
                           </ul>
                       
                           <!-- Navigation buttons -->
@@ -107,80 +115,152 @@ async created() {
   await this.fetchQuestions()
 },
 methods: {
-  async fetchQuestions() {
-    try {
-      // Fetch questions from API
-      const response = await fetch('/api/quiz')
-      this.quizData = await response.json()
-      this.processQuestions()
-    } catch (error) {
-      console.error('Failed to fetch questions:', error)
-    }
-  },
-  processQuestions() {
+    async fetchQuestions() {
+      try {
+        // Fetch questions from API
+        const response = await fetch('/api/quiz')
+        this.quizData = await response.json()
+        this.processQuestions()
+      } catch (error) {
+        console.error('Failed to fetch questions:', error)
+      }
+    },
+    processQuestions() {
     // Shuffle questions and select first 10
-    const shuffledQuestions = this.quizData
-    .map(a => ({ sort: Math.random(), value: a })) // Add random sort value
-    .sort((a, b) => a.sort - b.sort) // Sort by random value
-    .map(a => a.value) // Extract original values
+    const shuffledQuestions = [...this.quizData]
+      .map(a => ({ sort: Math.random(), value: a })) // Add random sort value
+      .sort((a, b) => a.sort - b.sort) // Sort by random value
+      .map(a => a.value) // Extract original values
+      .slice(0, 10); // Take first 10
 
     // Process question format
-    this.questions = shuffledQuestions.slice(0, 10).map(item => {
-      // Split options string into array
-      const options = item.Options.split(';')
+    this.questions = shuffledQuestions.map(item => {
+      // Process options (split string if needed)
+      const optionsString = item.Options[0];
+      const options = optionsString.split(';').map(opt => opt.trim());
+      
+      // Determine question type and process correct answers
+      const isMultipleChoice = item['Quiz Type'] === 'Multiple Choice';
+      let correctIndices;
+      
+      if (isMultipleChoice) {
+        // For multiple choice: split answers like "A,B" or "AB"
+        correctIndices = item['Correct Answer'].split(/[, ]*/)
+          .map(char => char.charCodeAt(0) - 65);
+      } else {
+        // For single choice: convert single letter to index
+        correctIndices = [item['Correct Answer'].charCodeAt(0) - 65];
+      }
+
       return {
         id: item._id,
         text: item.Question,
         options: options,
-        // Convert correct answer (A/B/C/D) to index (0/1/2/3)
-        correctIndex: item['Correct Answer'].charCodeAt(0) - 65 
-      }
-    })
+        correctIndices: correctIndices, // Always array (even for single choice)
+        isMultipleChoice: isMultipleChoice,
+        quizType: item['Quiz Type'] // Store original type for reference
+      };
+    });
+
+    // Initialize userAnswers - arrays for MC, null for SC
+    this.userAnswers = this.questions.map(q => 
+      q.isMultipleChoice ? [] : null
+    );
   },
+
   selectOption(index) {
-    this.selectedOption = index
-    this.userAnswers[this.currentQuestionIndex] = index
+    const currentQuestion = this.questions[this.currentQuestionIndex];
+    
+    if (currentQuestion.isMultipleChoice) {
+      // Multiple choice logic
+      const currentAnswers = [...(this.userAnswers[this.currentQuestionIndex] || [])];
+      const answerIndex = currentAnswers.indexOf(index);
+      
+      if (answerIndex === -1) {
+        // Add selection
+        currentAnswers.push(index);
+      } else {
+        // Remove selection
+        currentAnswers.splice(answerIndex, 1);
+      }
+      
+      // Update state with sorted indices
+      this.userAnswers[this.currentQuestionIndex] = currentAnswers.sort((a, b) => a - b);
+      this.selectedOption = [...currentAnswers]; // Create a new array For UI binding
+    } else {
+      // Single choice logic
+      this.userAnswers[this.currentQuestionIndex] = index;
+      this.selectedOption = index;
+    }
   },
+
   prevQuestion() {
     if (this.currentQuestionIndex > 0) {
-      this.currentQuestionIndex--
-      // Restore previous answer if exists
-      this.selectedOption = this.userAnswers[this.currentQuestionIndex] ?? null
+      this.currentQuestionIndex--;
+      // Restore previous answer (could be array or null)
+      this.selectedOption = this.userAnswers[this.currentQuestionIndex];
     }
   },
+
   nextQuestion() {
-    if (this.selectedOption !== null) {
-      if (this.isLastQuestion) {
-        this.submitQuiz()
-      } else {
-        this.currentQuestionIndex++
-        // Clear selection for next question
-        this.selectedOption = this.userAnswers[this.currentQuestionIndex] ?? null
-      }
+    if (this.currentQuestionIndex < this.questions.length - 1) {
+      this.currentQuestionIndex++;
+      // Load current answer (array or null)
+      this.selectedOption = this.userAnswers[this.currentQuestionIndex];
+    } else {
+      this.submitQuiz();
     }
   },
+
   async submitQuiz() {
     try {
       // Prepare answer data for API
-      const answers = this.questions.map((q, index) => ({
-        questionId: q.id,
-        // Convert index back to letter (0->A, 1->B)
-        selectedOption: String.fromCharCode(65 + this.userAnswers[index]) 
-      }))
+      const answers = this.questions.map((q, index) => {
+        const userAnswer = this.userAnswers[index];
+        
+        // Convert answer based on question type
+        let submittedAnswer;
+        if (q.isMultipleChoice) {
+          // For multiple choice: convert array of indices to "A,B" format
+          submittedAnswer = userAnswer
+            ? userAnswer.map(idx => String.fromCharCode(65 + idx)).join(',')
+            : '';
+        } else {
+          // For single choice: convert index to letter
+          submittedAnswer = userAnswer !== null 
+            ? String.fromCharCode(65 + userAnswer)
+            : '';
+        }
+
+        return {
+          questionId: q.id,
+          selectedOption: submittedAnswer,
+          questionType: q.quizType // Include question type in submission
+        };
+      });
       
-      // Submit answers to server
+      // Submit to server
       const response = await fetch('/api/quiz/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ answers })
-      })
+        body: JSON.stringify({ 
+          answers,
+          quizType: 'mixed' // Indicate this quiz contains both types
+        })
+      });
       
-      const result = await response.json()
-      alert(`Quiz completed! Score: ${result.score}`)
+      const result = await response.json();
+      alert(`Quiz completed! Score: ${result.score}`);
+      
+      // Additional result handling
+      if (result.detailedResults) {
+        this.quizResults = result.detailedResults;
+      }
     } catch (error) {
-      console.error('Submission failed:', error)
+      console.error('Submission failed:', error);
+      alert('Failed to submit quiz. Please try again.');
     }
   }
 }
