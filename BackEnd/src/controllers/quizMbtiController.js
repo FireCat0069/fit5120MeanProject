@@ -1,4 +1,5 @@
 const MBTIQuiz = require('../models/MBTIQuiz');
+const ScreenUsage = require('../models/ScreenUsage');
 
 // 获取所有问题
 exports.getAllMBTIQuestions = async (req, res) => {
@@ -11,31 +12,43 @@ exports.getAllMBTIQuestions = async (req, res) => {
 };
 
 // 校验答案
-exports.validateAnswer = async (req, res) => {
+exports.validateAnswers = async (req, res) => {
   try {
-    const { option, order } = req.body;
-    const question = await MBTIQuiz.findOne({ order });
+    const answers = req.body;
+    const results = [];
 
-    if (!question) {
-      return res.status(404).json({ message: 'Question not found' });
-    }
+    for (const answer of answers) {
+      const { option, order } = answer;
 
-    if (!question.correctAnswer) {
-      return res.status(200).json({
-        isCorrect: null,
-        explanation: "This question is for data collection purposes only.",
-        correctAnswer: null
+      const question = await MBTIQuiz.findOne({ order });
+
+      if (!question) {
+        results.push({ order, message: 'Question not found' });
+        continue;
+      }
+
+      if (!question.correctAnswer) {
+        results.push({
+          order,
+          isCorrect: null,
+          explanation: "This question is for data collection purposes only.",
+          correctAnswer: null
+        });
+        continue;
+      }
+
+      const isCorrect = question.correctAnswer === option;
+
+      results.push({
+        order,
+        isCorrect,
+        explanation: question.explanation,
+        correctAnswer: question.correctAnswer
       });
     }
 
-    const isCorrect = question.correctAnswer === option;
-
-    res.status(200).json({
-      isCorrect,
-      explanation: question.explanation,
-      correctAnswer: question.correctAnswer
-    });
+    res.status(200).json(results);
   } catch (err) {
-    res.status(500).json({ message: 'Failed to validate answer', error: err.message });
+    res.status(500).json({ message: 'Failed to validate answers', error: err.message });
   }
 };
