@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { getAllMBTIQuestions } = require('../controllers/quizMbtiController'); 
+const quizMbtiController = require('../controllers/quizMbtiController'); // 确保路径正确
 
-router.get('/', getAllMBTIQuestions);
+// 校验答案的 POST 路由
+router.post('/validate-answer', quizMbtiController.validateAnswer);
+
+// 获取所有问题的 GET 路由
+router.get('/questions', quizMbtiController.getAllMBTIQuestions);
 
 module.exports = router;
