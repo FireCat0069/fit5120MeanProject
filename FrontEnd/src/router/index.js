@@ -4,7 +4,11 @@ import QuizBank from '../components/QuizBank.vue';
 import QuizIntroduction from '@/components/QuizIntroduction.vue';
 import QuizContent from '@/components/QuizContent.vue';
 import CzQuiz from '../components/CzQuiz.vue';
+<<<<<<< HEAD
 import QuizFeedback from '@/components/QuizFeedback.vue';
+=======
+import CzFeedback from '../components/CzFeedback.vue'
+>>>>>>> a1cc6ad5b4c22c28be255e4ac31c56eda50942ed
 
 
 
@@ -35,7 +39,11 @@ const routes = [
     component: QuizContent
   },
   {
-    path: '/Quiz-Feedback',
+    path: '/cz-feedback',
+    name: 'CzFeedback',
+    component: CzFeedback
+  },
+  {path: '/Quiz-Feedback',
     name: 'QuizFeedback',
     component: QuizFeedback
   }
