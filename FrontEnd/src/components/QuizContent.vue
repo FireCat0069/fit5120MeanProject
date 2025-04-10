@@ -118,7 +118,7 @@ methods: {
     async fetchQuestions() {
       try {
         // Fetch questions from API
-        const response = await fetch('/api/quiz')
+        const response = await fetch('https://fit5120meanproject.onrender.com/api/quiz')
         this.quizData = await response.json()
         this.processQuestions()
       } catch (error) {
