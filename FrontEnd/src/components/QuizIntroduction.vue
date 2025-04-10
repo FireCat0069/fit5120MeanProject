@@ -5,10 +5,8 @@
           <div class="first-section">
           <div class="navbar-brand">DigiWise</div>
           <nav class="nav-links">
-              <a href="#" class="nav-item">Dashboard</a>
-              <a href="#" class="nav-item">Quiz Bank</a>
-              <a href="#" class="nav-item">Achievements</a>
-              <a href="#" class="nav-item">Quiz History</a>
+            <router-link to="/Quiz-Content" class="nav-item">Dashboard</router-link>
+            <router-link to="/quiz-bank" class="nav-item">Quiz Bank</router-link>
           </nav>
           </div>
           <!-- Right content area -->
@@ -139,14 +137,7 @@ margin: 0 auto;
   overflow: auto; /* Enable scrolling */
 }
 
-/* Navigation links container */
-.nav-links {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  width: 100%;
-  padding: 0 1rem;
-}
+
 
 /* Brand logo styling */
 .navbar-brand {
@@ -154,7 +145,7 @@ margin: 0 auto;
   font-weight: bold;
   color: #c65209;
   margin-right: auto;
-  margin-left: 2rem;
+  margin-left: 1rem;
   margin-top: 1.2rem;
   margin-bottom: 3.5rem; 
 }
@@ -181,9 +172,11 @@ margin: 0 auto;
   box-sizing: border-box;
 }
 
+
 /* Navigation hover effect */
 .nav-item:hover {
   background-color: #ea3f06;
+  color: white;
 }
 
 /* Main content area */
