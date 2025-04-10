@@ -103,9 +103,7 @@ data() {
     questions: [], // Processed questions
     currentQuestionIndex: 0,
     selectedOption: null,
-    userAnswers: [],
-    CorrectAnswer: [],
-    IsCorrect: ""
+    userAnswers: []
   }
 },
 computed: {
@@ -244,7 +242,7 @@ methods: {
       });
 
       // Submit to server
-      const response = await fetch('api/quiz/validate-answers', {
+      const response = await fetch('https://fit5120meanproject.onrender.com/api/quiz/validate-answers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -257,9 +255,34 @@ methods: {
       }
 
       const result = await response.json();
-      (result => {
-          
-        })
+    console.log("✅ The server returned:", result);
+
+    // Store the result
+    const quizResults = {
+      score: result.filter(r => r.isCorrect).length, // Calculate the score
+      total: this.questions.length,
+      details: result.map(item => ({
+        questionId: item._id,
+        isCorrect: item.isCorrect,
+        correctAnswer: item.correctAnswer,
+        userAnswer: item.selectedOption
+      })),
+      // Store the question
+      questions: this.questions.map(q => ({
+        id: q.id,
+        text: q.text,
+        options: q.options
+      }))
+    };
+    sessionStorage.setItem('quizResults', JSON.stringify(quizResults));
+
+    this.$router.push({
+      path: '/Quiz-Feedback',
+      query: {
+        score: quizResults.score,
+        total: quizResults.total
+      }
+    });
       
       // Handle result - adjust based on your API's actual response
       if (result.score !== undefined) {
