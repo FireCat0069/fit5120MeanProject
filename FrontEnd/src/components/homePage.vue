@@ -2,7 +2,7 @@
   <!-- 第一屏 -->
   <div class="page-container first-section">
     <div class="nav-bar">
-      <span>Home</span>
+      <router-link to="/" class="nav-link">Home</router-link>
       <router-link to="/quiz-bank" class="nav-link">Quiz Bank</router-link>
       <span>Contact us</span>
     </div>

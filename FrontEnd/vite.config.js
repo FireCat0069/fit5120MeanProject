@@ -7,7 +7,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 export default defineConfig({
   plugins: [
     vue(),
-    vueDevTools(), // ✅ 两个插件合并在同一个 plugins 数组中
+    vueDevTools(), 
   ],
   resolve: {
     alias: {

@@ -1,5 +1,11 @@
 <template>
   <div class="container">
+    <div class="nav-bar">
+      <router-link to="/" class="nav-link">Home</router-link>
+      <router-link to="/quiz-bank" class="nav-link">Quiz Bank</router-link>
+      <span>Contact us</span>
+    </div>
+
     <h1>
       Digital <span class="highlight">Citizenship</span> Survey
     </h1>
@@ -72,7 +78,7 @@ export default {
         // 单选题：取消所有按钮高亮，仅选中当前
         buttons.forEach(btn => btn.classList.remove("selected"));
         event.currentTarget.classList.add("selected");
-        this.$set(this.answers, questionOrder, option);
+        this.answers[questionOrder] = option;
       } else if (type === "multiple-choice") {
         // 多选题：切换当前按钮高亮状态
         const current = this.answers[questionOrder] || [];
@@ -86,7 +92,7 @@ export default {
           event.currentTarget.classList.remove("selected");
         }
 
-        this.$set(this.answers, questionOrder, current);
+        this.answers[questionOrder] = current;
       }
     },
 
@@ -106,7 +112,7 @@ export default {
         }
       });
 
-      fetch("http://localhost:5000/api/mbtiquiz/validate-answer", {
+      fetch("http://localhost:5000/api/mbtiquiz/validate-answers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -143,6 +149,32 @@ export default {
   max-height: 100vh;
   background-color: #ffffff;
 }
+
+.nav-bar {
+  position: absolute;
+  top: 2vh;
+  right: 5vw;
+  display: flex;
+  gap: 3vw;
+  font-size: 24px;
+  color: #1D1D1D;
+  white-space: nowrap;
+}
+
+.nav-link {
+  color: #1D1D1D;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+/* 如果需要控制激活状态颜色，也可以加上下面这一行 */
+.router-link-active {
+  color: #1D1D1D;
+}
+
 
 h1 {
   font-size: 36px;
