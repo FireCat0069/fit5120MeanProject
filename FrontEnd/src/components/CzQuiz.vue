@@ -6,34 +6,41 @@
 
     <div
       v-for="(question, index) in questions"
-      :key="question._id"
+      :key="question.order"
       class="question-block"
     >
       <p class="question-text">
         {{ index + 1 }}. {{ question.question }}
       </p>
-      <div class="options">
+
+      <!-- 单选 & 多选题 -->
+      <div class="options" v-if="question.type !== 'fill-in-the-blank'">
         <button
           v-for="(option, i) in question.options"
           :key="i"
           class="option-btn"
-          @click="selectAnswer(question._id, option, $event)"
+          @click="selectAnswer(question.order, option, question.type, $event)"
         >
           {{ option }}
         </button>
       </div>
+
+      <!-- 填空题 -->
+      <div v-else>
+        <input
+          type="text"
+          class="option-btn"
+          style="max-width: 600px;"
+          v-model="answers[question.order]"
+          placeholder="Please type your answer here"
+        />
+      </div>
+
       <hr />
     </div>
 
     <div class="submit-section">
       <button class="submit-btn" @click="handleSubmit">Submit</button>
-    </div>
-
-    <div v-if="showWarning" class="modal-overlay">
-      <div class="modal">
-        <p>Please answer all questions before submitting.</p>
-        <button class="modal-btn" @click="showWarning = false">OK</button>
-      </div>
     </div>
   </div>
 </template>
@@ -44,37 +51,77 @@ export default {
   data() {
     return {
       questions: [],
-      answers: {},
-      showWarning: false
+      answers: {}
     };
   },
   methods: {
     fetchQuestions() {
-      fetch("/api/mbtiquiz")
+      fetch("/api/mbtiquiz/questions")
         .then(res => res.json())
         .then(data => {
-          this.questions = data.map(item => ({
-            ...item,
-            _id: item._id || item.id
-          }));
+          // 直接使用返回的数据，因为每个题目已有唯一的 order
+          this.questions = data;
         })
         .catch(err => console.error(err));
     },
 
-    selectAnswer(questionId, option, event) {
-      const buttons = event.currentTarget.parentElement.querySelectorAll(".option-btn");
-      buttons.forEach(btn => btn.classList.remove("selected"));
-      event.currentTarget.classList.add("selected");
-      this.$set(this.answers, questionId, option);
+    selectAnswer(questionOrder, option, type, event) {
+      const buttons = event.currentTarget.closest(".options").querySelectorAll(".option-btn");
+
+      if (type === "single-choice") {
+        // 单选题：取消所有按钮高亮，仅选中当前
+        buttons.forEach(btn => btn.classList.remove("selected"));
+        event.currentTarget.classList.add("selected");
+        this.$set(this.answers, questionOrder, option);
+      } else if (type === "multiple-choice") {
+        // 多选题：切换当前按钮高亮状态
+        const current = this.answers[questionOrder] || [];
+        const index = current.indexOf(option);
+
+        if (index === -1) {
+          current.push(option);
+          event.currentTarget.classList.add("selected");
+        } else {
+          current.splice(index, 1);
+          event.currentTarget.classList.remove("selected");
+        }
+
+        this.$set(this.answers, questionOrder, current);
+      }
     },
 
     handleSubmit() {
-      const allAnswered = this.questions.every(q => this.answers[q._id]);
-      if (!allAnswered) {
-        this.showWarning = true;
-      } else {
-        console.log("All questions answered!", this.answers);
-      }
+      // 直接生成提交数据，无需检测所有题目是否回答
+      const payload = [];
+
+      this.questions.forEach(q => {
+        const answer = this.answers[q.order];
+        if (Array.isArray(answer)) {
+          // 多选题：每个选项单独生成一条记录
+          answer.forEach(opt => {
+            payload.push({ option: opt, order: q.order });
+          });
+        } else {
+          payload.push({ option: answer, order: q.order });
+        }
+      });
+
+      fetch("http://localhost:5000/api/mbtiquiz/validate-answer", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      })
+        .then(res => res.json())
+        .then(result => {
+          console.log("✅ 服务器返回：", result);
+          alert("提交成功！请查看控制台返回结果");
+        })
+        .catch(err => {
+          console.error("❌ 提交失败：", err);
+          alert("提交失败，请检查控制台和服务器状态");
+        });
     }
   },
   mounted() {
@@ -176,39 +223,5 @@ hr {
 
 .submit-btn:hover {
   background-color: #e65f14;
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
-
-.modal {
-  background: #fff;
-  padding: 30px;
-  border-radius: 10px;
-  text-align: center;
-  max-width: 300px;
-  font-size: 18px;
-  color: #333;
-}
-
-.modal-btn {
-  margin-top: 20px;
-  padding: 10px 24px;
-  background-color: #FF7426;
-  color: #fff;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 16px;
 }
 </style>
