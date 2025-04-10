@@ -258,10 +258,7 @@ methods: {
 
       const result = await response.json();
       (result => {
-          console.log("✅ 服务器返回：", result);
-          // 保存反馈数据，并显示反馈视图
-          this.CorrectAnswer = result.correctAnswer;
-          this.IsCorrect = result.IsCorrect;
+          
         })
       
       // Handle result - adjust based on your API's actual response
