@@ -103,7 +103,9 @@ data() {
     questions: [], // Processed questions
     currentQuestionIndex: 0,
     selectedOption: null,
-    userAnswers: []
+    userAnswers: [],
+    CorrectAnswer: [],
+    IsCorrect: ""
   }
 },
 computed: {
@@ -121,7 +123,7 @@ methods: {
     async fetchQuestions() {
       try {
         // Fetch questions from API
-        const response = await fetch('/api/quiz')
+        const response = await fetch('api/quiz/questions')
         this.quizData = await response.json()
         this.processQuestions()
       } catch (error) {
@@ -242,7 +244,7 @@ methods: {
       });
 
       // Submit to server
-      const response = await fetch('http://localhost:5000/api/quiz/validate-answers', {
+      const response = await fetch('api/quiz/validate-answers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -255,11 +257,16 @@ methods: {
       }
 
       const result = await response.json();
+      (result => {
+          console.log("✅ 服务器返回：", result);
+          // 保存反馈数据，并显示反馈视图
+          this.CorrectAnswer = result.correctAnswer;
+          this.IsCorrect = result.IsCorrect;
+        })
       
       // Handle result - adjust based on your API's actual response
       if (result.score !== undefined) {
-        alert(`Quiz completed! Score: ${result.score}`);
-        // Optionally navigate to results page
+        // Optionally navigate to FeedBack page
         this.$router.push('/Quiz-Feedback');
       } else {
         alert('Quiz submitted successfully!');
