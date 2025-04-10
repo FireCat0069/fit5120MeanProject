@@ -1,4 +1,4 @@
-require('dotenv').config(); // Load environment variables from .env file
+require('dotenv').config({ path: './src/.env' }); 
 const express = require('express'); // Import Express framework
 const cors = require('cors'); // Import CORS middleware
 const connectDB = require('./config/db'); // Import database connection function
