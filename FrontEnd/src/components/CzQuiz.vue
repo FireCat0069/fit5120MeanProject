@@ -148,7 +148,7 @@ export default {
         }
       });
 
-      fetch("http://localhost:5000/api/mbtiquiz/validate-answers", {
+      fetch("/api/mbtiquiz/validate-answers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
