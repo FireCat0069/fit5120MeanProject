@@ -143,7 +143,7 @@ methods: {
       const options = optionsString.split(';').map(opt => opt.trim());
       
       // Determine question type and process correct answers
-      const isMultipleChoice = item['Quiz Type'] === 'Multiple Choice';
+      const isMultipleChoice = item['QuizType'] === 'Multiple Choice';
       let correctIndices;
       
       if (isMultipleChoice) {
@@ -161,7 +161,7 @@ methods: {
         options: options,
         correctIndices: correctIndices, // Always array (even for single choice)
         isMultipleChoice: isMultipleChoice,
-        quizType: item['Quiz Type'] // Store original type for reference
+        quizType: item['QuizType'] // Store original type for reference
       };
     });
 
@@ -260,7 +260,7 @@ methods: {
       if (result.score !== undefined) {
         alert(`Quiz completed! Score: ${result.score}`);
         // Optionally navigate to results page
-        this.$router.push('/quiz-results');
+        this.$router.push('/Quiz-Feedback');
       } else {
         alert('Quiz submitted successfully!');
       }
