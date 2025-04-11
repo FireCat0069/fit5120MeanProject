@@ -332,5 +332,6 @@ video {
 /* Quiz description paragraphs */
 .quiz-description p {
   margin-bottom: 1rem;
+  color: #333;
 }
 </style>
