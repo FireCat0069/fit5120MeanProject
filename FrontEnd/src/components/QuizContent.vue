@@ -5,10 +5,13 @@
           <div class="first-section">
               <div class="navbar-brand">DigiWise</div>
               <nav class="nav-links">
-                  <a href="#" class="nav-item">Dashboard</a>
-                  <a href="#" class="nav-item">Quiz Bank</a>
-                  <a href="#" class="nav-item">Achievements</a>
-                  <a href="#" class="nav-item">Quiz History</a>
+                <router-link 
+                  to="/Quiz-Content" 
+                  class="nav-item active-nav-item" 
+                >
+                  Dashboard
+                </router-link>
+                <router-link to="/quiz-bank" class="nav-item">Quiz Bank</router-link>
               </nav>
           </div>
           <!-- Right content area -->
@@ -118,7 +121,7 @@ methods: {
     async fetchQuestions() {
       try {
         // Fetch questions from API
-        const response = await fetch('https://fit5120meanproject.onrender.com/api/quiz')
+        const response = await fetch('https://fit5120meanproject.onrender.com/api/quiz/questions')
         this.quizData = await response.json()
         this.processQuestions()
       } catch (error) {
@@ -140,16 +143,16 @@ methods: {
       const options = optionsString.split(';').map(opt => opt.trim());
       
       // Determine question type and process correct answers
-      const isMultipleChoice = item['Quiz Type'] === 'Multiple Choice';
+      const isMultipleChoice = item['QuizType'] === 'Multiple Choice';
       let correctIndices;
       
       if (isMultipleChoice) {
         // For multiple choice: split answers like "A,B" or "AB"
-        correctIndices = item['Correct Answer'].split(/[, ]*/)
+        correctIndices = item['CorrectAnswer'].split(/[, ]*/)
           .map(char => char.charCodeAt(0) - 65);
       } else {
         // For single choice: convert single letter to index
-        correctIndices = [item['Correct Answer'].charCodeAt(0) - 65];
+        correctIndices = [item['CorrectAnswer'].charCodeAt(0) - 65];
       }
 
       return {
@@ -158,7 +161,7 @@ methods: {
         options: options,
         correctIndices: correctIndices, // Always array (even for single choice)
         isMultipleChoice: isMultipleChoice,
-        quizType: item['Quiz Type'] // Store original type for reference
+        quizType: item['QuizType'] // Store original type for reference
       };
     });
 
@@ -214,53 +217,87 @@ methods: {
 
   async submitQuiz() {
     try {
-      // Prepare answer data for API
-      const answers = this.questions.map((q, index) => {
+      // Prepare answer data in the exact format the API expects
+      const answers = this.questions.map((question, index) => {
         const userAnswer = this.userAnswers[index];
         
-        // Convert answer based on question type
-        let submittedAnswer;
-        if (q.isMultipleChoice) {
-          // For multiple choice: convert array of indices to "A,B" format
-          submittedAnswer = userAnswer
-            ? userAnswer.map(idx => String.fromCharCode(65 + idx)).join(',')
-            : '';
-        } else {
-          // For single choice: convert index to letter
-          submittedAnswer = userAnswer !== null 
-            ? String.fromCharCode(65 + userAnswer)
-            : '';
+        // Convert user's answer to letter format (A, B, C, etc.)
+        let selectedOption = '';
+        
+        if (question.isMultipleChoice && Array.isArray(userAnswer)) {
+          // Multiple choice: convert to "A,B,C" format
+          selectedOption = userAnswer
+            .sort((a, b) => a - b) // Ensure consistent order
+            .map(idx => String.fromCharCode(65 + idx))
+            .join(',');
+        } else if (!question.isMultipleChoice && typeof userAnswer === 'number') {
+          // Single choice: convert to single letter
+          selectedOption = String.fromCharCode(65 + userAnswer);
         }
 
         return {
-          questionId: q.id,
-          selectedOption: submittedAnswer,
-          questionType: q.quizType // Include question type in submission
+          _id: question.id, // Use _id instead of questionId to match API
+          selectedOption: selectedOption || 'A' // Default to 'A' if empty
         };
       });
-      
+
       // Submit to server
-      const response = await fetch('/api/quiz/submit', {
+      const response = await fetch('https://fit5120meanproject.onrender.com/api/quiz/validate-answers', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          answers,
-          quizType: 'mixed' // Indicate this quiz contains both types
-        })
+        body: JSON.stringify(answers) // Send the array directly without wrapping
       });
-      
-      const result = await response.json();
-      alert(`Quiz completed! Score: ${result.score}`);
-      
-      // Additional result handling
-      if (result.detailedResults) {
-        this.quizResults = result.detailedResults;
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const result = await response.json();
+    console.log("✅ The server returned:", result);
+
+    // Store the result
+    const quizResults = {
+      score: result.filter(r => r.isCorrect).length, // Calculate the score
+      total: this.questions.length,
+      details: result.map(item => ({
+        questionId: item._id,
+        isCorrect: item.isCorrect,
+        correctAnswer: item.correctAnswer,
+        userAnswer: item.selectedOption
+      })),
+      // Store the question
+      questions: this.questions.map(q => ({
+        id: q.id,
+        text: q.text,
+        options: q.options
+      }))
+    };
+    sessionStorage.setItem('quizResults', JSON.stringify(quizResults));
+
+    this.$router.push({
+      path: '/Quiz-Feedback',
+      query: {
+        score: quizResults.score,
+        total: quizResults.total
+      }
+    });
+      
+      // Handle result - adjust based on your API's actual response
+      if (result.score !== undefined) {
+        // Optionally navigate to FeedBack page
+        this.$router.push('/Quiz-Feedback');
+      } else {
+        alert('Quiz submitted successfully!');
+      }
+
+      return result;
+      
     } catch (error) {
       console.error('Submission failed:', error);
       alert('Failed to submit quiz. Please try again.');
+      throw error; // Re-throw if you want calling code to handle it
     }
   }
 }
@@ -353,10 +390,19 @@ margin: 0 auto;
   box-sizing: border-box;
 }
 
+
+/* Active navigation item */
+.nav-item.active-nav-item {
+  background-color: #ea3f06 ;
+  color: white ;
+}
+
 /* Navigation hover effect */
 .nav-item:hover {
   background-color: #ea3f06;
 }
+
+
 
 /* Main content area */
 .main-section {
@@ -483,6 +529,7 @@ gap: 0.8rem;
 /* Option item styling */
 .options-list li {
 padding: 1rem;
+color: #1D1D1D;
 background-color: #fff;
 border: 1px solid #e0e0e0;
 border-radius: 6px;
