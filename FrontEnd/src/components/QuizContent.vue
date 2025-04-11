@@ -529,6 +529,7 @@ gap: 0.8rem;
 /* Option item styling */
 .options-list li {
 padding: 1rem;
+color: #1D1D1D;
 background-color: #fff;
 border: 1px solid #e0e0e0;
 border-radius: 6px;
