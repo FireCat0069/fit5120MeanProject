@@ -148,7 +148,7 @@ export default {
         }
       });
 
-      fetch("https://fit5120meanproject.onrender.com/api/mbtiquiz/validate-answers", {
+      fetch("https://fit5120mainprojecttp20backend.onrender.com/api/mbtiquiz/validate-answers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
