@@ -14,7 +14,7 @@
     <div v-if="!feedbackDisplayed">
       <div
         v-for="(question, index) in questions"
-        :key="question.order"
+        :key="question.question_order"
         class="question-block"
       >
         <p class="question-text">
@@ -27,7 +27,7 @@
             v-for="(option, i) in question.options"
             :key="i"
             class="option-btn"
-            @click="selectAnswer(question.order, option, question.type, $event)"
+            @click="selectAnswer(question.question_order, option, question.type, $event)"
           >
             {{ option }}
           </button>
@@ -39,7 +39,7 @@
             type="text"
             class="option-btn"
             style="max-width: 600px;"
-            v-model="answers[question.order]"
+            v-model="answers[question.question_order]"
             placeholder="Please type your answer here"
           />
         </div>
@@ -61,10 +61,10 @@
       <div v-else>
         <div
           v-for="(feedback, index) in feedbackList"
-          :key="feedback.order"
+          :key="feedback.question_order"
           class="feedback-item"
         >
-          <h3>Question {{ feedback.order }}</h3>
+          <h3>Question {{ feedback.question_order }}</h3>
           <p>
             <strong>Correct Answer:</strong>
             {{ feedback.correctAnswer }}
@@ -101,7 +101,6 @@ export default {
       fetch("https://fit5120mainprojecttp20backend.onrender.com/api/mbtiquiz/questions")
         .then(res => res.json())
         .then(data => {
-          // 直接使用返回的数据，因为每个题目已有唯一的 order
           this.questions = data;
         })
         .catch(err => console.error(err));
@@ -111,12 +110,10 @@ export default {
       const buttons = event.currentTarget.closest(".options").querySelectorAll(".option-btn");
 
       if (type === "single-choice") {
-        // 单选题：取消所有按钮高亮，仅选中当前
         buttons.forEach(btn => btn.classList.remove("selected"));
         event.currentTarget.classList.add("selected");
         this.answers[questionOrder] = option;
       } else if (type === "multiple-choice") {
-        // 多选题：切换当前按钮高亮状态
         const current = this.answers[questionOrder] || [];
         const index = current.indexOf(option);
 
@@ -133,18 +130,16 @@ export default {
     },
 
     handleSubmit() {
-      // 生成提交数据，无需检测所有题目是否回答
       const payload = [];
 
       this.questions.forEach(q => {
-        const answer = this.answers[q.order];
+        const answer = this.answers[q.question_order];
         if (Array.isArray(answer)) {
-          // 多选题：每个选项单独生成一条记录
           answer.forEach(opt => {
-            payload.push({ option: opt, order: q.order });
+            payload.push({ option: opt, question_order: q.question_order });
           });
         } else {
-          payload.push({ option: answer, order: q.order });
+          payload.push({ option: answer, question_order: q.question_order });
         }
       });
 
@@ -158,7 +153,6 @@ export default {
         .then(res => res.json())
         .then(result => {
           console.log("✅ 服务器返回：", result);
-          // 保存反馈数据，并显示反馈视图
           this.feedbackList = result;
           this.feedbackDisplayed = true;
         })
@@ -176,7 +170,7 @@ export default {
 </script>
 
 <style>
-/* 全局样式 */
+/* 样式保持原样 */
 .container {
   width: 100vw;
   position: absolute;
@@ -294,7 +288,6 @@ hr {
   background-color: #e65f14;
 }
 
-/* 反馈部分样式 */
 .feedback-section {
   margin-top: 50px;
 }
@@ -304,7 +297,7 @@ hr {
   margin: 30px auto;
   padding: 20px;
   font-family: Arial, sans-serif;
-  color: #000; /* 设置反馈区域文字为黑色 */
+  color: #000;
 }
 
 .feedback-item {
@@ -317,10 +310,9 @@ hr {
 
 .feedback-item h3 {
   margin-top: 0;
-  color: #000; /* 确保标题为黑色 */
+  color: #000;
 }
 
-/* 使用通配选择器确保所有反馈区的文字为黑色 */
 .feedback-section * {
   color: #000 !important;
 }

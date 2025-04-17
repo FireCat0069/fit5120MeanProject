@@ -1,4 +1,4 @@
-const ScreenUsage = require('../models/ScreenUsage'); 
+const pool = require('../config/db'); // 引入 PostgreSQL 连接池
 
 // Controller function to handle screen usage data submission
 exports.submitScreenUsage = async (req, res) => {
@@ -10,17 +10,27 @@ exports.submitScreenUsage = async (req, res) => {
       return res.status(400).json({ message: 'Request body is empty or invalid' });
     }
 
-    // Create and save a new screen usage record
-    const newUsage = new ScreenUsage(data);
-    const saved = await newUsage.save();
+    // Insert the screen usage data into the database
+    const query = `
+      INSERT INTO screen_usage (user_id, screen_time, activity, timestamp)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *;
+    `;
+    const values = [
+      data.user_id,
+      data.screen_time,
+      data.activity,
+      data.timestamp || new Date() // Use current timestamp if not provided
+    ];
+
+    const { rows } = await pool.query(query, values);
 
     // Return a success response with the saved data
-    res.status(201).json(saved);
+    res.status(201).json(rows[0]);
   } catch (err) {
-    if (err.name === 'ValidationError') {
-      // Handle Mongoose validation errors
-      const errors = Object.values(err.errors).map(e => e.message);
-      return res.status(400).json({ message: 'Validation failed', errors });
+    if (err.code === '23505') {
+      // Handle unique constraint violations (if applicable)
+      return res.status(400).json({ message: 'Duplicate entry', error: err.detail });
     }
 
     // Log the error and return a 500 Internal Server Error response

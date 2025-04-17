@@ -1,27 +1,24 @@
-const mongoose = require('mongoose');
+const { Pool } = require('pg');
 
-// Function to connect to MongoDB
-const connectDB = async () => {
+// Create a PostgreSQL connection pool
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false, // 跳过 SSL 校验（根据你的需求调整）
+  },
+});
+
+// Test the connection when the application starts
+(async () => {
   try {
-    // Check if the MONGO_URI environment variable is defined
-    if (!process.env.MONGO_URI) {
-      throw new Error('MONGO_URI is not defined in environment variables');
-    }
-
-    // Attempt to connect to MongoDB using the provided URI
-    await mongoose.connect(process.env.MONGO_URI);
-
-    // Log a success message if the connection is established
-    console.log('✅ MongoDB Connected');
+    const client = await pool.connect();
+    console.log('✅ PostgreSQL Connected');
+    client.release();
   } catch (error) {
-    // Log the error message and stack trace if the connection fails
-    console.error('❌ MongoDB Connection Failed:', error.message);
+    console.error('❌ PostgreSQL Connection Failed:', error.message);
     console.error(error.stack);
-
-    // Exit the process with a failure code
-    process.exit(1);
+    process.exit(1); // Exit the process if the connection fails
   }
-};
+})();
 
-// Export the connectDB function for use in other parts of the application
-module.exports = connectDB;
+module.exports = pool;
