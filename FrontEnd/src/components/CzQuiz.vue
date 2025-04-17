@@ -98,7 +98,7 @@ export default {
   },
   methods: {
     fetchQuestions() {
-      fetch("https://fit5120meanproject.onrender.com/api/mbtiquiz/questions")
+      fetch("https://fit5120mainprojecttp20backend.onrender.com/api/mbtiquiz/questions")
         .then(res => res.json())
         .then(data => {
           // 直接使用返回的数据，因为每个题目已有唯一的 order
