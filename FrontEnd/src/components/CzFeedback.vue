@@ -9,10 +9,10 @@
     <div v-else>
       <div
         v-for="(feedback, index) in feedbackList"
-        :key="feedback.order"
+        :key="feedback.question_order"
         class="feedback-item"
       >
-        <h2>Question {{ feedback.order }}</h2>
+        <h2>Question {{ feedback.question_order }}</h2>
         <p>
           <strong>Correct Answer:</strong>
           {{ feedback.correctAnswer }}
@@ -53,7 +53,7 @@ export default {
   methods: {
     // 如果后端提供 GET 接口时，可以用 fetchFeedback 方法获取数据
     fetchFeedback() {
-      fetch("http://localhost:5000/api/mbtiquiz/validate-answers")
+      fetch("https://fit5120mainprojecttp20backend.onrender.com/api/mbtiquiz/validate-answers")
         .then(res => res.json())
         .then(data => {
           this.feedbackList = data;
