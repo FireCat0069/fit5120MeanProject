@@ -55,6 +55,11 @@
     <!-- 提交后显示反馈 -->
     <div v-else class="feedback-section">
       <h2>Quiz Feedback</h2>
+      <!-- 通用反馈 -->
+      <div v-if="generalFeedback" class="general-feedback">
+        <p>{{ generalFeedback }}</p>
+      </div>
+
       <div v-if="feedbackList.length === 0">
         <p>No feedback available.</p>
       </div>
@@ -93,6 +98,7 @@ export default {
       questions: [],
       answers: {},
       feedbackList: [],
+      generalFeedback: "",
       feedbackDisplayed: false
     };
   },
@@ -153,7 +159,9 @@ export default {
         .then(res => res.json())
         .then(result => {
           console.log("✅ 服务器返回：", result);
-          this.feedbackList = result;
+          // 更新为新的返回结构
+          this.feedbackList = result.results || [];
+          this.generalFeedback = result.feedback || "";
           this.feedbackDisplayed = true;
         })
         .catch(err => {
@@ -170,7 +178,6 @@ export default {
 </script>
 
 <style>
-/* 样式保持原样 */
 .container {
   width: 100vw;
   position: absolute;
@@ -292,12 +299,10 @@ hr {
   margin-top: 50px;
 }
 
-.feedback-container {
-  max-width: 800px;
-  margin: 30px auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  color: #000;
+.general-feedback {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #333;
 }
 
 .feedback-item {
