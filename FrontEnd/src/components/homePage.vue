@@ -18,7 +18,7 @@
       </div>
       <p class="sub-text">
         Today’s digital world demands more than access—it requires awareness.
-        <strong> DigitalShield </strong>
+        <strong>DigitalShield</strong>
         equips university students with the tools to stay safe, spot misinformation, and become responsible digital citizens.
       </p>
 
@@ -36,19 +36,19 @@
     <p class="quiz-title">Foster Digital Citizenship</p>
     <p class="quiz-subtitle">Work together to create a safe and better online world.</p>
     <div class="red-card-container">
-     <!-- 卡片 1 -->
-    <div class="red-card">
-      <div class="card-content">
-      <img class="quiz-img" src="@/assets/quiz1.png" alt="Quiz 1" />
-      <p class="category-text">Online Safety</p>
-      <p class="quiz-name">Can You Outsmart the Internet Threats?</p>
-      <div class="divider"></div>
-      <p class="quiz-meta">15 mins · 34 questions · 521 times</p>
-      <router-link to="/Quiz-Introduction">
-        <button class="start-quiz-btn">Start Quiz</button>
-      </router-link>
+      <!-- 卡片 1 -->
+      <div class="red-card">
+        <div class="card-content">
+          <img class="quiz-img" src="@/assets/quiz1.png" alt="Quiz 1" />
+          <p class="category-text">Online Safety</p>
+          <p class="quiz-name">Can You Outsmart the Internet Threats?</p>
+          <div class="divider"></div>
+          <p class="quiz-meta">15 mins · 34 questions · 521 times</p>
+          <router-link to="/Quiz-Introduction">
+            <button class="start-quiz-btn">Start Quiz</button>
+          </router-link>
+        </div>
       </div>
-    </div>
 
       <!-- 卡片 2 -->
       <div class="red-card">
@@ -82,11 +82,35 @@
 
 <script>
 export default {
-  name: "HomePage"
+  name: 'HomePage'
 };
 </script>
 
 <style scoped>
+/* 页面进入动画：淡入向上 */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.main-title,
+.fake-search {
+  animation: fadeInUp 1s ease-out both;
+}
+.main-title {
+  animation-delay: 0.3s;
+}
+.fake-search {
+  animation-delay: 0.6s;
+}
+
+/* 原有样式 */
 .page-container {
   width: 100vw;
   height: 100vh;
@@ -302,8 +326,8 @@ export default {
   color: #1D1D1D;
   text-decoration: none;
 }
+
 .nav-link:hover {
   text-decoration: underline;
 }
-
 </style>
