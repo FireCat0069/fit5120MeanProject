@@ -13,7 +13,7 @@
     <!-- 如果未提交反馈，则显示答题内容 -->
     <div v-if="!feedbackDisplayed">
       <div
-        v-for="(question, index) in questions"
+        v-for="(question, index) in questions.slice(0, 10)"
         :key="question.question_order"
         class="question-block"
       >
