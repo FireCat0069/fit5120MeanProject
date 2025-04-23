@@ -58,13 +58,10 @@
 
       <!-- 统计饼图 轮播 -->
       <div v-if="statsLoaded" class="stats-charts-carousel">
-        <h3>Usage Statistics</h3>
+        <h3>Usage Statistics – {{ chartTitles[currentChartIndex] }}</h3>
         <div class="chart-frame">
           <button class="nav-btn left" @click="prevChart">‹</button>
-          <div class="chart-content">
-            <h4>{{ chartTitles[currentChartIndex] }}</h4>
-            <v-chart :option="chartOptionsList[currentChartIndex]" class="chart" />
-          </div>
+          <v-chart :option="chartOptionsList[currentChartIndex]" class="chart" />
           <button class="nav-btn right" @click="nextChart">›</button>
         </div>
       </div>
@@ -123,7 +120,6 @@ export default {
       feedbackList: [],
       generalFeedback: '',
       feedbackDisplayed: false,
-      stats: null,
       statsLoaded: false,
       chartOptionsList: [],
       chartTitles: [],
@@ -159,12 +155,9 @@ export default {
     handleSubmit() {
       const payload = [];
       this.questions.forEach(q => {
-        const answer = this.answers[q.question_order];
-        if (Array.isArray(answer)) {
-          answer.forEach(opt => payload.push({ option: opt, question_order: q.question_order }));
-        } else {
-          payload.push({ option: answer, question_order: q.question_order });
-        }
+        const ans = this.answers[q.question_order];
+        if (Array.isArray(ans)) ans.forEach(opt => payload.push({ question_order: q.question_order, option: opt }));
+        else payload.push({ question_order: q.question_order, option: ans });
       });
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/mbtiquiz/validate-answers', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -195,25 +188,21 @@ export default {
           });
           this.statsLoaded = true;
         })
-        .catch(err => console.error(err));
+        .catch(console.error);
     },
     createPieOption(title, dataObj) {
       return {
-        title: { text: title, left: 'center' },
+        title: { text: '', left: 'center' },
         tooltip: { trigger: 'item' },
         legend: { orient: 'vertical', right: '5%', top: 'center', itemGap: 12 },
         series: [{ name: title, type: 'pie', radius: '40%',
-          data: Object.entries(dataObj).map(([name, pct]) => ({ name, value: parseFloat(pct) })),
+          data: Object.entries(dataObj).map(([n, p]) => ({ name: n, value: parseFloat(p) })),
           emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.5)' } }
         }]
       };
     },
-    prevChart() {
-      this.currentChartIndex = (this.currentChartIndex + this.chartOptionsList.length - 1) % this.chartOptionsList.length;
-    },
-    nextChart() {
-      this.currentChartIndex = (this.currentChartIndex + 1) % this.chartOptionsList.length;
-    }
+    prevChart() { this.currentChartIndex = (this.currentChartIndex + this.chartOptionsList.length - 1) % this.chartOptionsList.length; },
+    nextChart() { this.currentChartIndex = (this.currentChartIndex + 1) % this.chartOptionsList.length; }
   },
   mounted() {
     document.title = 'Digital Citizenship Survey';
@@ -224,51 +213,31 @@ export default {
 </script>
 
 <style>
-.container {
-  width: 100vw;
-  position: absolute;
-  left: 0;
-  top: 0;
-  padding: 40px 60px;
-  font-family: Arial;
-  overflow-y: auto;
-  max-height: 100vh;
-  background: #fff;
-}
-.nav-bar {
-  position: absolute;
-  top: 2vh;
-  right: 5vw;
-  display: flex;
-  gap: 3vw;
-  font-size: 24px;
-  color: #1d1d1d;
-  white-space: nowrap;
-}
-.nav-link { color: #1d1d1d; text-decoration: none; }
-.nav-link:hover { text-decoration: underline; }
-.router-link-active { color: #1d1d1d; }
-h1 { font-size: 36px; font-weight: 700; margin-bottom: 30px; color: #050c26; }
-.highlight { color: #f18829; }
-.question-block { margin-bottom: 40px; }
-.question-text { font-size: 20px; font-weight: 600; margin-bottom: 16px; color: #1d1d1d; }
-.options { display: flex; flex-direction: column; gap: 12px; }
-.option-btn { padding: 14px 20px; max-width: 600px; border: 2px solid #e0e0e0; border-radius: 12px; background: #fff; cursor: pointer; transition: .2s; font-size: 16px; color: #333; box-shadow: 0 1px 4px rgba(0,0,0,0.03); text-align: left; }
-.option-btn:hover { background: #fff8f5; border-color: #ff7426; }
-.option-btn.selected { background: #ff7426; color: #fff; border-color: #ff7426; }
-hr { border: none; border-top: 1px solid #ddd; margin: 30px 0; }
-.submit-section { text-align: center; margin-top: 50px; }
-.submit-btn { padding: 14px 32px; font-size: 18px; background: #f18829; color: #fff; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-.submit-btn:hover { background: #e65f14; }
-.feedback-section { margin-top: 50px; }
-.stats-charts-carousel { margin-bottom: 20px; }
-.chart-frame { display: flex; align-items: center; justify-content: center; width: 900px; margin: 0 auto; }
-.nav-btn { background: transparent; border: none; font-size: 30px; cursor: pointer; padding: 0 20px; color: #333; }
-.chart-content { display: flex; align-items: center; gap: 40px; }
-.chart-content h4 { margin-bottom: 10px; font-size: 18px; text-align: center; margin-right: 20px; }
-.chart { width: 500px; height: 500px; flex-shrink: 0; }
-.general-feedback { margin-bottom: 20px; font-size: 16px; color: #333; }
-.feedback-item { border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 20px; background: #f9f9f9; }
-.feedback-item h3 { margin-top: 0; color: #000; }
-.feedback-section * { color: #000 !important; }
+.container { width:100vw; position:absolute; left:0; top:0; padding:40px 60px; font-family:Arial; overflow-y:auto; max-height:100vh; background:#fff; }
+.nav-bar { position:absolute; top:2vh; right:5vw; display:flex; gap:3vw; font-size:24px; color:#1d1d1d; white-space:nowrap; }
+.nav-link { color:#1d1d1d; text-decoration:none; }
+.nav-link:hover { text-decoration:underline; }
+.router-link-active { color:#1d1d1d; }
+h1 { font-size:36px; font-weight:700; margin-bottom:30px; color:#050c26; }
+.highlight { color:#f18829; }
+.question-block { margin-bottom:40px; }
+.question-text { font-size:20px; font-weight:600; margin-bottom:16px; color:#1d1d1d; }
+.options { display:flex; flex-direction:column; gap:12px; }
+.option-btn { padding:14px 20px; max-width:600px; border:2px solid #e0e0e0; border-radius:12px; background:#fff; cursor:pointer; transition:.2s; font-size:16px; color:#333; box-shadow:0 1px 4px rgba(0,0,0,0.03); text-align:left; }
+.option-btn:hover { background:#fff8f5; border-color:#ff7426; }
+.option-btn.selected { background:#ff7426; color:#fff; border-color:#ff7426; }
+hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
+.submit-section { text-align:center; margin-top:50px; }
+.submit-btn { padding:14px 32px; font-size:18px; background:#f18829; color:#fff; border:none; border-radius:30px; cursor:pointer; font-weight:bold; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+.submit-btn:hover { background:#e65f14; }
+.feedback-section { margin-top:50px; }
+.stats-charts-carousel { margin-bottom:30px; }
+.stats-charts-carousel h3 { font-size:24px; text-align:center; margin-bottom:20px; }
+.chart-frame { display:flex; align-items:center; justify-content:center; width:1200px; margin:0 auto; }
+.nav-btn { background:transparent; border:none; font-size:40px; cursor:pointer; padding:0 30px; color:#333; }
+.chart { width:600px; height:600px; }
+.general-feedback { margin-bottom:20px; font-size:16px; color:#333; }
+.feedback-item { border:1px solid #ddd; border-radius:8px; padding:15px; margin-bottom:20px; background:#f9f9f9; }
+.feedback-item h3 { margin-top:0; color:#000; }
+.feedback-section * { color:#000!important; }
 </style>
