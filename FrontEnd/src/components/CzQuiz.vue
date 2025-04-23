@@ -56,15 +56,16 @@
     <div v-else class="feedback-section">
       <h2>Quiz Feedback</h2>
 
-      <!-- 统计饼图 -->
-      <div v-if="statsLoaded" class="stats-charts">
+      <!-- 统计饼图 轮播 -->
+      <div v-if="statsLoaded" class="stats-charts-carousel">
         <h3>Usage Statistics</h3>
-        <div class="chart-container">
-          <v-chart :option="deviceTypeOption" class="chart" />
-          <v-chart :option="screenTimeOption" class="chart" />
-          <v-chart :option="screenActivityOption" class="chart" />
-          <v-chart :option="appCategoryOption" class="chart" />
-          <v-chart :option="averageScreenTimeOption" class="chart" />
+        <div class="chart-frame">
+          <button class="nav-btn left" @click="prevChart">‹</button>
+          <div class="chart-content">
+            <h4>{{ chartTitles[currentChartIndex] }}</h4>
+            <v-chart :option="chartOptionsList[currentChartIndex]" class="chart" />
+          </div>
+          <button class="nav-btn right" @click="nextChart">›</button>
         </div>
       </div>
 
@@ -124,11 +125,9 @@ export default {
       feedbackDisplayed: false,
       stats: null,
       statsLoaded: false,
-      deviceTypeOption: null,
-      screenTimeOption: null,
-      screenActivityOption: null,
-      appCategoryOption: null,
-      averageScreenTimeOption: null
+      chartOptionsList: [],
+      chartTitles: [],
+      currentChartIndex: 0
     };
   },
   methods: {
@@ -183,30 +182,38 @@ export default {
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/usage/stats')
         .then(res => res.json())
         .then(data => {
-          this.stats = data;
+          const { device_type, screen_time_period, screen_activity, app_category, average_screen_time_range } = data;
+          const groups = [
+            { title: 'Device Type', data: device_type },
+            { title: 'Screen Time Period', data: screen_time_period },
+            { title: 'Screen Activity', data: screen_activity },
+            { title: 'App Category', data: app_category },
+            { title: 'Avg Screen Time Range', data: average_screen_time_range }
+          ];
+          groups.forEach(g => {
+            this.chartTitles.push(g.title);
+            this.chartOptionsList.push(this.createPieOption(g.title, g.data));
+          });
           this.statsLoaded = true;
-          this.buildChartOptions();
         })
         .catch(err => console.error(err));
-    },
-    buildChartOptions() {
-      const { device_type, screen_time_period, screen_activity, app_category, average_screen_time_range } = this.stats;
-      this.deviceTypeOption = this.createPieOption('Device Type', device_type);
-      this.screenTimeOption = this.createPieOption('Screen Time Period', screen_time_period);
-      this.screenActivityOption = this.createPieOption('Screen Activity', screen_activity);
-      this.appCategoryOption = this.createPieOption('App Category', app_category);
-      this.averageScreenTimeOption = this.createPieOption('Avg Screen Time Range', average_screen_time_range);
     },
     createPieOption(title, dataObj) {
       return {
         title: { text: title, left: 'center' },
         tooltip: { trigger: 'item' },
-        legend: { orient: 'vertical', left: 'left' },
-        series: [{ name: title, type: 'pie', radius: '50%',
+        legend: { orient: 'vertical', right: '10%', top: 'center' },
+        series: [{ name: title, type: 'pie', radius: '40%',
           data: Object.entries(dataObj).map(([name, pct]) => ({ name, value: parseFloat(pct) })),
           emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.5)' } }
         }]
       };
+    },
+    prevChart() {
+      this.currentChartIndex = (this.currentChartIndex + this.chartOptionsList.length - 1) % this.chartOptionsList.length;
+    },
+    nextChart() {
+      this.currentChartIndex = (this.currentChartIndex + 1) % this.chartOptionsList.length;
     }
   },
   mounted() {
@@ -236,9 +243,12 @@ hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
 .submit-btn { padding:14px 32px; font-size:18px; background:#f18829; color:#fff; border:none; border-radius:30px; cursor:pointer; font-weight:bold; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
 .submit-btn:hover { background:#e65f14; }
 .feedback-section { margin-top:50px; }
-.stats-charts { margin-bottom:20px; }
-.chart-container { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; }
-.chart { width:300px; height:300px; }
+.stats-charts-carousel { margin-bottom:20px; }
+.chart-frame { display:flex; align-items:center; justify-content:center; }
+.nav-btn { background:transparent; border:none; font-size:30px; cursor:pointer; padding:0 20px; color:#333; }
+.chart-content { text-align:center; }
+.chart-content h4 { margin-bottom:10px; font-size:18px; }
+.chart { width:300px; height:300px; margin:0 auto; }
 .general-feedback { margin-bottom:20px; font-size:16px; color:#333; }
 .feedback-item { border:1px solid #ddd; border-radius:8px; padding:15px; margin-bottom:20px; background:#f9f9f9; }
 .feedback-item h3 { margin-top:0; color:#000; }
