@@ -228,7 +228,7 @@ h1 { font-size:36px; font-weight:700; margin-bottom:30px; color:#050c26; }
 .question-block { margin-bottom:40px; }
 .question-text { font-size:20px; font-weight:600; margin-bottom:16px; color:#1d1d1d; }
 .options { display:flex; flex-direction:column; gap:12px; }
-.option-btn { padding:14px 20px; max-width:600px; border:2px solid #e0e0e0; border-radius:12px; background:#fff; cursor:pointer; transition:.2s; font-size:16px; color:#333; box-shadow:0 1px 4px rgba(0,0,0,0.03); }
+.option-btn { padding:14px 20px; max-width:600px; border:2px solid #e0e0e0; border-radius:12px; background:#fff; cursor:pointer; transition:.2s; font-size:16px; color:#333; box-shadow:0 1px 4px rgba(0,0,0,0.03); text-align:left; }
 .option-btn:hover { background:#fff8f5; border-color:#ff7426; }
 .option-btn.selected { background:#ff7426; color:#fff; border-color:#ff7426; }
 hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
