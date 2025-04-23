@@ -37,7 +37,7 @@
     <p class="quiz-subtitle">Work together to create a safe and better online world.</p>
     <div class="red-card-container">
       <!-- 卡片 1 -->
-      <div class="red-card">
+      <div class="red-card" data-aos="fade-up" data-aos-delay="100">
         <div class="card-content">
           <img class="quiz-img" src="@/assets/quiz1.png" alt="Quiz 1" />
           <p class="category-text">Online Safety</p>
@@ -51,7 +51,7 @@
       </div>
 
       <!-- 卡片 2 -->
-      <div class="red-card">
+      <div class="red-card" data-aos="fade-up" data-aos-delay="200">
         <div class="card-content">
           <img class="quiz-img" src="@/assets/quiz2.png" alt="Quiz 2" />
           <p class="category-text">Digital Literacy</p>
@@ -63,7 +63,7 @@
       </div>
 
       <!-- 卡片 3 -->
-      <div class="red-card">
+      <div class="red-card" data-aos="fade-up" data-aos-delay="300">
         <div class="card-content">
           <img class="quiz-img" src="@/assets/quiz3.png" alt="Quiz 3" />
           <p class="category-text">Fact-Checking</p>
@@ -81,8 +81,17 @@
 </template>
 
 <script>
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
 export default {
-  name: 'HomePage'
+  name: 'HomePage',
+  mounted() {
+    AOS.init({
+      once: true,
+      duration: 800
+    });
+  }
 };
 </script>
 
