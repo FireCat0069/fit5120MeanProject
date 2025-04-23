@@ -133,30 +133,25 @@ export default {
         .then(data => { this.questions = data; })
         .catch(err => console.error(err));
     },
-    selectAnswer(questionOrder, option, type, event) {
+    selectAnswer(qo, opt, type, event) {
       const buttons = event.currentTarget.closest('.options').querySelectorAll('.option-btn');
       if (type === 'single-choice') {
         buttons.forEach(btn => btn.classList.remove('selected'));
         event.currentTarget.classList.add('selected');
-        this.answers[questionOrder] = option;
-      } else if (type === 'multiple-choice') {
-        const current = this.answers[questionOrder] || [];
-        const idx = current.indexOf(option);
-        if (idx === -1) {
-          current.push(option);
-          event.currentTarget.classList.add('selected');
-        } else {
-          current.splice(idx, 1);
-          event.currentTarget.classList.remove('selected');
-        }
-        this.answers[questionOrder] = current;
+        this.answers[qo] = opt;
+      } else {
+        const arr = this.answers[qo] || [];
+        const idx = arr.indexOf(opt);
+        if (idx === -1) { arr.push(opt); event.currentTarget.classList.add('selected'); }
+        else { arr.splice(idx, 1); event.currentTarget.classList.remove('selected'); }
+        this.answers[qo] = arr;
       }
     },
     handleSubmit() {
       const payload = [];
       this.questions.forEach(q => {
         const ans = this.answers[q.question_order];
-        if (Array.isArray(ans)) ans.forEach(opt => payload.push({ question_order: q.question_order, option: opt }));
+        if (Array.isArray(ans)) ans.forEach(o => payload.push({ question_order: q.question_order, option: o }));
         else payload.push({ question_order: q.question_order, option: ans });
       });
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/mbtiquiz/validate-answers', {
@@ -164,12 +159,8 @@ export default {
         body: JSON.stringify(payload)
       })
         .then(res => res.json())
-        .then(result => {
-          this.feedbackList = result.results || [];
-          this.generalFeedback = result.feedback || '';
-          this.feedbackDisplayed = true;
-        })
-        .catch(err => { console.error(err); alert('提交失败，请检查控制台和服务器状态'); });
+        .then(res => { this.feedbackList = res.results || []; this.generalFeedback = res.feedback || ''; this.feedbackDisplayed = true; })
+        .catch(err => { console.error(err); alert('提交失败'); });
     },
     fetchStats() {
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/usage/stats')
@@ -188,15 +179,18 @@ export default {
           });
           this.statsLoaded = true;
         })
-        .catch(console.error);
+        .catch(err => console.error(err));
     },
     createPieOption(title, dataObj) {
       return {
-        title: { text: '', left: 'center' },
         tooltip: { trigger: 'item' },
-        legend: { orient: 'vertical', right: '5%', top: 'center', itemGap: 12 },
-        series: [{ name: title, type: 'pie', radius: '40%',
-          data: Object.entries(dataObj).map(([n, p]) => ({ name: n, value: parseFloat(p) })),
+        legend: { orient: 'vertical', left: '75%', top: 'center', itemGap: 12 },
+        series: [{
+          name: title,
+          type: 'pie',
+          center: ['30%', '50%'],
+          radius: '40%',
+          data: Object.entries(dataObj).map(([name, pct]) => ({ name, value: parseFloat(pct) })),
           emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.5)' } }
         }]
       };
@@ -215,9 +209,7 @@ export default {
 <style>
 .container { width:100vw; position:absolute; left:0; top:0; padding:40px 60px; font-family:Arial; overflow-y:auto; max-height:100vh; background:#fff; }
 .nav-bar { position:absolute; top:2vh; right:5vw; display:flex; gap:3vw; font-size:24px; color:#1d1d1d; white-space:nowrap; }
-.nav-link { color:#1d1d1d; text-decoration:none; }
-.nav-link:hover { text-decoration:underline; }
-.router-link-active { color:#1d1d1d; }
+.nav-link, .nav-link:hover { color:#1d1d1d; text-decoration:none; }
 h1 { font-size:36px; font-weight:700; margin-bottom:30px; color:#050c26; }
 .highlight { color:#f18829; }
 .question-block { margin-bottom:40px; }
