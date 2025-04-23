@@ -182,13 +182,12 @@ export default {
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/usage/stats')
         .then(res => res.json())
         .then(data => {
-          const { device_type, screen_time_period, screen_activity, app_category, average_screen_time_range } = data;
           const groups = [
-            { title: 'Device Type', data: device_type },
-            { title: 'Screen Time Period', data: screen_time_period },
-            { title: 'Screen Activity', data: screen_activity },
-            { title: 'App Category', data: app_category },
-            { title: 'Avg Screen Time Range', data: average_screen_time_range }
+            { title: 'Device Type', data: data.device_type },
+            { title: 'Screen Time Period', data: data.screen_time_period },
+            { title: 'Screen Activity', data: data.screen_activity },
+            { title: 'App Category', data: data.app_category },
+            { title: 'Avg Screen Time Range', data: data.average_screen_time_range }
           ];
           groups.forEach(g => {
             this.chartTitles.push(g.title);
@@ -202,7 +201,7 @@ export default {
       return {
         title: { text: title, left: 'center' },
         tooltip: { trigger: 'item' },
-        legend: { orient: 'vertical', right: '10%', top: 'center' },
+        legend: { orient: 'vertical', right: '5%', top: 'center', itemGap: 12 },
         series: [{ name: title, type: 'pie', radius: '40%',
           data: Object.entries(dataObj).map(([name, pct]) => ({ name, value: parseFloat(pct) })),
           emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.5)' } }
@@ -225,32 +224,51 @@ export default {
 </script>
 
 <style>
-.container { width:100vw; position:absolute; left:0; top:0; padding:40px 60px; font-family:Arial; overflow-y:auto; max-height:100vh; background:#fff; }
-.nav-bar { position:absolute; top:2vh; right:5vw; display:flex; gap:3vw; font-size:24px; color:#1d1d1d; white-space:nowrap; }
-.nav-link { color:#1d1d1d; text-decoration:none; }
-.nav-link:hover { text-decoration:underline; }
-.router-link-active { color:#1d1d1d; }
-h1 { font-size:36px; font-weight:700; margin-bottom:30px; color:#050c26; }
-.highlight { color:#f18829; }
-.question-block { margin-bottom:40px; }
-.question-text { font-size:20px; font-weight:600; margin-bottom:16px; color:#1d1d1d; }
-.options { display:flex; flex-direction:column; gap:12px; }
-.option-btn { padding:14px 20px; max-width:600px; border:2px solid #e0e0e0; border-radius:12px; background:#fff; cursor:pointer; transition:.2s; font-size:16px; color:#333; box-shadow:0 1px 4px rgba(0,0,0,0.03); text-align:left; }
-.option-btn:hover { background:#fff8f5; border-color:#ff7426; }
-.option-btn.selected { background:#ff7426; color:#fff; border-color:#ff7426; }
-hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
-.submit-section { text-align:center; margin-top:50px; }
-.submit-btn { padding:14px 32px; font-size:18px; background:#f18829; color:#fff; border:none; border-radius:30px; cursor:pointer; font-weight:bold; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-.submit-btn:hover { background:#e65f14; }
-.feedback-section { margin-top:50px; }
-.stats-charts-carousel { margin-bottom:20px; }
-.chart-frame { display:flex; align-items:center; justify-content:center; }
-.nav-btn { background:transparent; border:none; font-size:30px; cursor:pointer; padding:0 20px; color:#333; }
-.chart-content { text-align:center; }
-.chart-content h4 { margin-bottom:10px; font-size:18px; }
-.chart { width:300px; height:300px; margin:0 auto; }
-.general-feedback { margin-bottom:20px; font-size:16px; color:#333; }
-.feedback-item { border:1px solid #ddd; border-radius:8px; padding:15px; margin-bottom:20px; background:#f9f9f9; }
-.feedback-item h3 { margin-top:0; color:#000; }
-.feedback-section * { color:#000!important; }
+.container {
+  width: 100vw;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 40px 60px;
+  font-family: Arial;
+  overflow-y: auto;
+  max-height: 100vh;
+  background: #fff;
+}
+.nav-bar {
+  position: absolute;
+  top: 2vh;
+  right: 5vw;
+  display: flex;
+  gap: 3vw;
+  font-size: 24px;
+  color: #1d1d1d;
+  white-space: nowrap;
+}
+.nav-link { color: #1d1d1d; text-decoration: none; }
+.nav-link:hover { text-decoration: underline; }
+.router-link-active { color: #1d1d1d; }
+h1 { font-size: 36px; font-weight: 700; margin-bottom: 30px; color: #050c26; }
+.highlight { color: #f18829; }
+.question-block { margin-bottom: 40px; }
+.question-text { font-size: 20px; font-weight: 600; margin-bottom: 16px; color: #1d1d1d; }
+.options { display: flex; flex-direction: column; gap: 12px; }
+.option-btn { padding: 14px 20px; max-width: 600px; border: 2px solid #e0e0e0; border-radius: 12px; background: #fff; cursor: pointer; transition: .2s; font-size: 16px; color: #333; box-shadow: 0 1px 4px rgba(0,0,0,0.03); text-align: left; }
+.option-btn:hover { background: #fff8f5; border-color: #ff7426; }
+.option-btn.selected { background: #ff7426; color: #fff; border-color: #ff7426; }
+hr { border: none; border-top: 1px solid #ddd; margin: 30px 0; }
+.submit-section { text-align: center; margin-top: 50px; }
+.submit-btn { padding: 14px 32px; font-size: 18px; background: #f18829; color: #fff; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+.submit-btn:hover { background: #e65f14; }
+.feedback-section { margin-top: 50px; }
+.stats-charts-carousel { margin-bottom: 20px; }
+.chart-frame { display: flex; align-items: center; justify-content: center; width: 900px; margin: 0 auto; }
+.nav-btn { background: transparent; border: none; font-size: 30px; cursor: pointer; padding: 0 20px; color: #333; }
+.chart-content { display: flex; align-items: center; gap: 40px; }
+.chart-content h4 { margin-bottom: 10px; font-size: 18px; text-align: center; margin-right: 20px; }
+.chart { width: 500px; height: 500px; flex-shrink: 0; }
+.general-feedback { margin-bottom: 20px; font-size: 16px; color: #333; }
+.feedback-item { border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 20px; background: #f9f9f9; }
+.feedback-item h3 { margin-top: 0; color: #000; }
+.feedback-section * { color: #000 !important; }
 </style>
