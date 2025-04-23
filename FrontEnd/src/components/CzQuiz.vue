@@ -130,34 +130,46 @@ export default {
     },
 
     handleSubmit() {
-      const payload = [];
+      const firstFivePayload = [];
+      const lastFivePayload = [];
 
-      this.questions.forEach(q => {
+      // 将前十题分成两部分：前五题统计到 stats，后五题提交到 validate-answers
+      this.questions.slice(0, 10).forEach((q, idx) => {
         const answer = this.answers[q.question_order];
         if (Array.isArray(answer)) {
           answer.forEach(opt => {
-            payload.push({ option: opt, question_order: q.question_order });
+            const obj = { option: opt, question_order: q.question_order };
+            if (idx < 5) firstFivePayload.push(obj);
+            else lastFivePayload.push(obj);
           });
         } else {
-          payload.push({ option: answer, question_order: q.question_order });
+          const obj = { option: answer, question_order: q.question_order };
+          if (idx < 5) firstFivePayload.push(obj);
+          else lastFivePayload.push(obj);
         }
       });
 
+      // 前五题发送到 usage stats API
+      fetch("https://fit5120mainprojecttp20backend.onrender.com/api/usage/stats", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(firstFivePayload)
+      }).catch(err => console.error("❌ 前五题反馈失败：", err));
+
+      // 后五题提交并获取反馈
       fetch("https://fit5120mainprojecttp20backend.onrender.com/api/mbtiquiz/validate-answers", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(lastFivePayload)
       })
         .then(res => res.json())
         .then(result => {
-          console.log("✅ 服务器返回：", result);
+          console.log("✅ 后五题服务器返回：", result);
           this.feedbackList = result;
           this.feedbackDisplayed = true;
         })
         .catch(err => {
-          console.error("❌ 提交失败：", err);
+          console.error("❌ 后五题提交失败：", err);
           alert("提交失败，请检查控制台和服务器状态");
         });
     }
