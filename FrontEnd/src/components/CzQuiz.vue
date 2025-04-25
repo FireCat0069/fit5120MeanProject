@@ -308,7 +308,13 @@ hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
 
 /* existing carousel styles */
 .stats-charts-carousel h3 { font-size:24px; margin-bottom:20px; }
-.chart-frame { display:flex; align-items:center; justify-content:center; width:1200px; margin:0 auto; }
+.chart-frame { 
+  display:flex; 
+  align-items:center; 
+  transform: translateY(-20px);
+  justify-content:center; 
+  width:1200px; 
+  margin:0 auto; }
 .nav-btn { background:transparent; border:none; font-size:40px; cursor:pointer; padding:0 30px; color:#333; }
 .chart { width:600px; height:600px; }
 
