@@ -142,37 +142,45 @@ export default {
       } else {
         const arr = this.answers[qo] || [];
         const idx = arr.indexOf(opt);
-        if (idx === -1) { arr.push(opt); event.currentTarget.classList.add('selected'); }
-        else { arr.splice(idx, 1); event.currentTarget.classList.remove('selected'); }
+        if (idx === -1) {
+          arr.push(opt);
+          event.currentTarget.classList.add('selected');
+        } else {
+          arr.splice(idx, 1);
+          event.currentTarget.classList.remove('selected');
+        }
         this.answers[qo] = arr;
       }
     },
     handleSubmit() {
       const payload = [];
       this.questions.forEach(q => {
+        const type = q.type;
         let ans = this.answers[q.question_order];
+
+        // 单值情况
         if (typeof ans === 'string') {
           ans = ans.trim();
-          // 如果后端不区分大小写，可加下面一行
-          // ans = ans.toLowerCase();
+          if (type !== 'fill-in-the-blank') {
+            // 只取首字母 A/B/C/D
+            ans = ans.charAt(0);
+          }
+          payload.push({ question_order: q.question_order, option: ans });
         }
+
+        // 多选情况
         if (Array.isArray(ans)) {
           ans.forEach(o => {
-            payload.push({
-              question_order: q.question_order,
-              option: o.trim()
-            });
-          });
-        } else {
-          payload.push({
-            question_order: q.question_order,
-            option: ans
+            let opt = o.trim();
+            if (type !== 'fill-in-the-blank') {
+              opt = opt.charAt(0);
+            }
+            payload.push({ question_order: q.question_order, option: opt });
           });
         }
       });
 
-      // —— 测试用：打印 payload 到控制台 —— 
-      console.log('Submitting answers payload:', payload);
+      console.log('Submitting letters-only payload:', payload);
 
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/mbtiquiz/validate-answers', {
         method: 'POST',
