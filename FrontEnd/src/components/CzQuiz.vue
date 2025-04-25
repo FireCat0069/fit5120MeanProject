@@ -307,11 +307,15 @@ hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
 }
 
 /* existing carousel styles */
-.stats-charts-carousel h3 { font-size:24px; margin-bottom:20px; }
+.stats-charts-carousel h3 { 
+  font-size:24px; 
+  margin-bottom:20px;
+  left:2vw;
+ }
 .chart-frame { 
   display:flex; 
   align-items:center; 
-  transform: translateY(-20px);
+  transform: translateY(-60px);
   justify-content:center; 
   width:1200px; 
   margin:0 auto; }
