@@ -5,6 +5,7 @@ import QuizIntroduction from '@/components/QuizIntroduction.vue';
 import QuizContent from '@/components/QuizContent.vue';
 import CzQuiz from '../components/CzQuiz.vue';
 import QuizFeedback from '@/components/QuizFeedback.vue';
+import DigitalCitiInfo from '../components/DigitalCitiInfo.vue'
 import CzFeedback from '../components/CzFeedback.vue'
 
 
@@ -14,6 +15,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: homePage
+  },
+  {
+    path: '/digital-citi-info',    // 你想要的访问路径
+    name: 'DigitalCitiInfo',
+    component: DigitalCitiInfo      // 对应刚才引入的组件
   },
   {
     path: '/quiz-bank',

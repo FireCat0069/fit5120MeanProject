@@ -19,14 +19,33 @@
 
       <!-- Quiz Cards -->
       <div class="card-wrapper">
-        <div class="quiz-card" v-for="(quiz, index) in quizzes" :key="index">
+        <div
+          class="quiz-card"
+          v-for="(quiz, index) in quizzes"
+          :key="index"
+        >
           <div class="card-content">
             <img class="quiz-img" src="@/assets/quiz1.png" alt="Quiz" />
             <p class="category-text">{{ quiz.category }}</p>
             <p class="quiz-name">{{ quiz.title }}</p>
             <div class="divider"></div>
             <p class="quiz-meta">{{ quiz.meta }}</p>
-            <button class="start-quiz-btn">Start Quiz</button>
+
+            <!-- 第一张卡片：Start Quiz 导航至 /Quiz-Introduction -->
+            <router-link
+              v-if="index === 0"
+              to="/Quiz-Introduction"
+            >
+              <button class="start-quiz-btn">Start Quiz</button>
+            </router-link>
+
+            <!-- 其他卡片：普通按钮 -->
+            <button
+              v-else
+              class="start-quiz-btn"
+            >
+              Start Quiz
+            </button>
           </div>
         </div>
       </div>
@@ -59,18 +78,18 @@ export default {
           category: "Social Media",
           title: "How Mindful is Your Scrolling?",
           meta: "18 mins · 30 questions · 460 times",
-        }
-      ]
+        },
+      ],
     };
   },
   mounted() {
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
   },
   unmounted() {
-    document.body.style.overflow = 'auto';
-    document.documentElement.style.overflow = 'auto';
-  }
+    document.body.style.overflow = "auto";
+    document.documentElement.style.overflow = "auto";
+  },
 };
 </script>
 
@@ -83,7 +102,7 @@ export default {
   height: 100vh;
   overflow: hidden;
   display: flex;
-  background-color: #FBF9F9;
+  background-color: #fbf9f9;
   font-family: Arial, sans-serif;
 }
 
@@ -97,7 +116,7 @@ export default {
 .logo {
   font-size: 20px;
   font-weight: bold;
-  color: #F97316;
+  color: #f97316;
   margin-bottom: 40px;
 }
 
@@ -121,7 +140,7 @@ export default {
   flex: 1;
   height: 90vh; /* 为底部按钮预留10vh */
   padding: 30px 40px 10px 40px;
-  background-color: #FBF9F9;
+  background-color: #fbf9f9;
   box-sizing: border-box;
   overflow: hidden;
   display: flex;
@@ -147,7 +166,7 @@ export default {
 .search-button {
   margin-left: 16px;
   padding: 10px 24px;
-  background-color: #FF7426;
+  background-color: #ff7426;
   color: white;
   border: none;
   border-radius: 6px;
@@ -191,7 +210,7 @@ export default {
 
 .category-text {
   font-size: 14px;
-  color: #ACACAC;
+  color: #acacac;
   margin-bottom: 4px;
 }
 
@@ -205,7 +224,7 @@ export default {
 .divider {
   width: 100%;
   height: 1px;
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
   margin: 10px 0;
 }
 
@@ -216,7 +235,7 @@ export default {
 }
 
 .start-quiz-btn {
-  background-color: #FF7426;
+  background-color: #ff7426;
   color: #ffffff;
   border: none;
   padding: 10px 24px;
