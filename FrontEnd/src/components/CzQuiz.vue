@@ -278,8 +278,7 @@ hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
   display:flex; 
   align-items:center; 
   justify-content:center; 
-  width:1200px; 
-  left:0vw; }
+  width:1200px; margin:0 auto; }
 .nav-btn { background:transparent; border:none; font-size:40px; cursor:pointer; padding:0 30px; color:#333; }
 .chart { width:600px; height:600px; }
 .general-feedback { margin-bottom:20px; font-size:16px; color:#333; }
