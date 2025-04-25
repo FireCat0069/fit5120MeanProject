@@ -72,9 +72,7 @@
         <div class="chart-content">
           <h3>Usage Statistics – {{ chartTitles[currentChartIndex] }}</h3>
           <div class="chart-frame">
-            <button class="nav-btn left" @click="prevChart">‹</button>
             <v-chart :option="chartOptionsList[currentChartIndex]" class="chart" />
-            <button class="nav-btn right" @click="nextChart">›</button>
           </div>
         </div>
       </div>
@@ -257,20 +255,52 @@ export default {
 </script>
 
 <style>
-.container { width:100vw; position:absolute; left:0; top:0; padding:40px 60px; font-family:Arial; overflow-y:auto; max-height:100vh; background:#fff; }
-.nav-bar { position:absolute; top:2vh; right:5vw; display:flex; gap:3vw; font-size:24px; color:#1d1d1d; white-space:nowrap; }
+.container {
+  width:100vw;
+  position:absolute; left:0; top:0;
+  padding:40px 60px;
+  font-family:Arial;
+  overflow-y:auto;
+  max-height:100vh;
+  background:#fff;
+}
+.nav-bar {
+  position:absolute;
+  top:2vh; right:5vw;
+  display:flex; gap:3vw;
+  font-size:24px; color:#1d1d1d;
+  white-space:nowrap;
+}
 .nav-link, .nav-link:hover { color:#1d1d1d; text-decoration:none; }
-h1 { font-size:36px; font-weight:700; margin-bottom:30px; color:#050c26; }
+h1 {
+  font-size:36px; font-weight:700;
+  margin-bottom:30px; color:#050c26;
+}
 .highlight { color:#f18829; }
 .question-block { margin-bottom:40px; }
-.question-text { font-size:20px; font-weight:600; margin-bottom:16px; color:#1d1d1d; }
+.question-text {
+  font-size:20px; font-weight:600;
+  margin-bottom:16px; color:#1d1d1d;
+}
 .options { display:flex; flex-direction:column; gap:12px; }
-.option-btn { padding:14px 20px; max-width:600px; border:2px solid #e0e0e0; border-radius:12px; background:#fff; cursor:pointer; transition:.2s; font-size:16px; color:#333; box-shadow:0 1px 4px rgba(0,0,0,0.03); text-align:left; }
+.option-btn {
+  padding:14px 20px; max-width:600px;
+  border:2px solid #e0e0e0; border-radius:12px;
+  background:#fff; cursor:pointer;
+  transition:.2s; font-size:16px; color:#333;
+  box-shadow:0 1px 4px rgba(0,0,0,0.03);
+  text-align:left;
+}
 .option-btn:hover { background:#fff8f5; border-color:#ff7426; }
 .option-btn.selected { background:#ff7426; color:#fff; border-color:#ff7426; }
 hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
 .submit-section { text-align:center; margin-top:50px; }
-.submit-btn { padding:14px 32px; font-size:18px; background:#f18829; color:#fff; border:none; border-radius:30px; cursor:pointer; font-weight:bold; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+.submit-btn {
+  padding:14px 32px; font-size:18px;
+  background:#f18829; color:#fff;
+  border:none; border-radius:30px; cursor:pointer;
+  font-weight:bold; box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
 .submit-btn:hover { background:#e65f14; }
 .feedback-section { margin-top:50px; }
 
@@ -279,6 +309,7 @@ hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
   display: flex;
   align-items: flex-start;
   margin-bottom:30px;
+  position: relative;
 }
 .chart-selector {
   display: flex;
@@ -308,14 +339,28 @@ hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
   flex:1;
 }
 
-/* existing carousel styles */
-.stats-charts-carousel h3 { font-size:24px; margin-bottom:20px; }
-.chart-frame { display:flex; align-items:center; justify-content:center; width:1200px; margin:0 auto; }
-.nav-btn { background:transparent; border:none; font-size:40px; cursor:pointer; padding:0 30px; color:#333; }
-.chart { width:600px; height:600px; }
+/* absolutely position the actual chart (pie + legend) */
+.chart-frame {
+  position: absolute;
+  top: 13vh;
+  left: 60px;
+  display: flex;
+  align-items: center;
+}
 
-.general-feedback { margin-bottom:20px; font-size:16px; color:#333; }
-.feedback-item { border:1px solid #ddd; border-radius:8px; padding:15px; margin-bottom:20px; background:#f9f9f9; }
+/* size of the ECharts canvas */
+.chart {
+  width: 600px;
+  height: 600px;
+}
+
+.general-feedback {
+  margin-bottom:20px; font-size:16px; color:#333;
+}
+.feedback-item {
+  border:1px solid #ddd; border-radius:8px;
+  padding:15px; margin-bottom:20px; background:#f9f9f9;
+}
 .feedback-item h3 { margin-top:0; color:#000; }
 .feedback-section * { color:#000!important; }
 </style>
