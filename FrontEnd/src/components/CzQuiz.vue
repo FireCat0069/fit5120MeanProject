@@ -54,13 +54,28 @@
 
     <!-- 提交后显示反馈 -->
     <div v-else class="feedback-section">
-      <!-- 统计饼图 轮播 -->
+      <!-- 统计饼图 轮播 with left-side selector -->
       <div v-if="statsLoaded" class="stats-charts-carousel">
-        <h3>Usage Statistics – {{ chartTitles[currentChartIndex] }}</h3>
-        <div class="chart-frame">
-          <button class="nav-btn left" @click="prevChart">‹</button>
-          <v-chart :option="chartOptionsList[currentChartIndex]" class="chart" />
-          <button class="nav-btn right" @click="nextChart">›</button>
+        <!-- Left-side chart titles as clickable rectangles -->
+        <div class="chart-selector">
+          <div
+            v-for="(title, index) in chartTitles"
+            :key="index"
+            :class="['selector-item', { active: currentChartIndex === index }]"
+            @click="currentChartIndex = index"
+          >
+            {{ title }}
+          </div>
+        </div>
+
+        <!-- Chart content area -->
+        <div class="chart-content">
+          <h3>Usage Statistics – {{ chartTitles[currentChartIndex] }}</h3>
+          <div class="chart-frame">
+            <button class="nav-btn left" @click="prevChart">‹</button>
+            <v-chart :option="chartOptionsList[currentChartIndex]" class="chart" />
+            <button class="nav-btn right" @click="nextChart">›</button>
+          </div>
         </div>
       </div>
 
@@ -155,27 +170,17 @@ export default {
       this.questions.forEach((q, idx) => {
         const type = q.type;
         let ans = this.answers[q.question_order];
-
-        // 如果未作答，直接推 null
         if (ans == null) {
           payload.push({ question_order: q.question_order, option: null });
           return;
         }
-
-        // 对字符串类型答案先 trim
         if (typeof ans === 'string') {
           ans = ans.trim();
-          let sendOpt;
-          if (type !== 'fill-in-the-blank') {
-            // 前五题保留全部内容，后面只保留字母
-            sendOpt = idx < 5 ? ans : ans.charAt(0);
-          } else {
-            sendOpt = ans;
-          }
+          const sendOpt = type !== 'fill-in-the-blank'
+            ? (idx < 5 ? ans : ans.charAt(0))
+            : ans;
           payload.push({ question_order: q.question_order, option: sendOpt });
         }
-
-        // 多选题情况
         if (Array.isArray(ans)) {
           ans.forEach(o => {
             const trimmed = o.trim();
@@ -186,9 +191,6 @@ export default {
           });
         }
       });
-
-      console.log('Payload before submit:', payload);
-
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/mbtiquiz/validate-answers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -196,7 +198,6 @@ export default {
       })
         .then(res => res.json())
         .then(res => {
-          console.log('Validation response:', res);
           this.feedbackList = res.results || [];
           this.generalFeedback = res.feedback || '';
           this.feedbackDisplayed = true;
@@ -272,15 +273,44 @@ hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
 .submit-btn { padding:14px 32px; font-size:18px; background:#f18829; color:#fff; border:none; border-radius:30px; cursor:pointer; font-weight:bold; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
 .submit-btn:hover { background:#e65f14; }
 .feedback-section { margin-top:50px; }
-.stats-charts-carousel { margin-bottom:30px; }
-.stats-charts-carousel h3 { font-size:24px; text-align:center; margin-bottom:20px; }
-.chart-frame { 
-  display:flex; 
-  align-items:center; 
-  justify-content:center; 
-  width:1200px; margin:0 auto; }
+
+/* ===== new flex wrapper and selector ===== */
+.stats-charts-carousel {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom:30px;
+}
+.chart-selector {
+  display: flex;
+  flex-direction: column;
+  gap:12px;
+  margin-right:40px;
+}
+.selector-item {
+  width:160px;
+  padding:10px;
+  border-radius:6px;
+  background:#f0f0f0;
+  text-align:center;
+  font-size:16px;
+  color:#333;
+  cursor:pointer;
+  transition: background .2s, color .2s;
+}
+.selector-item.active {
+  background:#ff7426;
+  color:#fff;
+}
+.chart-content {
+  flex:1;
+}
+
+/* existing carousel styles */
+.stats-charts-carousel h3 { font-size:24px; margin-bottom:20px; }
+.chart-frame { display:flex; align-items:center; justify-content:center; width:1200px; margin:0 auto; }
 .nav-btn { background:transparent; border:none; font-size:40px; cursor:pointer; padding:0 30px; color:#333; }
 .chart { width:600px; height:600px; }
+
 .general-feedback { margin-bottom:20px; font-size:16px; color:#333; }
 .feedback-item { border:1px solid #ddd; border-radius:8px; padding:15px; margin-bottom:20px; background:#f9f9f9; }
 .feedback-item h3 { margin-top:0; color:#000; }
