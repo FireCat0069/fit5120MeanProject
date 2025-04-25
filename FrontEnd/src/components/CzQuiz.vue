@@ -154,33 +154,42 @@ export default {
     },
     handleSubmit() {
       const payload = [];
-      this.questions.forEach(q => {
+      this.questions.forEach((q, idx) => {
         const type = q.type;
         let ans = this.answers[q.question_order];
 
-        // 单值情况
-        if (typeof ans === 'string') {
-          ans = ans.trim();
-          if (type !== 'fill-in-the-blank') {
-            // 只取首字母 A/B/C/D
-            ans = ans.charAt(0);
-          }
-          payload.push({ question_order: q.question_order, option: ans });
+        // 如果未作答，直接推 null
+        if (ans == null) {
+          payload.push({ question_order: q.question_order, option: null });
+          return;
         }
 
-        // 多选情况
+        // 对字符串类型答案先 trim
+        if (typeof ans === 'string') {
+          ans = ans.trim();
+          let sendOpt;
+          if (type !== 'fill-in-the-blank') {
+            // 前五题保留全部内容，后面只保留字母
+            sendOpt = idx < 5 ? ans : ans.charAt(0);
+          } else {
+            sendOpt = ans;
+          }
+          payload.push({ question_order: q.question_order, option: sendOpt });
+        }
+
+        // 多选题情况
         if (Array.isArray(ans)) {
           ans.forEach(o => {
-            let opt = o.trim();
-            if (type !== 'fill-in-the-blank') {
-              opt = opt.charAt(0);
-            }
-            payload.push({ question_order: q.question_order, option: opt });
+            const trimmed = o.trim();
+            const sendOpt = type !== 'fill-in-the-blank'
+              ? (idx < 5 ? trimmed : trimmed.charAt(0))
+              : trimmed;
+            payload.push({ question_order: q.question_order, option: sendOpt });
           });
         }
       });
 
-      console.log('Submitting letters-only payload:', payload);
+      console.log('Payload before submit:', payload);
 
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/mbtiquiz/validate-answers', {
         method: 'POST',
