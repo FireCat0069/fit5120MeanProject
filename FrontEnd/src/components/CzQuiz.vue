@@ -72,9 +72,7 @@
         <div class="chart-content">
           <h3>Usage Statistics – {{ chartTitles[currentChartIndex] }}</h3>
           <div class="chart-frame">
-            <button class="nav-btn left" @click="prevChart">‹</button>
             <v-chart :option="chartOptionsList[currentChartIndex]" class="chart" />
-            <button class="nav-btn right" @click="nextChart">›</button>
           </div>
         </div>
       </div>
