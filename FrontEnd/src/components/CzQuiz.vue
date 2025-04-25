@@ -284,7 +284,7 @@ hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
   display: flex;
   flex-direction: column;
   gap:12px;
-  margin-top: 10vh;
+  margin-top: 13vh;
   margin-right:40px;
 }
 .selector-item {
