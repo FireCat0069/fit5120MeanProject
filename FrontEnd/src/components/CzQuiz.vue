@@ -150,17 +150,46 @@ export default {
     handleSubmit() {
       const payload = [];
       this.questions.forEach(q => {
-        const ans = this.answers[q.question_order];
-        if (Array.isArray(ans)) ans.forEach(o => payload.push({ question_order: q.question_order, option: o }));
-        else payload.push({ question_order: q.question_order, option: ans });
+        let ans = this.answers[q.question_order];
+        if (typeof ans === 'string') {
+          ans = ans.trim();
+          // 如果后端不区分大小写，可加下面一行
+          // ans = ans.toLowerCase();
+        }
+        if (Array.isArray(ans)) {
+          ans.forEach(o => {
+            payload.push({
+              question_order: q.question_order,
+              option: o.trim()
+            });
+          });
+        } else {
+          payload.push({
+            question_order: q.question_order,
+            option: ans
+          });
+        }
       });
+
+      // —— 测试用：打印 payload 到控制台 —— 
+      console.log('Submitting answers payload:', payload);
+
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/mbtiquiz/validate-answers', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       })
         .then(res => res.json())
-        .then(res => { this.feedbackList = res.results || []; this.generalFeedback = res.feedback || ''; this.feedbackDisplayed = true; })
-        .catch(err => { console.error(err); alert('提交失败'); });
+        .then(res => {
+          console.log('Validation response:', res);
+          this.feedbackList = res.results || [];
+          this.generalFeedback = res.feedback || '';
+          this.feedbackDisplayed = true;
+        })
+        .catch(err => {
+          console.error(err);
+          alert('提交失败');
+        });
     },
     fetchStats() {
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/usage/stats')
@@ -195,8 +224,13 @@ export default {
         }]
       };
     },
-    prevChart() { this.currentChartIndex = (this.currentChartIndex + this.chartOptionsList.length - 1) % this.chartOptionsList.length; },
-    nextChart() { this.currentChartIndex = (this.currentChartIndex + 1) % this.chartOptionsList.length; }
+    prevChart() {
+      this.currentChartIndex =
+        (this.currentChartIndex + this.chartOptionsList.length - 1) % this.chartOptionsList.length;
+    },
+    nextChart() {
+      this.currentChartIndex = (this.currentChartIndex + 1) % this.chartOptionsList.length;
+    }
   },
   mounted() {
     document.title = 'Digital Citizenship Survey';
@@ -233,5 +267,3 @@ hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
 .feedback-item h3 { margin-top:0; color:#000; }
 .feedback-section * { color:#000!important; }
 </style>
-
-
