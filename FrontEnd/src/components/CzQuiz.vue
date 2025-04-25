@@ -54,8 +54,6 @@
 
     <!-- 提交后显示反馈 -->
     <div v-else class="feedback-section">
-      <h2>Quiz Feedback</h2>
-
       <!-- 统计饼图 轮播 -->
       <div v-if="statsLoaded" class="stats-charts-carousel">
         <h3>Usage Statistics – {{ chartTitles[currentChartIndex] }}</h3>
@@ -276,7 +274,12 @@ hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
 .feedback-section { margin-top:50px; }
 .stats-charts-carousel { margin-bottom:30px; }
 .stats-charts-carousel h3 { font-size:24px; text-align:center; margin-bottom:20px; }
-.chart-frame { display:flex; align-items:center; justify-content:center; width:1200px; margin:0 auto; }
+.chart-frame { 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  width:1200px; 
+  left:0vw; }
 .nav-btn { background:transparent; border:none; font-size:40px; cursor:pointer; padding:0 30px; color:#333; }
 .chart { width:600px; height:600px; }
 .general-feedback { margin-bottom:20px; font-size:16px; color:#333; }

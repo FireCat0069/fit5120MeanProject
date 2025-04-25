@@ -2,7 +2,8 @@
   <div class="quizbank-container" @touchmove.prevent>
     <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="logo">DigiWise</div>
+      <!-- Logo 跳转主页 -->
+      <router-link to="/" class="logo">DigiWise</router-link>
       <nav class="nav">
         <router-link
           to="/"
@@ -148,10 +149,12 @@ export default {
 }
 
 .logo {
+  display: block;
   font-size: 20px;
   font-weight: bold;
   color: #f97316;
   margin-bottom: 40px;
+  text-decoration: none;
 }
 
 .nav {
