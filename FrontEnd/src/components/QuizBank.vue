@@ -4,8 +4,27 @@
     <aside class="sidebar">
       <div class="logo">DigiWise</div>
       <nav class="nav">
-        <div class="nav-item">Dashboard</div>
-        <div class="nav-item active">Quiz Bank</div>
+        <router-link
+          to="/"
+          class="nav-item"
+          :class="{ active: $route.path === '/' }"
+        >
+          Dashboard
+        </router-link>
+        <router-link
+          to="/info-hub"
+          class="nav-item"
+          :class="{ active: $route.path === '/info-hub' }"
+        >
+          Info Hub
+        </router-link>
+        <router-link
+          to="/quiz-bank"
+          class="nav-item"
+          :class="{ active: $route.path === '/quiz-bank' }"
+        >
+          Quiz Bank
+        </router-link>
       </nav>
     </aside>
 
@@ -13,19 +32,32 @@
     <main class="main-area">
       <!-- Search Bar -->
       <div class="search-bar">
-        <input type="text" placeholder="Search Quiz" class="search-input" />
+        <input
+          type="text"
+          placeholder="Search Quiz"
+          class="search-input"
+        />
         <button class="search-button">Search</button>
       </div>
 
-      <!-- Quiz Cards -->
-      <div class="card-wrapper">
+      <!-- Quiz Cards with fade-in on mount and enter -->
+      <transition-group
+        name="fade"
+        tag="div"
+        class="card-wrapper"
+        appear
+      >
         <div
           class="quiz-card"
           v-for="(quiz, index) in quizzes"
           :key="index"
         >
           <div class="card-content">
-            <img class="quiz-img" src="@/assets/quiz1.png" alt="Quiz" />
+            <img
+              class="quiz-img"
+              src="@/assets/quiz1.png"
+              alt="Quiz"
+            />
             <p class="category-text">{{ quiz.category }}</p>
             <p class="quiz-name">{{ quiz.title }}</p>
             <div class="divider"></div>
@@ -36,7 +68,9 @@
               v-if="index === 0"
               to="/Quiz-Introduction"
             >
-              <button class="start-quiz-btn">Start Quiz</button>
+              <button class="start-quiz-btn">
+                Start Quiz
+              </button>
             </router-link>
 
             <!-- 其他卡片：普通按钮 -->
@@ -48,7 +82,7 @@
             </button>
           </div>
         </div>
-      </div>
+      </transition-group>
     </main>
   </div>
 </template>
@@ -129,6 +163,7 @@ export default {
 .nav-item {
   font-size: 16px;
   color: #1d1d1d;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -140,12 +175,12 @@ export default {
   flex: 1;
   height: 90vh; /* 为底部按钮预留10vh */
   padding: 30px 40px 10px 40px;
-  background-color: #fbf9f9;
   box-sizing: border-box;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  background-color: #fbf9f9;
 }
 
 /* Search Bar */
@@ -186,7 +221,11 @@ export default {
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   height: calc(90vh - 110px); /* 减去搜索栏和 padding */
-  overflow: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.card-wrapper::-webkit-scrollbar {
+  display: none;
 }
 
 /* Quiz Card */
@@ -217,7 +256,7 @@ export default {
 .quiz-name {
   font-size: 18px;
   font-weight: bold;
-  color: #000000;
+  color: #000;
   margin-bottom: 6px;
 }
 
@@ -236,7 +275,7 @@ export default {
 
 .start-quiz-btn {
   background-color: #ff7426;
-  color: #ffffff;
+  color: #fff;
   border: none;
   padding: 10px 24px;
   border-radius: 24px;
@@ -250,5 +289,21 @@ export default {
 
 .start-quiz-btn:hover {
   background-color: #e65f14;
+}
+
+/* Fade & Appear Animations */
+.fade-enter-active,
+.fade-appear-active {
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+.fade-enter-from,
+.fade-appear-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.fade-enter-to,
+.fade-appear-to {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
