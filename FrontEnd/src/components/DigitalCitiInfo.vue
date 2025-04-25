@@ -81,10 +81,22 @@
             </ul>
           </div>
         </div>
+  
+        <!-- Rights, Privacy & Ethics 扩展区 -->
+        <div class="rights-section">
+          <h2 class="detail-title">Rights, Privacy &amp; Ethics</h2>
+          <ul class="rights-list">
+            <li>I proactively use privacy tools and account settings to safeguard my personal information online, ensuring greater control over who sees my data.</li>
+            <li>I respect others’ privacy by thoughtfully considering and seeking permission before sharing their photos, posts, or personal details.</li>
+            <li>I access digital content ethically—choosing legitimate platforms for music, games, videos, and respecting copyright and licensing terms.</li>
+            <li>I understand my Fair Dealing rights and responsibly leverage public domain or Creative Commons resources to enrich my digital experiences.</li>
+            <li>I’m aware of my rights as a citizen, consumer, and human being, and I confidently assert them when engaging in online discussions or transactions.</li>
+          </ul>
+        </div>
       </div>
   
       <!-- 视频，绝对定位，距离右边 5vw -->
-      <div class="detail-video">
+      <div class="detail-video1">
         <iframe
           src="https://www.youtube.com/embed/8nLshfChfXg?si=09D6PYPDj9I54sos"
           title="YouTube video player"
@@ -93,6 +105,18 @@
           allowfullscreen
         ></iframe>
       </div>
+      <div class="detail-video2">
+         <iframe
+            width="560" height="315"
+            src="https://www.youtube.com/embed/PsPPO1R-Zog?si=dqR5z_tV_4BQ5O74"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+        >     </iframe>
+        </div>
+
     </div>
   </template>
   
@@ -166,6 +190,11 @@
     animation: fadeInUp 1s ease-out both;
     animation-delay: 0.6s;
   }
+  .detail-title {
+    font-size: 28px;
+    margin-bottom: 12px;
+    color: #2c3e50;
+  }
   .detail-quote {
     border-left: 4px solid #9b59b6;
     padding-left: 16px;
@@ -183,7 +212,7 @@
   /* 卡片布局 */
   .cards-container {
     display: flex;
-    width:100vw;
+    width: 100vw;
     gap: 3vw;
     margin-top: 24px;
     flex-wrap: wrap;
@@ -194,7 +223,11 @@
     border-radius: 8px;
     padding: 16px;
     width: 20vw;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+  .card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
   .card-title {
     font-size: 20px;
@@ -211,16 +244,40 @@
     margin-bottom: 8px;
     font-size: 16px;
     line-height: 1.5;
-    color: #000000;
+    color: #000;
+  }
+  
+  /* Rights, Privacy & Ethics 扩展区 */
+  .rights-section {
+    margin-top: 3vh;
+    width: 55vw; max-width: 800px;
+  }
+  .rights-list {
+    padding-left: 20px;
+    list-style: disc inside;
+  }
+  .rights-list li {
+    margin-bottom: 12px;
+    font-size: 18px;
+    color: #2c3e50;
+    line-height: 1.6;
   }
   
   /* 视频 */
-  .detail-video {
+  .detail-video1 {
     position: absolute;
     top: 80vh; right: 5vw;
     width: 560px; height: 315px;
   }
-  .detail-video iframe {
+  .detail-video1 iframe {
+    width: 100%; height: 100%;
+  }
+  .detail-video2 {
+    position: absolute;
+    top: 175vh; right: 5vw;
+    width: 560px; height: 315px;
+  }
+  .detail-video2 iframe {
     width: 100%; height: 100%;
   }
   </style>
