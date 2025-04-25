@@ -284,10 +284,13 @@ hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
   display: flex;
   flex-direction: column;
   gap:12px;
+  margin-top: 5vh;
   margin-right:40px;
 }
 .selector-item {
-  width:160px;
+  flex: none;
+  width: 200px;
+  height: 60px;
   padding:10px;
   border-radius:6px;
   background:#f0f0f0;
