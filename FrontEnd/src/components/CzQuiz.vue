@@ -54,23 +54,10 @@
 
     <!-- 提交后显示反馈 -->
     <div v-else class="feedback-section">
-      <!-- 统计饼图 轮播 with left-side selector -->
+      <!-- 统计饼图 只显示标题和图表区域 -->
       <div v-if="statsLoaded" class="stats-charts-carousel">
-        <!-- Left-side chart titles and selector fixed in grid rows -->
-        <div class="chart-selector">
-          <h3>Usage Statistics – {{ chartTitles[currentChartIndex] }}</h3>
-          <div
-            v-for="(title, index) in chartTitles"
-            :key="index"
-            :class="['selector-item', { active: currentChartIndex === index }]"
-            @click="currentChartIndex = index"
-          >
-            {{ title }}
-          </div>
-        </div>
-
-        <!-- Chart content area -->
         <div class="chart-content">
+          <h3>Usage Statistics</h3>
           <div class="chart-frame">
             <v-chart :option="chartOptionsList[currentChartIndex]" class="chart" />
           </div>
@@ -174,17 +161,13 @@ export default {
         }
         if (typeof ans === 'string') {
           ans = ans.trim();
-          const sendOpt = type !== 'fill-in-the-blank'
-            ? (idx < 5 ? ans : ans.charAt(0))
-            : ans;
+          const sendOpt = type !== 'fill-in-the-blank' ? (idx < 5 ? ans : ans.charAt(0)) : ans;
           payload.push({ question_order: q.question_order, option: sendOpt });
         }
         if (Array.isArray(ans)) {
           ans.forEach(o => {
             const trimmed = o.trim();
-            const sendOpt = type !== 'fill-in-the-blank'
-              ? (idx < 5 ? trimmed : trimmed.charAt(0))
-              : trimmed;
+            const sendOpt = type !== 'fill-in-the-blank' ? (idx < 5 ? trimmed : trimmed.charAt(0)) : trimmed;
             payload.push({ question_order: q.question_order, option: sendOpt });
           });
         }
@@ -239,8 +222,7 @@ export default {
       };
     },
     prevChart() {
-      this.currentChartIndex =
-        (this.currentChartIndex + this.chartOptionsList.length - 1) % this.chartOptionsList.length;
+      this.currentChartIndex = (this.currentChartIndex + this.chartOptionsList.length - 1) % this.chartOptionsList.length;
     },
     nextChart() {
       this.currentChartIndex = (this.currentChartIndex + 1) % this.chartOptionsList.length;
@@ -272,63 +254,29 @@ hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
 .submit-btn:hover { background:#e65f14; }
 .feedback-section { margin-top:50px; }
 
-/* ===== new flex wrapper and selector ===== */
+/* Simplified carousel showing only chart content */
 .stats-charts-carousel {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 30px;
+  display:flex;
+  justify-content:center;
+  margin-bottom:30px;
 }
-
-.chart-selector {
-  display: grid;
-  grid-auto-rows: 60px;
-  row-gap: 12px;
-  margin-right: 40px;
-}
-.chart-selector h3 {
-  font-size: 24px;
-  line-height: 60px;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.selector-item {
-  flex: none;
-  width: 200px;
-  height: 60px;
-  padding: 10px;
-  border-radius: 6px;
-  background: #f0f0f0;
-  text-align: center;
-  font-size: 16px;
-  color: #333;
-  cursor: pointer;
-  transition: background .2s, color .2s;
-}
-.selector-item.active {
-  background: #ff7426;
-  color: #fff;
-}
-
 .chart-content {
-  flex: 1;
+  text-align:center;
 }
-
 .chart-frame {
-  display: flex;
-  align-items: center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:1200px;
+  margin:0 auto;
   transform: translateY(-60px);
-  justify-content: center;
-  width: 1200px;
-  margin: 0 auto;
 }
 .chart {
-  width: 600px;
-  height: 600px;
+  width:600px;
+  height:600px;
 }
 
-.general-feedback { margin-bottom:20px; font-size:16px; color:#333; }
+general-feedback { margin-bottom:20px; font-size:16px; color:#333; }
 .feedback-item { border:1px solid #ddd; border-radius:8px; padding:15px; margin-bottom:20px; background:#f9f9f9; }
 .feedback-item h3 { margin-top:0; color:#000; }
 .feedback-section * { color:#000!important; }
