@@ -53,11 +53,26 @@
           :key="index"
         >
           <div class="card-content">
+            <!-- Conditional image per card -->
             <img
+              v-if="index === 0"
+              class="quiz-img"
+              src="@/assets/DCInfo.png"
+              alt="Digital Citizenship Info"
+            />
+            <img
+              v-else-if="index === 1"
+              class="quiz-img"
+              src="@/assets/SMP.png"
+              alt="SMP"
+            />
+            <img
+              v-else
               class="quiz-img"
               src="@/assets/quiz1.png"
               alt="Quiz"
             />
+
             <p class="category-text">{{ quiz.category }}</p>
             <p class="quiz-name">{{ quiz.title }}</p>
             <div class="divider"></div>
@@ -253,6 +268,7 @@ export default {
   width: 100%;
   height: 140px;
   object-fit: cover;
+  object-position: center -50px;
   border-radius: 8px;
   margin-bottom: 12px;
 }
