@@ -3,6 +3,7 @@ import './assets/main.css';
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
+import { PowerGlitch } from 'powerglitch'
 
 // 引入 AOS 库及样式
 import AOS from 'aos';
@@ -25,3 +26,5 @@ AOS.init({
 });
 
 app.mount('#app');
+
+PowerGlitch.glitch('.glich')

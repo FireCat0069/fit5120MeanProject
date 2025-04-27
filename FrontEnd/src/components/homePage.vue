@@ -74,8 +74,8 @@
         </div>
       </div>
     </div>
-    <router-link to="/quiz-bank">
-      <button class="learn-more-btn">Learn More</button>
+    <router-link to="/info-hub">
+      <button class="learn-more-btn">Explore more</button>
     </router-link>
   </div>
 </template>
