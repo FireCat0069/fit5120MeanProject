@@ -67,6 +67,18 @@
               alt="SMP"
             />
             <img
+              v-else-if="index === 2"
+              class="quiz-img"
+              src="@/assets/di.png"
+              alt="di"
+            />
+            <img
+              v-else-if="index === 3"
+              class="quiz-img"
+              src="@/assets/DA.png"
+              alt="da"
+            />
+            <img
               v-else
               class="quiz-img"
               src="@/assets/quiz1.png"
@@ -105,6 +117,14 @@
                 Learn more
               </button>
             </router-link>
+            <router-link
+              v-else-if="index === 3"
+              to="/da"
+            >
+              <button class="start-quiz-btn">
+                Learn more
+              </button>
+            </router-link>
             <!-- 其他卡片：普通按钮 -->
             <button
               v-else
@@ -137,12 +157,12 @@ export default {
         },
         {
           category: "Fact-Checking",
-          title: "Spot the Fake News",
+          title: "Click Smart: Building Your Digital IQ",
           meta: "10 mins · 20 questions · 601 times",
         },
         {
           category: "Social Media",
-          title: "How Mindful is Your Scrolling?",
+          title: "Facing Digital Aggression",
           meta: "18 mins · 30 questions · 460 times",
         },
       ],

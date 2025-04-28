@@ -1,7 +1,7 @@
 <template>
     <div class="page-container">
       <!-- 背景图：绝对定位贴左上，宽铺满，按 70vh 显示 -->
-      <img class="bg-img" src="@/assets/di.png" alt="Background" />
+      <img class="bg-img" src="@/assets/DA.png" alt="Background" />
   
       <!-- 导航栏 -->
       <div class="nav-bar">
@@ -12,82 +12,82 @@
   
       <!-- 覆盖层内容 -->
       <div class="overlay-content">
-        <h1 class="info-title">Click Smart: Building Your Digital IQ</h1>
+        <h1 class="info-title">Facing Digital Aggression</h1>
         <p class="info-text">
-            ​Digital literacy is the ability to confidently and critically use digital technologies for information, communication, and basic problem-solving across various aspects of life. It involves skills such as using computers to retrieve, assess, store, produce, present, and exchange information, as well as communicating and participating in collaborative networks via the Internet.
+          Digital aggression refers to harmful behaviors that occur through digital platforms, such as hurtful messages, exclusion, or spreading false information. It can affect people’s well-being and create unsafe online spaces. By understanding and addressing digital aggression, we can build a more positive and respectful digital community.
         </p>
       </div>
   
       <!-- 详情文字区域 -->
       <div class="detail-section">
-        <h2 class="detail-title">What is Digital literacy?</h2>
+        <h2 class="detail-title">What is Digital Aggression?</h2>
         <div class="detail-text-block">
           <div class="detail-quote">
-            Digital literacy is the ability to use digital tools safely, critically, and effectively to access, evaluate, create, and communicate information across digital spaces, fostering responsible and informed online engagement.
+            Digital aggression refers to harmful or hostile behaviors carried out through digital platforms, emphasizing the need for respectful, responsible, and thoughtful engagement in online communities.
           </div>
           <p class="detail-text">
-            Although we use digital technologies much like we navigate the offline world, we aren't always careful with how we gather, share, or create information online. Sometimes we use or trust digital content without checking its source, impacting our safety, privacy, and credibility. Meanwhile, every click, post, and message continues to shape and define our digital presence and skills.
+            Although communication online mirrors many aspects of offline interaction, emotional distance and anonymity often reduce mindfulness in digital behavior. Harmful comments, exclusion, or targeted harassment can damage reputations, mental well-being, and community trust. Every interaction in digital spaces shapes personal and collective experiences, influencing how digital environments evolve.
           </p>
           <p class="detail-text">
-            Digital technologies also offer powerful opportunities for everyone to access information, share knowledge, and drive innovation both online and offline. Our digital skills influence how we solve problems, learn, and collaborate, and we each have an important role to play as active and responsible digital participants.
+            Digital platforms offer opportunities to build supportive, inclusive spaces and advocate against harmful behaviors. Positive actions in online environments can counteract digital aggression and foster communities where respect and empathy guide interactions. Everyone has a part in shaping safe digital cultures.
           </p>
-          <p class="detail-text"><em>Did you know:</em> Improving digital literacy across just 10 percent of a group can influence how knowledge spreads? Even one person practicing safe, critical online habits can inspire others to think more carefully and act more responsibly.</p>
+          <p class="detail-text"><em>Did you know:</em> Just 10 percent of a digital community demonstrating respect and inclusion can shift the tone of online spaces? Even one supportive voice can encourage others to act thoughtfully and resist digital aggression.</p>
           <p class="detail-text">
-            Find out how to  build a smarter, safer, and more empowered online world!
+            Learn how to contribute to building safer, more empathetic online spaces!
           </p>
         </div>
   
         <!-- 卡片区，独立容器 -->
         <div class="cards-container">
           <div class="card">
-            <h4 class="card-title">Critical Thinking Online</h4>
+            <h4 class="card-title">Recognizing Digital Aggression</h4>
             <ul>
-              <li>Question the source behind every piece of information.</li>
-              <li>Check in with peers if you notice digital misinformation.</li>
-              <li>Pause and evaluate before responding to online content.</li>
-              <li>Resolve misunderstandings through respectful digital dialogue.</li>
-              <li>Stand against online manipulation and false narratives.</li>
+              <li>Identify harassment, exclusion, and harmful digital behavior.</li>
+              <li>Watch for repeated hostile actions online.</li>
+              <li>Spot language that intimidates or mocks others.</li>
+              <li>Distinguish respectful disagreement from personal attacks.</li>
+              <li>Detect attempts to silence or isolate individuals.</li>
             </ul>
           </div>
           <div class="card">
-            <h4 class="card-title">Smart Digital Habits</h4>
+            <h4 class="card-title">Positive Technology Use</h4>
             <ul>
-              <li>Use digital tools to research and verify new ideas.</li>
-              <li>Share educational articles and creative projects thoughtfully.</li>
-              <li>Set limits for screen time to balance work and rest.</li>
-              <li>Look for reliable, peer-reviewed information sources.</li>
-              <li>Credit authors and creators when reposting or remixing content.</li>
+              <li>Encourage respectful dialogue and active listening.</li>
+              <li>Share positive and educational digital content.</li>
+              <li>Set clear boundaries for online interactions.</li>
+              <li>Support creators who promote kindness and inclusion.</li>
+              <li>Engage with communities that model respectful behavior.</li>
             </ul>
           </div>
           <div class="card">
-            <h4 class="card-title">Responsible Sharing </h4>
+            <h4 class="card-title">Responding to Harmful Conduct</h4>
             <ul>
-              <li>Fact-check before reposting digital content.</li>
-              <li>Attribute accurate sources in online discussions.</li>
-              <li>Correct errors and debunk myths when possible.</li>
-              <li>Use clear, respectful communication in digital spaces.</li>
+              <li>Report abusive messages, threats, and harmful posts to platform moderators.</li>
+              <li>Document instances of digital aggression to support investigations or further action.</li>
+              <li>Avoid amplifying harmful content by not reposting or sharing it.</li>
+              <li>Use clear, firm communication to challenge aggressive behaviors when safe to do so.</li>
             </ul>
           </div>
           <div class="card">
-            <h4 class="card-title">Privacy and Protection</h4>
+            <h4 class="card-title">Safeguarding Digital Communities</h4>
             <ul>
-              <li>Keep personal data private unless necessary.</li>
-              <li>Regularly review and update privacy settings.</li>
-              <li>Be cautious before clicking unknown links.</li>
-              <li>Report vulnerabilities to maintain secure digital spaces.</li>
+              <li>Support guidelines and initiatives that promote safe and inclusive online spaces.</li>
+              <li>Advocate for transparency in moderation and anti-abuse policies on digital platforms.</li>
+              <li>Stay informed about tools and settings that protect against harassment and exposure to harmful content.</li>
+              <li>Contribute to building resilient digital communities by fostering kindness and accountability.</li>
             </ul>
           </div>
         </div>
   
         <!-- Rights, Privacy & Ethics 扩展区 -->
         <div class="rights-section">
-          <h2 class="detail-title">Algorithmic Bias</h2>
+          <h2 class="detail-title">Legal Awareness in Digital Spaces</h2>
           <ul class="rights-list">
-            <li>Algorithms often prioritize sensational and emotionally charged content to maximize watch time, leading to skewed exposure to information.</li>
-            <li>Critical thinking is essential when engaging with recommended content; questioning why certain articles or videos are promoted helps avoid manipulation.</li>
-            <li>Seeking out diverse sources and perspectives counters algorithm-driven echo chambers and supports a broader understanding of complex issues.</li>
-            <li>Awareness of content curation systems enables users to spot bias patterns and minimize the influence of algorithmic agendas on their digital consumption.</li>
-            <li>Educators and students can strengthen digital literacy by studying how algorithms shape online experiences and applying strategies to navigate recommendations wisely.</li>
+            <li>Utilize privacy laws and platform reporting tools to safeguard personal information and minimize exposure to online harassment.</li>
+            <li>Respect digital rights by seeking consent before sharing others' images, messages, or private details in any public forum.</li>
+            <li>Access and share content through legitimate sources, ensuring compliance with copyright, intellectual property, and communication laws.</li>
+            <li>Understand legal protections against digital threats and use reporting mechanisms to document and address unlawful behavior.</li>
+            <li>Recognize personal rights under cybercrime and harassment laws, and seek appropriate legal support when facing serious online misconduct.</li>
           </ul>
         </div>
       </div>
@@ -97,7 +97,7 @@
   <iframe
     width="560"
     height="315"
-    src="https://www.youtube.com/embed/3uLLivFGlfE?si=HCBcHe5RL24t29NS"
+    src="https://www.youtube.com/embed/1dYgE4nv5i4?si=vDTFqp27zozvR3xk"
     title="YouTube video player"
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -110,7 +110,7 @@
   <iframe
     width="560"
     height="315"
-    src="https://www.youtube.com/embed/CuFKYSSZtpo?si=L9w9U_x29zHLQ8VH"
+    src="https://www.youtube.com/embed/oaZKeMnEzqQ?si=oz_fr3lkEahI8eOx"
     title="YouTube video player"
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -277,7 +277,7 @@
   }
   .detail-video2 {
     position: absolute;
-    top: 185vh; right: 5vw;
+    top: 188vh; right: 5vw;
     width: 560px; height: 315px;
   }
   .detail-video2 iframe {
