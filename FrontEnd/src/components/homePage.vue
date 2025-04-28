@@ -3,7 +3,7 @@
   <div class="page-container first-section">
     <div class="nav-bar">
       <router-link to="/" class="nav-link">Home</router-link>
-      <router-link to="/quiz-bank" class="nav-link">Quiz Bank</router-link>
+      <router-link to="/quiz-bank" class="nav-link">Dashboard</router-link>
       <span>Contact us</span>
     </div>
 

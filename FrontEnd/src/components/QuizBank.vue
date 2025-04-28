@@ -42,45 +42,26 @@
       </div>
 
       <!-- Quiz Cards with fade-in on mount and enter -->
-      <transition-group
-        name="fade"
-        tag="div"
-        class="card-wrapper"
-        appear
-      >
+      <transition-group name="fade" tag="div" class="card-wrapper" appear>
         <div
           class="quiz-card"
           v-for="(quiz, index) in pagedQuizzes"
-          :key="index"
+          :key="quiz.imgSrc"
         >
           <div class="card-content">
-            <img
-              class="quiz-img"
-              :src="quiz.imgSrc"
-              alt="Quiz"
-            />
+            <img class="quiz-img" :src="quiz.imgSrc" alt="Quiz" />
             <p class="category-text">{{ quiz.category }}</p>
             <p class="quiz-name">{{ quiz.title }}</p>
             <div class="divider"></div>
             <p class="quiz-meta">{{ quiz.meta }}</p>
 
             <!-- 第一张卡片：Start Quiz 导航至 /Quiz-Introduction -->
-            <router-link
-              v-if="index === 0"
-              to="/Quiz-Introduction"
-            >
-              <button class="start-quiz-btn">
-                Start Quiz
-              </button>
+            <router-link v-if="index === 0" to="/Quiz-Introduction">
+              <button class="start-quiz-btn">Start Quiz</button>
             </router-link>
 
             <!-- 其他卡片：普通按钮 -->
-            <button
-              v-else
-              class="start-quiz-btn"
-            >
-              Start Quiz
-            </button>
+            <button v-else class="start-quiz-btn">Start Quiz</button>
           </div>
         </div>
       </transition-group>
