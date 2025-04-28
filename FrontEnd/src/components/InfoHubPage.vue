@@ -97,7 +97,14 @@
                 Learn more
               </button>
             </router-link>
-
+            <router-link
+              v-else-if="index === 2"
+              to="/di"
+            >
+              <button class="start-quiz-btn">
+                Learn more
+              </button>
+            </router-link>
             <!-- 其他卡片：普通按钮 -->
             <button
               v-else

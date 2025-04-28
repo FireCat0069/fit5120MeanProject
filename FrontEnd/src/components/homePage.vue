@@ -39,7 +39,7 @@
       <!-- 卡片 1 -->
       <div class="red-card" data-aos="fade-up" data-aos-delay="100">
         <div class="card-content">
-          <img class="quiz-img" src="@/assets/quiz1.png" alt="Quiz 1" />
+          <img class="quiz-img" src="@/assets/DCInfo.png" alt="Quiz 1" />
           <p class="category-text">Online Safety</p>
           <p class="quiz-name">What's the Digital Citizenship?</p>
           <div class="divider"></div>
@@ -53,12 +53,14 @@
       <!-- 卡片 2 -->
       <div class="red-card" data-aos="fade-up" data-aos-delay="200">
         <div class="card-content">
-          <img class="quiz-img" src="@/assets/quiz2.png" alt="Quiz 2" />
+          <img class="quiz-img" src="@/assets/SMP.png" alt="Quiz 2" />
           <p class="category-text">Digital Literacy</p>
-          <p class="quiz-name">Think Before You Click</p>
+          <p class="quiz-name">Building Your Privacy Fortress Online</p>
           <div class="divider"></div>
           <p class="quiz-meta">12 mins · 25 questions · 780 times</p>
-          <button class="start-quiz-btn">Start Quiz</button>
+          <router-link to="/smp">
+            <button class="start-quiz-btn">Learn More</button>
+          </router-link>
         </div>
       </div>
 

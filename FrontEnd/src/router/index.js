@@ -9,6 +9,7 @@ import DigitalCitiInfo from '../components/DigitalCitiInfo.vue'
 import CzFeedback from '../components/CzFeedback.vue'
 import InfoHubPage from '../components/InfoHubPage.vue'
 import SMP from '../components/SMP.vue'
+import DI from '../components/DI.vue'    
 
 
 
@@ -17,6 +18,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: homePage
+  },
+  {
+    path: '/di',
+    name: 'DI',
+    component: DI
   },
   {
     path: '/info-hub',
