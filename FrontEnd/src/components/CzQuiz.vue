@@ -54,12 +54,28 @@
 
     <!-- 提交后显示反馈 -->
     <div v-else class="feedback-section">
-      <!-- 统计饼图 只显示标题和图表区域 -->
+      <!-- 统计柱状图：显示图表切换标签和图表 -->
       <div v-if="statsLoaded" class="stats-charts-carousel">
+        <!-- 切换模块 -->
+        <div class="chart-tabs">
+          <div
+            v-for="(title, i) in chartTitles"
+            :key="i"
+            class="chart-tab"
+            :class="{ active: currentChartIndex === i }"
+            @click="currentChartIndex = i"
+          >
+            {{ title }}
+          </div>
+        </div>
+        <!-- 图表内容 -->
         <div class="chart-content">
-          <h3>Usage Statistics</h3>
+          <h3>{{ chartTitles[currentChartIndex] }}</h3>
           <div class="chart-frame">
-            <v-chart :option="chartOptionsList[currentChartIndex]" class="chart" />
+            <v-chart
+              :option="chartOptionsList[currentChartIndex]"
+              class="chart"
+            />
           </div>
         </div>
       </div>
@@ -102,11 +118,11 @@
 <script>
 import { use } from 'echarts/core';
 import VChart from 'vue-echarts';
-import { PieChart } from 'echarts/charts';
-import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components';
+import { BarChart } from 'echarts/charts';
+import { TitleComponent, TooltipComponent, LegendComponent, GridComponent } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 
-use([PieChart, TitleComponent, TooltipComponent, LegendComponent, CanvasRenderer]);
+use([BarChart, TitleComponent, TooltipComponent, LegendComponent, GridComponent, CanvasRenderer]);
 
 export default {
   name: 'CzQuiz',
@@ -185,47 +201,56 @@ export default {
         })
         .catch(err => {
           console.error(err);
-          alert('提交失败');
+          alert('Submission failed');
         });
     },
     fetchStats() {
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/usage/stats')
         .then(res => res.json())
         .then(data => {
-          const groups = [
+          const rawGroups = [
             { title: 'Device Type', data: data.device_type },
             { title: 'Screen Time Period', data: data.screen_time_period },
             { title: 'Screen Activity', data: data.screen_activity },
             { title: 'App Category', data: data.app_category },
             { title: 'Avg Screen Time Range', data: data.average_screen_time_range }
           ];
-          groups.forEach(g => {
+          rawGroups.forEach(g => {
+            // 深拷贝并过滤不需要的键
+            const filtered = { ...g.data };
+            if (g.title === 'Device Type') {
+              ['A. Mobile Phone', 'B. Laptop', 'A', 'C. Other'].forEach(k => delete filtered[k]);
+            } else if (g.title === 'Screen Time Period') {
+              ['B. Afternoon (12 PM – 6 PM)', 'C. Late Night (10 PM – 6 AM)', 'A. Evening (6 PM – 10 PM)', 'B'].forEach(k => delete filtered[k]);
+            } else if (g.title === 'Screen Activity') {
+              ['A. Work and Study (e.g., working, studying, content creation)', 'B. Entertainment (e.g., gaming, social media)', 'A'].forEach(k => delete filtered[k]);
+            } else if (g.title === 'App Category') {
+              ['P'].forEach(k => delete filtered[k]);
+            }
             this.chartTitles.push(g.title);
-            this.chartOptionsList.push(this.createPieOption(g.title, g.data));
+            this.chartOptionsList.push(this.createBarOption(g.title, filtered));
           });
           this.statsLoaded = true;
         })
         .catch(err => console.error(err));
     },
-    createPieOption(title, dataObj) {
+    createBarOption(title, dataObj) {
+      const names = Object.keys(dataObj);
+      const values = Object.values(dataObj).map(v => parseFloat(v));
       return {
-        tooltip: { trigger: 'item' },
-        legend: { orient: 'vertical', left: '75%', top: 'center', itemGap: 12 },
+        tooltip: { trigger: 'axis' },
+        legend: { show: false },
+        xAxis: { type: 'category', data: names, axisLabel: { rotate: 45, interval: 0 } },
+        yAxis: { type: 'value' },
+        grid: { left: '10%', right: '5%', bottom: '15%', containLabel: true },
         series: [{
           name: title,
-          type: 'pie',
-          center: ['30%', '50%'],
-          radius: '40%',
-          data: Object.entries(dataObj).map(([name, pct]) => ({ name, value: parseFloat(pct) })),
-          emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.5)' } }
+          type: 'bar',
+          data: values,
+          itemStyle: { barBorderRadius: [4, 4, 0, 0] },
+          emphasis: { itemStyle: { color: '#f18829' } }
         }]
       };
-    },
-    prevChart() {
-      this.currentChartIndex = (this.currentChartIndex + this.chartOptionsList.length - 1) % this.chartOptionsList.length;
-    },
-    nextChart() {
-      this.currentChartIndex = (this.currentChartIndex + 1) % this.chartOptionsList.length;
     }
   },
   mounted() {
@@ -237,6 +262,7 @@ export default {
 </script>
 
 <style>
+/* 样式保持不变 */
 .container { width:100vw; position:absolute; left:0; top:0; padding:40px 60px; font-family:Arial; overflow-y:auto; max-height:100vh; background:#fff; }
 .nav-bar { position:absolute; top:2vh; right:5vw; display:flex; gap:3vw; font-size:24px; color:#1d1d1d; white-space:nowrap; }
 .nav-link, .nav-link:hover { color:#1d1d1d; text-decoration:none; }
@@ -254,27 +280,16 @@ hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
 .submit-btn:hover { background:#e65f14; }
 .feedback-section { margin-top:50px; }
 
-/* Simplified carousel showing only chart content */
-.stats-charts-carousel {
-  display:flex;
-  justify-content:center;
-  margin-bottom:30px;
-}
-.chart-content {
-  text-align:center;
-}
-.chart-frame {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:1200px;
-  margin:0 auto;
-  transform: translateY(-60px);
-}
-.chart {
-  width:600px;
-  height:600px;
-}
+/* 图表切换标签 */
+.chart-tabs { display:flex; justify-content:center; gap:1rem; margin-bottom:1rem; }
+.chart-tab { padding:0.5rem 1rem; border:1px solid #ddd; border-radius:4px; cursor:pointer; font-size:14px; background:#fafafa; }
+.chart-tab.active { background:#f18829; color:#fff; border-color:#f18829; }
+
+/* 简化轮播，仅展示当前图表 */
+.stats-charts-carousel { display:flex; flex-direction:column; align-items:center; margin-bottom:30px; }
+.chart-content { text-align:center; }
+.chart-frame { display:flex; align-items:center; justify-content:center; width:1200px; margin:0 auto; transform: translateY(-60px); }
+.chart { width:600px; height:600px; }
 
 general-feedback { margin-bottom:20px; font-size:16px; color:#333; }
 .feedback-item { border:1px solid #ddd; border-radius:8px; padding:15px; margin-bottom:20px; background:#f9f9f9; }

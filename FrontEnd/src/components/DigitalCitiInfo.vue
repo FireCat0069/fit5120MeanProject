@@ -265,8 +265,8 @@
   
   /* 视频 */
   .detail-video1 {
-    position: absolute;
-    top: 80vh; right: 5vw;
+    position: relative;
+    top: 80vh; left: 60vw;
     width: 560px; height: 315px;
   }
   .detail-video1 iframe {
@@ -274,7 +274,8 @@
   }
   .detail-video2 {
     position: absolute;
-    top: 175vh; right: 5vw;
+    margin-top: 78%; 
+    left: 60vw;
     width: 560px; height: 315px;
   }
   .detail-video2 iframe {

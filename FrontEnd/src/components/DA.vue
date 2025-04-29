@@ -277,7 +277,8 @@
   }
   .detail-video2 {
     position: absolute;
-    top: 188vh; right: 5vw;
+    margin-top: 105%; 
+    left: 60vw;
     width: 560px; height: 315px;
   }
   .detail-video2 iframe {
