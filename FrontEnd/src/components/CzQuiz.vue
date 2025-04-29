@@ -148,51 +148,76 @@ export default {
         .catch(err => console.error(err));
     },
     selectAnswer(qo, opt, type, event) {
-      // ... unchanged selectAnswer logic ...
+      const buttons = event.currentTarget.closest('.options').querySelectorAll('.option-btn');
+      if (type === 'single-choice') {
+        buttons.forEach(btn => btn.classList.remove('selected'));
+        event.currentTarget.classList.add('selected');
+        this.answers[qo] = opt;
+      } else {
+        const arr = this.answers[qo] || [];
+        const idx = arr.indexOf(opt);
+        if (idx === -1) {
+          arr.push(opt);
+          event.currentTarget.classList.add('selected');
+        } else {
+          arr.splice(idx, 1);
+          event.currentTarget.classList.remove('selected');
+        }
+        this.answers[qo] = arr;
+      }
     },
     handleSubmit() {
-      // ... unchanged handleSubmit logic ...
+      const payload = [];
+      this.questions.forEach((q, idx) => {
+        const type = q.type;
+        let ans = this.answers[q.question_order];
+        if (ans == null) {
+          payload.push({ question_order: q.question_order, option: null });
+          return;
+        }
+        if (typeof ans === 'string') {
+          ans = ans.trim();
+          const sendOpt = type !== 'fill-in-the-blank' ? (idx < 5 ? ans : ans.charAt(0)) : ans;
+          payload.push({ question_order: q.question_order, option: sendOpt });
+        }
+        if (Array.isArray(ans)) {
+          ans.forEach(o => {
+            const trimmed = o.trim();
+            const sendOpt = type !== 'fill-in-the-blank' ? (idx < 5 ? trimmed : trimmed.charAt(0)) : trimmed;
+            payload.push({ question_order: q.question_order, option: sendOpt });
+          });
+        }
+      });
+      fetch('https://fit5120mainprojecttp20backend.onrender.com/api/mbtiquiz/validate-answers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then(res => res.json())
+        .then(res => {
+          this.feedbackList = res.results || [];
+          this.generalFeedback = res.feedback || '';
+          this.feedbackDisplayed = true;
+        })
+        .catch(err => {
+          console.error(err);
+          alert('Submission failed');
+        });
     },
     fetchStats() {
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/usage/stats')
         .then(res => res.json())
         .then(data => {
-          // 定义每个分组需要过滤的键
-          const filters = {
-            'Device Type': [
-              'A. Mobile Phone', 'B. Laptop', 'A', 'C. Other'
-            ],
-            'Screen Time Period': [
-              'B. Afternoon (12 PM – 6 PM)',
-              'C. Late Night (10 PM – 6 AM)',
-              'A. Evening (6 PM – 10 PM)',
-              'B'
-            ],
-            'Screen Activity': [
-              'A. Work and Study (e.g., working, studying, content creation)',
-              'B. Entertainment (e.g., gaming, social media)',
-              'A'
-            ],
-            'App Category': ['P']
-          };
-
-          const rawGroups = [
+          const groups = [
             { title: 'Device Type', data: data.device_type },
             { title: 'Screen Time Period', data: data.screen_time_period },
             { title: 'Screen Activity', data: data.screen_activity },
             { title: 'App Category', data: data.app_category },
             { title: 'Avg Screen Time Range', data: data.average_screen_time_range }
           ];
-
-          rawGroups.forEach(g => {
-            // 复制并过滤
-            const filtered = { ...g.data };
-            (filters[g.title] || []).forEach(key => {
-              delete filtered[key];
-            });
-
+          groups.forEach(g => {
             this.chartTitles.push(g.title);
-            this.chartOptionsList.push(this.createBarOption(g.title, filtered));
+            this.chartOptionsList.push(this.createBarOption(g.title, g.data));
           });
           this.statsLoaded = true;
         })
@@ -226,7 +251,6 @@ export default {
 </script>
 
 <style>
-/* 样式保持不变 */
 .container { width:100vw; position:absolute; left:0; top:0; padding:40px 60px; font-family:Arial; overflow-y:auto; max-height:100vh; background:#fff; }
 .nav-bar { position:absolute; top:2vh; right:5vw; display:flex; gap:3vw; font-size:24px; color:#1d1d1d; white-space:nowrap; }
 .nav-link, .nav-link:hover { color:#1d1d1d; text-decoration:none; }
