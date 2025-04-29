@@ -121,7 +121,7 @@ methods: {
     async fetchQuestions() {
       try {
         // Fetch questions from API
-        const response = await fetch('https://fit5120meanproject.onrender.com/api/quiz/questions')
+        const response = await fetch('https://fit5120mainprojecttp20backend.onrender.com/api/quiz/questions')
         this.quizData = await response.json()
         this.processQuestions()
       } catch (error) {
@@ -129,39 +129,45 @@ methods: {
       }
     },
     processQuestions() {
-    // Shuffle questions and select first 10
-    const shuffledQuestions = [...this.quizData]
-      .map(a => ({ sort: Math.random(), value: a })) // Add random sort value
-      .sort((a, b) => a.sort - b.sort) // Sort by random value
-      .map(a => a.value) // Extract original values
-      .slice(0, 10); // Take first 10
+      if (!Array.isArray(this.quizData)) {
+        console.error('quizData is not an array:', this.quizData);
+        return;
+      }
+
+      const selectedSection = 'Cybersecurity Awareness'; 
+
+      
+      const filteredQuestions = this.quizData.filter(item => item.section === selectedSection);
+
+      if (filteredQuestions.length === 0) {
+        console.error('No questions found for section:', selectedSection);
+        return;
+      }
 
     // Process question format
-    this.questions = shuffledQuestions.map(item => {
+    this.questions = filteredQuestions.map(item => {
       // Process options (split string if needed)
-      const optionsString = item.Options[0];
-      const options = optionsString.split(';').map(opt => opt.trim());
+      const options = item.options.split(';').map(opt => opt.trim());
       
       // Determine question type and process correct answers
-      const isMultipleChoice = item['QuizType'] === 'Multiple Choice';
+      const isMultipleChoice = item['quiztype'] === 'Multiple Choice';
       let correctIndices;
       
       if (isMultipleChoice) {
         // For multiple choice: split answers like "A,B" or "AB"
-        correctIndices = item['CorrectAnswer'].split(/[, ]*/)
+        correctIndices = item['correctanswer'].split(/[, ]*/)
           .map(char => char.charCodeAt(0) - 65);
       } else {
         // For single choice: convert single letter to index
-        correctIndices = [item['CorrectAnswer'].charCodeAt(0) - 65];
+        correctIndices = [item['correctanswer'].charCodeAt(0) - 65];
       }
 
       return {
-        id: item._id,
-        text: item.Question,
+        text: item.question,
         options: options,
         correctIndices: correctIndices, // Always array (even for single choice)
         isMultipleChoice: isMultipleChoice,
-        quizType: item['QuizType'] // Store original type for reference
+        quizType: item['quiztype'] // Store original type for reference
       };
     });
 
@@ -236,13 +242,13 @@ methods: {
         }
 
         return {
-          _id: question.id, // Use _id instead of questionId to match API
+          text: question.text, // Use _id instead of questionId to match API
           selectedOption: selectedOption || 'A' // Default to 'A' if empty
         };
       });
 
       // Submit to server
-      const response = await fetch('https://fit5120meanproject.onrender.com/api/quiz/validate-answers', {
+      const response = await fetch('https://fit5120mainprojecttp20backend.onrender.com/api/quiz/validate-answers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -269,7 +275,7 @@ methods: {
       })),
       // Store the question
       questions: this.questions.map(q => ({
-        id: q.id,
+        //id: q.id,
         text: q.text,
         options: q.options
       }))
