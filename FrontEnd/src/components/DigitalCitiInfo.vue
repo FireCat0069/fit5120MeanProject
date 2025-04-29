@@ -222,8 +222,7 @@
     border: 1px solid #e1e4e8;
     border-radius: 8px;
     padding: 16px;
-    width: 350px;
-    height: 350px;
+    width: 20vw;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
   }
@@ -275,7 +274,7 @@
   }
   .detail-video2 {
     position: relative;
-    top: 140vh; left: 60vw;
+    top: 1350px; left: 60vw;
     width: 560px; height: 315px;
   }
   .detail-video2 iframe {
