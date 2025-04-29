@@ -222,7 +222,8 @@
     border: 1px solid #e1e4e8;
     border-radius: 8px;
     padding: 16px;
-    width: 20vw;
+    width: 350px;
+    height: 350px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
   }
