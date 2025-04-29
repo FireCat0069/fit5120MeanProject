@@ -54,9 +54,8 @@
 
     <!-- 提交后显示反馈 -->
     <div v-else class="feedback-section">
-      <!-- 统计柱状图：显示图表切换标签和图表 -->
+      <!-- 统计柱状图 -->
       <div v-if="statsLoaded" class="stats-charts-carousel">
-        <!-- 切换模块 -->
         <div class="chart-tabs">
           <div
             v-for="(title, i) in chartTitles"
@@ -68,48 +67,41 @@
             {{ title }}
           </div>
         </div>
-        <!-- 图表内容 -->
         <div class="chart-content">
           <h3>{{ chartTitles[currentChartIndex] }}</h3>
           <div class="chart-frame">
-            <v-chart
-              :option="chartOptionsList[currentChartIndex]"
-              class="chart"
-            />
+            <v-chart :option="chartOptionsList[currentChartIndex]" class="chart" />
           </div>
         </div>
       </div>
 
-      <!-- 通用反馈 -->
-      <div v-if="generalFeedback" class="general-feedback">
-        <p>{{ generalFeedback }}</p>
+      <!-- AI 分析 标题 -->
+      <div class="analysis-section">
+        <h2 class="analysis-title">AI Analysis</h2>
+        <p v-if="generalFeedback" class="general-feedback">{{ generalFeedback }}</p>
       </div>
 
-      <div v-if="feedbackList.length === 0">
-        <p>No feedback available.</p>
-      </div>
-      <div v-else>
-        <div
-          v-for="(feedback, index) in feedbackList"
-          :key="feedback.question_order"
-          class="feedback-item"
-        >
-          <h3>Question {{ feedback.question_order }}</h3>
-          <p>
-            <strong>Correct Answer:</strong>
-            {{ feedback.correctAnswer }}
-          </p>
-          <p>
-            <strong>Your Answer:</strong>
-            <span v-if="feedback.isCorrect === null">Not answered</span>
-            <span v-else-if="feedback.isCorrect">Correct</span>
+      <!-- 分页卡片展示题目解析 -->
+      <div v-if="feedbackList.length" class="feedback-card-container">
+        <div class="feedback-card">
+          <h3>Question {{ feedbackList[currentFeedbackIndex].question_order }}</h3>
+          <p><strong>Correct Answer:</strong> {{ feedbackList[currentFeedbackIndex].correctAnswer }}</p>
+          <p><strong>Your Answer:</strong>
+            <span v-if="feedbackList[currentFeedbackIndex].isCorrect === null">Not answered</span>
+            <span v-else-if="feedbackList[currentFeedbackIndex].isCorrect">Correct</span>
             <span v-else>Incorrect</span>
           </p>
-          <p>
-            <strong>Explanation:</strong>
-            {{ feedback.explanation }}
-          </p>
+          <p><strong>Explanation:</strong> {{ feedbackList[currentFeedbackIndex].explanation }}</p>
         </div>
+        <div class="card-navigation">
+          <button @click="prevFeedback" :disabled="currentFeedbackIndex === 0">Prev</button>
+          <span>{{ currentFeedbackIndex + 1 }} / {{ feedbackList.length }}</span>
+          <button @click="nextFeedback" :disabled="currentFeedbackIndex === feedbackList.length - 1">Next</button>
+        </div>
+      </div>
+
+      <div v-else>
+        <p>No feedback available.</p>
       </div>
     </div>
   </div>
@@ -137,7 +129,8 @@ export default {
       statsLoaded: false,
       chartOptionsList: [],
       chartTitles: [],
-      currentChartIndex: 0
+      currentChartIndex: 0,
+      currentFeedbackIndex: 0
     };
   },
   methods: {
@@ -169,7 +162,6 @@ export default {
     handleSubmit() {
       const payload = [];
       this.questions.forEach((q, idx) => {
-        const type = q.type;
         let ans = this.answers[q.question_order];
         if (ans == null) {
           payload.push({ question_order: q.question_order, option: null });
@@ -177,32 +169,28 @@ export default {
         }
         if (typeof ans === 'string') {
           ans = ans.trim();
-          const sendOpt = type !== 'fill-in-the-blank' ? (idx < 5 ? ans : ans.charAt(0)) : ans;
+          const sendOpt = q.type !== 'fill-in-the-blank' && idx >= 5 ? ans.charAt(0) : ans;
           payload.push({ question_order: q.question_order, option: sendOpt });
         }
         if (Array.isArray(ans)) {
           ans.forEach(o => {
             const trimmed = o.trim();
-            const sendOpt = type !== 'fill-in-the-blank' ? (idx < 5 ? trimmed : trimmed.charAt(0)) : trimmed;
+            const sendOpt = q.type !== 'fill-in-the-blank' && idx >= 5 ? trimmed.charAt(0) : trimmed;
             payload.push({ question_order: q.question_order, option: sendOpt });
           });
         }
       });
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/mbtiquiz/validate-answers', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
       })
         .then(res => res.json())
         .then(res => {
           this.feedbackList = res.results || [];
           this.generalFeedback = res.feedback || '';
           this.feedbackDisplayed = true;
+          this.currentFeedbackIndex = 0;
         })
-        .catch(err => {
-          console.error(err);
-          alert('Submission failed');
-        });
+        .catch(() => alert('Submission failed'));
     },
     fetchStats() {
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/usage/stats')
@@ -216,83 +204,68 @@ export default {
             { title: 'Avg Screen Time Range', data: data.average_screen_time_range }
           ];
           rawGroups.forEach(g => {
-            // 深拷贝并过滤不需要的键
             const filtered = { ...g.data };
-            if (g.title === 'Device Type') {
-              ['A. Mobile Phone', 'B. Laptop', 'A', 'C. Other'].forEach(k => delete filtered[k]);
-            } else if (g.title === 'Screen Time Period') {
-              ['B. Afternoon (12 PM – 6 PM)', 'C. Late Night (10 PM – 6 AM)', 'A. Evening (6 PM – 10 PM)', 'B'].forEach(k => delete filtered[k]);
-            } else if (g.title === 'Screen Activity') {
-              ['A. Work and Study (e.g., working, studying, content creation)', 'B. Entertainment (e.g., gaming, social media)', 'A'].forEach(k => delete filtered[k]);
-            } else if (g.title === 'App Category') {
-              ['P'].forEach(k => delete filtered[k]);
-            }
+            if (g.title === 'Device Type') ['A. Mobile Phone','B. Laptop','A','C. Other'].forEach(k=>delete filtered[k]);
+            if (g.title === 'Screen Time Period') ['B. Afternoon (12 PM – 6 PM)','C. Late Night (10 PM – 6 AM)','A. Evening (6 PM – 10 PM)','B'].forEach(k=>delete filtered[k]);
+            if (g.title === 'Screen Activity') ['A. Work and Study (e.g., working, studying, content creation)','B. Entertainment (e.g., gaming, social media)','A'].forEach(k=>delete filtered[k]);
+            if (g.title === 'App Category') ['P'].forEach(k=>delete filtered[k]);
             this.chartTitles.push(g.title);
             this.chartOptionsList.push(this.createBarOption(g.title, filtered));
           });
           this.statsLoaded = true;
-        })
-        .catch(err => console.error(err));
+        });
     },
     createBarOption(title, dataObj) {
       const names = Object.keys(dataObj);
-      const values = Object.values(dataObj).map(v => parseFloat(v));
+      const values = Object.values(dataObj).map(v=>parseFloat(v));
       return {
-        tooltip: { trigger: 'axis' },
-        legend: { show: false },
-        xAxis: { type: 'category', data: names, axisLabel: { rotate: 45, interval: 0 } },
-        yAxis: { type: 'value' },
-        grid: { left: '10%', right: '5%', bottom: '15%', containLabel: true },
-        series: [{
-          name: title,
-          type: 'bar',
-          data: values,
-          itemStyle: { barBorderRadius: [4, 4, 0, 0] },
-          emphasis: { itemStyle: { color: '#f18829' } }
-        }]
+        tooltip:{trigger:'axis'},legend:{show:false},
+        xAxis:{type:'category',data:names,axisLabel:{rotate:45,interval:0}},
+        yAxis:{type:'value'},grid:{left:'10%',right:'5%',bottom:'15%',containLabel:true},
+        series:[{name:title,type:'bar',data:values,itemStyle:{barBorderRadius:[4,4,0,0]},emphasis:{itemStyle:{color:'#f18829'}}}]
       };
-    }
+    },
+    prevFeedback() { if(this.currentFeedbackIndex>0) this.currentFeedbackIndex--; },
+    nextFeedback() { if(this.currentFeedbackIndex<this.feedbackList.length-1) this.currentFeedbackIndex++; }
   },
   mounted() {
-    document.title = 'Digital Citizenship Survey';
-    this.fetchQuestions();
-    this.fetchStats();
+    document.title='Digital Citizenship Survey';
+    this.fetchQuestions(); this.fetchStats();
   }
 };
 </script>
 
 <style>
-/* 样式保持不变 */
-.container { width:100vw; position:absolute; left:0; top:0; padding:40px 60px; font-family:Arial; overflow-y:auto; max-height:100vh; background:#fff; }
-.nav-bar { position:absolute; top:2vh; right:5vw; display:flex; gap:3vw; font-size:24px; color:#1d1d1d; white-space:nowrap; }
-.nav-link, .nav-link:hover { color:#1d1d1d; text-decoration:none; }
-h1 { font-size:36px; font-weight:700; margin-bottom:30px; color:#050c26; }
-.highlight { color:#f18829; }
-.question-block { margin-bottom:40px; }
-.question-text { font-size:20px; font-weight:600; margin-bottom:16px; color:#1d1d1d; }
-.options { display:flex; flex-direction:column; gap:12px; }
-.option-btn { padding:14px 20px; max-width:600px; border:2px solid #e0e0e0; border-radius:12px; background:#fff; cursor:pointer; transition:.2s; font-size:16px; color:#333; box-shadow:0 1px 4px rgba(0,0,0,0.03); text-align:left; }
-.option-btn:hover { background:#fff8f5; border-color:#ff7426; }
-.option-btn.selected { background:#ff7426; color:#fff; border-color:#ff7426; }
-hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
-.submit-section { text-align:center; margin-top:50px; }
-.submit-btn { padding:14px 32px; font-size:18px; background:#f18829; color:#fff; border:none; border-radius:30px; cursor:pointer; font-weight:bold; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-.submit-btn:hover { background:#e65f14; }
-.feedback-section { margin-top:50px; }
-
-/* 图表切换标签 */
-.chart-tabs { display:flex; justify-content:center; gap:1rem; margin-bottom:1rem; }
-.chart-tab { padding:0.5rem 1rem; border:1px solid #ddd; border-radius:4px; cursor:pointer; font-size:14px; background:#fafafa; }
-.chart-tab.active { background:#f18829; color:#fff; border-color:#f18829; }
-
-/* 简化轮播，仅展示当前图表 */
-.stats-charts-carousel { display:flex; flex-direction:column; align-items:center; margin-bottom:30px; }
-.chart-content { text-align:center; }
-.chart-frame { display:flex; align-items:center; justify-content:center; width:1200px; margin:0 auto; transform: translateY(-60px); }
-.chart { width:600px; height:600px; }
-
-general-feedback { margin-bottom:20px; font-size:16px; color:#333; }
-.feedback-item { border:1px solid #ddd; border-radius:8px; padding:15px; margin-bottom:20px; background:#f9f9f9; }
-.feedback-item h3 { margin-top:0; color:#000; }
-.feedback-section * { color:#000!important; }
+.container {width:100vw;position:absolute;left:0;top:0;padding:40px 60px;font-family:Arial;overflow-y:auto;max-height:100vh;background:#fff;}
+.nav-bar{position:absolute;top:2vh;right:5vw;display:flex;gap:3vw;font-size:24px;color:#1d1d1d;white-space:nowrap;}
+.nav-link,.nav-link:hover{color:#1d1d1d;text-decoration:none;}
+h1{font-size:36px;font-weight:700;margin-bottom:30px;color:#050c26;}
+.highlight{color:#f18829;}
+.question-block{margin-bottom:40px;}
+.question-text{font-size:20px;font-weight:600;margin-bottom:16px;color:#1d1d1d;}
+.options{display:flex;flex-direction:column;gap:12px;}
+.option-btn{padding:14px 20px;max-width:600px;border:2px solid #e0e0e0;border-radius:12px;background:#fff;cursor:pointer;transition:.2s;font-size:16px;color:#333;box-shadow:0 1px 4px rgba(0,0,0,0.03);text-align:left;}
+.option-btn:hover{background:#fff8f5;border-color:#ff7426;}
+.option-btn.selected{background:#ff7426;color:#fff;border-color:#ff7426;}
+hr{border:none;border-top:1px solid #ddd;margin:30px 0;}
+.submit-section{text-align:center;margin-top:50px;}
+.submit-btn{padding:14px 32px;font-size:18px;background:#f18829;color:#fff;border:none;border-radius:30px;cursor:pointer;font-weight:bold;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+.submit-btn:hover{background:#e65f14;}
+.feedback-section{margin-top:50px;}
+.chart-tabs{display:flex;justify-content:center;gap:1rem;margin-bottom:1rem;}
+.chart-tab{padding:0.5rem 1rem;border:1px solid #ddd;border-radius:4px;cursor:pointer;font-size:14px;background:#fafafa;}
+.chart-tab.active{background:#f18829;color:#fff;border-color:#f18829;}
+.stats-charts-carousel{display:flex;flex-direction:column;align-items:center;margin-bottom:30px;}
+.chart-content{text-align:center;}
+.chart-frame{display:flex;align-items:center;justify-content:center;width:1200px;margin:0 auto;transform:translateY(-60px);}
+.chart{width:600px;height:600px;}
+.analysis-section{margin:20px 0;}
+.analysis-title{font-size:24px;color:#050c26;margin-bottom:10px;}
+.feedback-card-container{display:flex;flex-direction:column;align-items:center;}
+.feedback-card{border:1px solid #ddd;border-radius:8px;padding:20px;width:60vw;max-width:800px;background:#f9f9f9;margin-bottom:15px;}
+.card-navigation{display:flex;align-items:center;gap:1rem;}
+.card-navigation button{padding:8px 16px;border:none;border-radius:4px;background:#f18829;color:#fff;cursor:pointer;}
+.card-navigation button:disabled{background:#ccc;cursor:default;}
+.card-navigation span{font-size:14px;color:#333;}
+.general-feedback{margin-bottom:20px;font-size:16px;color:#333;}
 </style>
