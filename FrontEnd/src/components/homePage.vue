@@ -44,7 +44,7 @@
           <p class="quiz-name">What's the Digital Citizenship?</p>
           <div class="divider"></div>
           <p class="quiz-meta">15 mins · 2 videos · 521 times</p>
-          <router-link to="/digital-citi-info" >
+          <router-link to="/digital-citi-info">
             <button class="start-quiz-btn">Learn More</button>
           </router-link>
         </div>
@@ -221,6 +221,51 @@ export default {
 .go-button { background-color: #f18829; color: white; border: none; padding: 14px 30px; border-radius: 28px; cursor: pointer; font-size: 20px; font-weight: bold; }
 .learn-more-btn { background-color: #ff7426; color: #ffffff; border: none; padding: 14px 32px; border-radius: 28px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 12vh; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); transition: background-color 0.3s ease; }
 .learn-more-btn:hover { background-color: #e65f14; }
-.nav-link { font-size: 24px; color: #1d1d1d; text-decoration: none; }
-.nav-link:hover { text-decoration: underline; }
+
+/* ==== 新增覆盖：清除所有链接和按钮的默认高亮/背景 ==== */
+a,
+a:link,
+a:visited,
+a:hover,
+a:focus,
+a:active {
+  background-color: transparent !important;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+button:focus,
+button:active {
+  background-color: transparent !important;
+  outline: none;
+  box-shadow: none;
+}
+
+/* 确保自定义按钮在所有状态下保持设计色 */
+.go-button,
+.go-button:focus,
+.go-button:active {
+  background-color: #f18829 !important;
+}
+.go-button:hover {
+  background-color: #e65f14 !important;
+}
+
+.start-quiz-btn,
+.start-quiz-btn:focus,
+.start-quiz-btn:active {
+  background-color: #ff7426 !important;
+}
+.start-quiz-btn:hover {
+  background-color: #e65f14 !important;
+}
+
+.learn-more-btn,
+.learn-more-btn:focus,
+.learn-more-btn:active {
+  background-color: #ff7426 !important;
+}
+.learn-more-btn:hover {
+  background-color: #e65f14 !important;
+}
 </style>
