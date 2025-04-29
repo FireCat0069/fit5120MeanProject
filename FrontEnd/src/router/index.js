@@ -8,6 +8,9 @@ import QuizFeedback from '@/components/QuizFeedback.vue';
 import DigitalCitiInfo from '../components/DigitalCitiInfo.vue'
 import CzFeedback from '../components/CzFeedback.vue'
 import InfoHubPage from '../components/InfoHubPage.vue'
+import SMP from '../components/SMP.vue'
+import DI from '../components/DI.vue'    
+import DA from '../components/DA.vue'   
 
 
 
@@ -18,9 +21,24 @@ const routes = [
     component: homePage
   },
   {
+    path: '/di',
+    name: 'DI',
+    component: DI
+  },
+  {
+    path: '/da',
+    name: 'DA',
+    component: DA
+  },
+  {
     path: '/info-hub',
     name: 'InfoHub',
     component: InfoHubPage
+  },
+  {
+    path: '/smp',
+    name: 'SMP',
+    component: SMP
   },
   {
     path: '/digital-citi-info',    

@@ -42,88 +42,92 @@
       </div>
 
       <!-- Quiz Cards with fade-in on mount and enter -->
-      <transition-group
-        name="fade"
-        tag="div"
-        class="card-wrapper"
-        appear
-      >
+      <transition-group name="fade" tag="div" class="card-wrapper" appear>
         <div
           class="quiz-card"
-          v-for="(quiz, index) in quizzes"
-          :key="index"
+          v-for="(quiz, index) in pagedQuizzes"
+          :key="quiz.imgSrc"
         >
           <div class="card-content">
-            <img
-              class="quiz-img"
-              src="@/assets/quiz1.png"
-              alt="Quiz"
-            />
+            <img class="quiz-img" :src="quiz.imgSrc" alt="Quiz" />
             <p class="category-text">{{ quiz.category }}</p>
             <p class="quiz-name">{{ quiz.title }}</p>
             <div class="divider"></div>
             <p class="quiz-meta">{{ quiz.meta }}</p>
 
             <!-- 第一张卡片：Start Quiz 导航至 /Quiz-Introduction -->
-            <router-link
-              v-if="index === 0"
-              to="/Quiz-Introduction"
-            >
-              <button class="start-quiz-btn">
-                Start Quiz
-              </button>
+            <router-link v-if="index === 0" to="/Quiz-Introduction">
+              <button class="start-quiz-btn">Start Quiz</button>
             </router-link>
 
             <!-- 其他卡片：普通按钮 -->
-            <button
-              v-else
-              class="start-quiz-btn"
-            >
-              Start Quiz
-            </button>
+            <button v-else class="start-quiz-btn">Start Quiz</button>
           </div>
         </div>
       </transition-group>
     </main>
+
+    <!-- Custom Pager -->
+    <div class="pager">
+      <div
+        v-for="page in numPages"
+        :key="page"
+        class="pager-segment"
+        :class="{ active: currentPage === page }"
+        :style="{ width: (100 / numPages) + '%' }"
+        @click="goToPage(page)"
+      ></div>
+    </div>
   </div>
 </template>
 
 <script>
+import quizBank1 from '@/assets/quizBank1.jpg';
+import quizBank2 from '@/assets/quizBank2.jpg';
+import quizBank3 from '@/assets/quizBank3.jpg';
+import quizBank4 from '@/assets/quizBank4.jpg';
+import quizBank5 from '@/assets/quizBank5.jpg';
+import quizBank6 from '@/assets/quizBank6.jpg';
+import quizBank7 from '@/assets/quizBank7.jpg';
+
 export default {
-  name: "QuizBank",
+  name: 'QuizBank',
   data() {
     return {
       quizzes: [
-        {
-          category: "Online Safety",
-          title: "Can You Outsmart the Internet Threats?",
-          meta: "15 mins · 34 questions · 521 times",
-        },
-        {
-          category: "Digital Literacy",
-          title: "Think Before You Click",
-          meta: "12 mins · 25 questions · 780 times",
-        },
-        {
-          category: "Fact-Checking",
-          title: "Spot the Fake News",
-          meta: "10 mins · 20 questions · 601 times",
-        },
-        {
-          category: "Social Media",
-          title: "How Mindful is Your Scrolling?",
-          meta: "18 mins · 30 questions · 460 times",
-        },
+        { category: 'Digital Literacy', title: 'Think Before You Click', meta: '15 mins · 34 questions · 521 times', imgSrc: quizBank1 },
+        { category: 'Digital Footprint & Privacy', title: 'Track, Trace, and Protect', meta: '12 mins · 25 questions · 780 times', imgSrc: quizBank2 },
+        { category: 'Online Etiquette / Netiquette', title: 'Mind Your Manners Online', meta: '10 mins · 20 questions · 601 times', imgSrc: quizBank3 },
+        { category: 'Cybersecurity Awareness', title: 'Cyber Shields Up!', meta: '18 mins · 30 questions · 460 times', imgSrc: quizBank4 },
+        { category: 'Digital Literacy', title: 'Think Before You Click', meta: '15 mins · 34 questions · 521 times', imgSrc: quizBank5 },
+        { category: 'Digital Footprint & Privacy', title: 'Track, Trace, and Protect', meta: '12 mins · 25 questions · 780 times', imgSrc: quizBank6 },
+        { category: 'Online Etiquette / Netiquette', title: 'Mind Your Manners Online', meta: '10 mins · 20 questions · 601 times', imgSrc: quizBank7 },
       ],
+      pageSize: 4,
+      currentPage: 1,
     };
   },
+  computed: {
+    numPages() {
+      return Math.ceil(this.quizzes.length / this.pageSize);
+    },
+    pagedQuizzes() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      return this.quizzes.slice(start, start + this.pageSize);
+    },
+  },
+  methods: {
+    goToPage(page) {
+      this.currentPage = page;
+    },
+  },
   mounted() {
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
   },
   unmounted() {
-    document.body.style.overflow = "auto";
-    document.documentElement.style.overflow = "auto";
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
   },
 };
 </script>
@@ -308,5 +312,23 @@ export default {
 .fade-appear-to {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* —— Custom Pager —— */
+.pager {
+  position: absolute;
+  bottom: 5vh;
+  left: 16vw;
+  width: calc(100vw - 16vw);
+  display: flex;
+}
+.pager-segment {
+  height: 8px;
+  background-color: #e0e0e0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.pager-segment.active {
+  background-color: #ff7426;
 }
 </style>

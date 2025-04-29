@@ -3,7 +3,7 @@
   <div class="page-container first-section">
     <div class="nav-bar">
       <router-link to="/" class="nav-link">Home</router-link>
-      <router-link to="/quiz-bank" class="nav-link">Quiz Bank</router-link>
+      <router-link to="/quiz-bank" class="nav-link">Dashboard</router-link>
       <span>Contact us</span>
     </div>
 
@@ -39,12 +39,12 @@
       <!-- 卡片 1 -->
       <div class="red-card" data-aos="fade-up" data-aos-delay="100">
         <div class="card-content">
-          <img class="quiz-img" src="@/assets/quiz1.png" alt="Quiz 1" />
+          <img class="quiz-img" src="@/assets/DCInfo.png" alt="Quiz 1" />
           <p class="category-text">Online Safety</p>
           <p class="quiz-name">What's the Digital Citizenship?</p>
           <div class="divider"></div>
           <p class="quiz-meta">15 mins · 2 videos · 521 times</p>
-          <router-link to="/digital-citi-info">
+          <router-link to="/digital-citi-info" >
             <button class="start-quiz-btn">Learn More</button>
           </router-link>
         </div>
@@ -53,29 +53,33 @@
       <!-- 卡片 2 -->
       <div class="red-card" data-aos="fade-up" data-aos-delay="200">
         <div class="card-content">
-          <img class="quiz-img" src="@/assets/quiz2.png" alt="Quiz 2" />
+          <img class="quiz-img" src="@/assets/SMP.png" alt="Quiz 2" />
           <p class="category-text">Digital Literacy</p>
-          <p class="quiz-name">Think Before You Click</p>
+          <p class="quiz-name">Building Your Privacy Fortress Online</p>
           <div class="divider"></div>
           <p class="quiz-meta">12 mins · 25 questions · 780 times</p>
-          <button class="start-quiz-btn">Start Quiz</button>
+          <router-link to="/smp">
+            <button class="start-quiz-btn">Learn More</button>
+          </router-link>
         </div>
       </div>
 
       <!-- 卡片 3 -->
       <div class="red-card" data-aos="fade-up" data-aos-delay="300">
         <div class="card-content">
-          <img class="quiz-img" src="@/assets/quiz3.png" alt="Quiz 3" />
+          <img class="quiz-img" src="@/assets/di.png" alt="Quiz 3" />
           <p class="category-text">Fact-Checking</p>
-          <p class="quiz-name">Spot the Fake News</p>
+          <p class="quiz-name">Click Smart: Building Your Digital IQ</p>
           <div class="divider"></div>
           <p class="quiz-meta">10 mins · 20 questions · 601 times</p>
-          <button class="start-quiz-btn">Start Quiz</button>
+          <router-link to="/smp">
+            <button class="start-quiz-btn">Learn More</button>
+          </router-link>
         </div>
       </div>
     </div>
-    <router-link to="/quiz-bank">
-      <button class="learn-more-btn">Learn More</button>
+    <router-link to="/info-hub">
+      <button class="learn-more-btn">Explore more</button>
     </router-link>
   </div>
 </template>
@@ -166,8 +170,28 @@ export default {
 .quiz-name { font-size: 20px; font-weight: bold; color: #000000; margin-bottom: 8px; }
 .divider { width: 100%; height: 1px; background-color: #e0e0e0; margin: 12px 0; }
 .quiz-meta { font-size: 14px; color: #4a4a4a; margin-bottom: auto; }
-.start-quiz-btn { background-color: #ff7426; color: #ffffff; border: none; padding: 12px 32px; border-radius: 28px; font-size: 16px; font-weight: bold; align-self: center; cursor: pointer; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); transition: all 0.2s ease-in-out; margin-top: 16px; }
-.start-quiz-btn:hover { background-color: #e65f14; }
+.start-quiz-btn {
+  /* 块级元素，才能让 margin 左右 auto 生效 */
+  display: block;
+
+  /* 上间距 16px，左右自动居中，底部 0 */
+  margin: 16px auto 0;
+
+  background-color: #ff7426;
+  color: #ffffff;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 28px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+}
+
+.start-quiz-btn:hover {
+  background-color: #e65f14;
+}
 .nav-bar { position: absolute; top: 5vh; right: 5vw; display: flex; gap: 3vw; font-size: 24px; color: #1d1d1d; white-space: nowrap; }
 .main-title { position: absolute; top: 30vh; left: 10vw; max-width: 600px; }
 .title-black { font-size: 48px; font-weight: 700; color: #050c26; }
@@ -195,7 +219,7 @@ export default {
   overflow: hidden;
 }
 .go-button { background-color: #f18829; color: white; border: none; padding: 14px 30px; border-radius: 28px; cursor: pointer; font-size: 20px; font-weight: bold; }
-.learn-more-btn { background-color: #ff7426; color: #ffffff; border: none; padding: 14px 32px; border-radius: 28px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 70px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); transition: background-color 0.3s ease; }
+.learn-more-btn { background-color: #ff7426; color: #ffffff; border: none; padding: 14px 32px; border-radius: 28px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 12vh; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); transition: background-color 0.3s ease; }
 .learn-more-btn:hover { background-color: #e65f14; }
 .nav-link { font-size: 24px; color: #1d1d1d; text-decoration: none; }
 .nav-link:hover { text-decoration: underline; }
