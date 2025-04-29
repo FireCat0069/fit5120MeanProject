@@ -54,12 +54,28 @@
 
     <!-- 提交后显示反馈 -->
     <div v-else class="feedback-section">
-      <!-- 统计饼图 只显示标题和图表区域 -->
+      <!-- 统计饼图：显示图表切换标签和图表 -->
       <div v-if="statsLoaded" class="stats-charts-carousel">
+        <!-- 切换模块 -->
+        <div class="chart-tabs">
+          <div
+            v-for="(title, i) in chartTitles"
+            :key="i"
+            class="chart-tab"
+            :class="{ active: currentChartIndex === i }"
+            @click="currentChartIndex = i"
+          >
+            {{ title }}
+          </div>
+        </div>
+        <!-- 图表内容 -->
         <div class="chart-content">
-          <h3>Usage Statistics</h3>
+          <h3>{{ chartTitles[currentChartIndex] }}</h3>
           <div class="chart-frame">
-            <v-chart :option="chartOptionsList[currentChartIndex]" class="chart" />
+            <v-chart
+              :option="chartOptionsList[currentChartIndex]"
+              class="chart"
+            />
           </div>
         </div>
       </div>
@@ -220,12 +236,6 @@ export default {
           emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.5)' } }
         }]
       };
-    },
-    prevChart() {
-      this.currentChartIndex = (this.currentChartIndex + this.chartOptionsList.length - 1) % this.chartOptionsList.length;
-    },
-    nextChart() {
-      this.currentChartIndex = (this.currentChartIndex + 1) % this.chartOptionsList.length;
     }
   },
   mounted() {
@@ -254,27 +264,16 @@ hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
 .submit-btn:hover { background:#e65f14; }
 .feedback-section { margin-top:50px; }
 
-/* Simplified carousel showing only chart content */
-.stats-charts-carousel {
-  display:flex;
-  justify-content:center;
-  margin-bottom:30px;
-}
-.chart-content {
-  text-align:center;
-}
-.chart-frame {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:1200px;
-  margin:0 auto;
-  transform: translateY(-60px);
-}
-.chart {
-  width:600px;
-  height:600px;
-}
+/* 图表切换标签 */
+.chart-tabs { display:flex; justify-content:center; gap:1rem; margin-bottom:1rem; }
+.chart-tab { padding:0.5rem 1rem; border:1px solid #ddd; border-radius:4px; cursor:pointer; font-size:14px; background:#fafafa; }
+.chart-tab.active { background:#f18829; color:#fff; border-color:#f18829; }
+
+/* 简化轮播，仅展示当前图表 */
+.stats-charts-carousel { display:flex; flex-direction:column; align-items:center; margin-bottom:30px; }
+.chart-content { text-align:center; }
+.chart-frame { display:flex; align-items:center; justify-content:center; width:1200px; margin:0 auto; transform: translateY(-60px); }
+.chart { width:600px; height:600px; }
 
 general-feedback { margin-bottom:20px; font-size:16px; color:#333; }
 .feedback-item { border:1px solid #ddd; border-radius:8px; padding:15px; margin-bottom:20px; background:#f9f9f9; }
