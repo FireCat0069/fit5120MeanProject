@@ -208,16 +208,27 @@ export default {
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/usage/stats')
         .then(res => res.json())
         .then(data => {
-          const groups = [
+          const rawGroups = [
             { title: 'Device Type', data: data.device_type },
             { title: 'Screen Time Period', data: data.screen_time_period },
             { title: 'Screen Activity', data: data.screen_activity },
             { title: 'App Category', data: data.app_category },
             { title: 'Avg Screen Time Range', data: data.average_screen_time_range }
           ];
-          groups.forEach(g => {
+          rawGroups.forEach(g => {
+            // 深拷贝并过滤不需要的键
+            const filtered = { ...g.data };
+            if (g.title === 'Device Type') {
+              ['A. Mobile Phone', 'B. Laptop', 'A', 'C. Other'].forEach(k => delete filtered[k]);
+            } else if (g.title === 'Screen Time Period') {
+              ['B. Afternoon (12 PM – 6 PM)', 'C. Late Night (10 PM – 6 AM)', 'A. Evening (6 PM – 10 PM)', 'B'].forEach(k => delete filtered[k]);
+            } else if (g.title === 'Screen Activity') {
+              ['A. Work and Study (e.g., working, studying, content creation)', 'B. Entertainment (e.g., gaming, social media)', 'A'].forEach(k => delete filtered[k]);
+            } else if (g.title === 'App Category') {
+              ['P'].forEach(k => delete filtered[k]);
+            }
             this.chartTitles.push(g.title);
-            this.chartOptionsList.push(this.createBarOption(g.title, g.data));
+            this.chartOptionsList.push(this.createBarOption(g.title, filtered));
           });
           this.statsLoaded = true;
         })
@@ -251,6 +262,7 @@ export default {
 </script>
 
 <style>
+/* 样式保持不变 */
 .container { width:100vw; position:absolute; left:0; top:0; padding:40px 60px; font-family:Arial; overflow-y:auto; max-height:100vh; background:#fff; }
 .nav-bar { position:absolute; top:2vh; right:5vw; display:flex; gap:3vw; font-size:24px; color:#1d1d1d; white-space:nowrap; }
 .nav-link, .nav-link:hover { color:#1d1d1d; text-decoration:none; }
