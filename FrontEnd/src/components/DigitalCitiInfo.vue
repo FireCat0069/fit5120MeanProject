@@ -273,7 +273,7 @@
     width: 100%; height: 100%;
   }
   .detail-video2 {
-    position: relative;
+    position: absolute;
     margin-top: 1350px; 
     left: 60vw;
     width: 560px; height: 315px;
