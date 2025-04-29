@@ -54,7 +54,7 @@
 
     <!-- 提交后显示反馈 -->
     <div v-else class="feedback-section">
-      <!-- 统计饼图：显示图表切换标签和图表 -->
+      <!-- 统计柱状图：显示图表切换标签和图表 -->
       <div v-if="statsLoaded" class="stats-charts-carousel">
         <!-- 切换模块 -->
         <div class="chart-tabs">
@@ -118,11 +118,11 @@
 <script>
 import { use } from 'echarts/core';
 import VChart from 'vue-echarts';
-import { PieChart } from 'echarts/charts';
-import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components';
+import { BarChart } from 'echarts/charts';
+import { TitleComponent, TooltipComponent, LegendComponent, GridComponent } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 
-use([PieChart, TitleComponent, TooltipComponent, LegendComponent, CanvasRenderer]);
+use([BarChart, TitleComponent, TooltipComponent, LegendComponent, GridComponent, CanvasRenderer]);
 
 export default {
   name: 'CzQuiz',
@@ -201,7 +201,7 @@ export default {
         })
         .catch(err => {
           console.error(err);
-          alert('提交失败');
+          alert('Submission failed');
         });
     },
     fetchStats() {
@@ -217,23 +217,27 @@ export default {
           ];
           groups.forEach(g => {
             this.chartTitles.push(g.title);
-            this.chartOptionsList.push(this.createPieOption(g.title, g.data));
+            this.chartOptionsList.push(this.createBarOption(g.title, g.data));
           });
           this.statsLoaded = true;
         })
         .catch(err => console.error(err));
     },
-    createPieOption(title, dataObj) {
+    createBarOption(title, dataObj) {
+      const names = Object.keys(dataObj);
+      const values = Object.values(dataObj).map(v => parseFloat(v));
       return {
-        tooltip: { trigger: 'item' },
-        legend: { orient: 'vertical', left: '75%', top: 'center', itemGap: 12 },
+        tooltip: { trigger: 'axis' },
+        legend: { show: false },
+        xAxis: { type: 'category', data: names, axisLabel: { rotate: 45, interval: 0 } },
+        yAxis: { type: 'value' },
+        grid: { left: '10%', right: '5%', bottom: '15%', containLabel: true },
         series: [{
           name: title,
-          type: 'pie',
-          center: ['30%', '50%'],
-          radius: '40%',
-          data: Object.entries(dataObj).map(([name, pct]) => ({ name, value: parseFloat(pct) })),
-          emphasis: { itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.5)' } }
+          type: 'bar',
+          data: values,
+          itemStyle: { barBorderRadius: [4, 4, 0, 0] },
+          emphasis: { itemStyle: { color: '#f18829' } }
         }]
       };
     }
