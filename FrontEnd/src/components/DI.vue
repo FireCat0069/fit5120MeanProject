@@ -116,13 +116,20 @@
           ></iframe>
         </div>
       </div>
+
+      <!-- 评论区 -->
+      <div class="comments-section">
+        <CommentFunction />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import CommentFunction from '@/components/CommentFunction.vue';
 export default {
-  name: 'DigitalCitiInfo'
+  name: 'DigitalCitiInfo',
+  components: { CommentFunction }
 };
 </script>
 
@@ -286,5 +293,13 @@ export default {
 .detail-video1 iframe,
 .detail-video2 iframe {
   width: 100%; height: 100%;
+}
+
+/* 评论区 */
+.comments-section {
+  margin-top: 5vh;
+  width: 55vw;
+  position: relative;
+  left: 0;
 }
 </style>
