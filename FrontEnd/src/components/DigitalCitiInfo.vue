@@ -187,7 +187,8 @@ export default {
 .detail-section {
   position: absolute;
   top: 73vh; left: 5vw;
-  width: 55vw; max-width: 800px;
+  width: 800px; 
+  max-width: 800px;
   animation: fadeInUp 1s ease-out both;
   animation-delay: 0.6s;
 }
