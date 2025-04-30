@@ -117,15 +117,22 @@
           ></iframe>
         </div>
       </div>
+
+      <!-- 评论区 -->
+      <div class="comments-section">
+        <CommentFunction />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { PowerGlitch } from 'powerglitch'
+import CommentFunction from '@/components/CommentFunction.vue'
 
 export default {
   name: 'SMP',
+  components: { CommentFunction },
   mounted() {
     PowerGlitch.glitch('.glitch', {
       playMode: 'always',
@@ -304,5 +311,12 @@ export default {
   width: 100%; height: 100%;
 }
 
+/* 评论区 */
+.comments-section {
+  margin-top: 3vh;
+  width: 55vw;
+  position: relative;
+  left: 0;
+}
 </style>
 
