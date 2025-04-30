@@ -114,19 +114,24 @@
   </script>
   
   <style scoped>
-  .comment-section {
-    margin-top: 50px;
-    padding: 30px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    position: absolute;
-    top: 240vh;
-    left: 5vw;
-    width: 55vw;
-    max-width: 800px;
-    animation: fadeInUp 1s ease-out both;
-  }
+.comment-section {
+  /* 取消这两行 */
+  /* position: absolute; */
+  /* top: 240vh; */
+  
+  /* 加上下面这行，让它在父级文档流里距上方 5vh */
+  margin-top: 5vh;
+
+  /* 其他样式保持 */
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  width: 55vw;
+  max-width: 800px;
+  animation: fadeInUp 1s ease-out both;
+}
+
   
   .comment-title {
     font-size: 24px;
