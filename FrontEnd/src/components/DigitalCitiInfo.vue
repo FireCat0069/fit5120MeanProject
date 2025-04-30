@@ -93,28 +93,30 @@
           </ul>
         </div>
       </div>
-    </div>
 
-    <!-- 视频，绝对定位，距离右边 5vw -->
-    <div class="detail-video1">
-      <iframe
-        src="https://www.youtube.com/embed/8nLshfChfXg?si=09D6PYPDj9I54sos"
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen
-      ></iframe>
-    </div>
-    <div class="detail-video2">
-      <iframe
-        width="560" height="315"
-        src="https://www.youtube.com/embed/PsPPO1R-Zog?si=dqR5z_tV_4BQ5O74"
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin"
-        allowfullscreen
-      ></iframe>
+      <!-- 视频 wrapper -->
+      <div class="videos-wrapper">
+        <div class="detail-video1">
+          <iframe
+            src="https://www.youtube.com/embed/8nLshfChfXg?si=09D6PYPDj9I54sos"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div class="detail-video2">
+          <iframe
+            width="560" height="315"
+            src="https://www.youtube.com/embed/PsPPO1R-Zog?si=dqR5z_tV_4BQ5O74"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -262,22 +264,26 @@ export default {
   color: #000;
 }
 
-/* 视频 */
+/* 视频 wrapper 定位 */
+.videos-wrapper {
+  position: absolute;
+  left: 55vw;
+  top: 10vh;
+}
+
+/* video1 & video2 共享尺寸 */
 .detail-video1,
 .detail-video2 {
-  position: absolute;
-  left: 60vw;
   width: 560px;
   height: 315px;
+  position: relative;
 }
 
-.detail-video1 {
-  top: 80vh;
-}
-
+/* video2 顶部相对于 video1 底部偏移 */
 .detail-video2 {
-  top: 135vh;
+  top: 15vh;
 }
+
 .detail-video1 iframe,
 .detail-video2 iframe {
   width: 100%; height: 100%;
