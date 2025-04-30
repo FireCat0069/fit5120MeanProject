@@ -117,16 +117,23 @@
     referrerpolicy="strict-origin-when-cross-origin"
     allowfullscreen
   ></iframe>
-</div>
 
+</div>
+<CommentFunction />
 
     </div>
   </template>
   
   <script>
+  import CommentFunction from '@/components/CommentFunction.vue';
   export default {
-    name: 'DigitalCitiInfo'
+    name: 'DigitalCitiInfo',
+  components: {
+    CommentFunction
+  }
   };
+
+  
   </script>
   
   <style scoped>

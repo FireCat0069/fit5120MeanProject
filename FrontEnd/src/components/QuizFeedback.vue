@@ -1,124 +1,179 @@
 <template>
-    <div class="quiz-container">
-      <div class="quiz-page">
-        <!-- Left navigation sidebar -->
-        <div class="first-section">
-          <div class="navbar-brand">DigiWise</div>
-          <nav class="nav-links">
-            <router-link to="/Quiz-Content" class="nav-item">Dashboard</router-link>
-            <router-link to="/quiz-bank" class="nav-item">Quiz Bank</router-link>
-          </nav>
+  <div class="quiz-container">
+    <div class="quiz-page">
+      <!-- Left navigation sidebar -->
+      <div class="first-section">
+        <div class="navbar-brand">DigiWise</div>
+        <nav class="nav-links">
+          <router-link to="/Quiz-Content" class="nav-item">Dashboard</router-link>
+          <router-link to="/quiz-bank" class="nav-item">Quiz Bank</router-link>
+        </nav>
+      </div>
+
+      <!-- Right content area -->
+      <div class="main-section">
+        <!-- Search bar -->
+        <div class="navbar-search"> 
+          <input type="text" placeholder="Search Quiz" class="search-input"> 
+          <button class="search-button">Search</button> 
         </div>
-  
-        <!-- Right content area -->
-        <div class="main-section">
-          <!-- Breadcrumb navigation -->
-          <!-- Search bar -->
-          <div class="navbar-search"> 
-                  <input type="text" placeholder="Search Quiz" class="search-input"> 
-                  <button class="search-button">Search</button> 
-              </div>
-      
-          <!-- Breadcrumb navigation -->
-          <div class="breadcrumb">
-                <span>Dashboard</span> / 
-                <span>Schedule Quizzes</span> / 
-                <span>Protecting the Organisation</span>
+        
+        <!-- Breadcrumb navigation -->
+        <div class="breadcrumb">
+          <span>Dashboard</span> / 
+          <span>Schedule Quizzes</span> / 
+          <span>Protecting the Organisation</span>
+        </div>
+
+        <!-- Feedback Area -->
+        <div class="quiz-section">
+          <!-- Quiz title section -->
+          <div class="quiz-section-1">
+            <h1 class="quiz-title">Protecting the Organisation</h1>
           </div>
-  
-          <!-- FeedBack Area -->
-          <div class="quiz-section">
-                  <!-- Quiz title section -->
-                  <div class="quiz-section-1">
-                    <h1 class="quiz-title">Protecting the Organisation</h1>
-                  </div>
-                  <div class="feedback-section">
-                        <div class="feedback-header">
-                            <h1 class="feedback-title">Quiz Results</h1>
-                            <!-- Score -->
-                            <div class="score-summary">
-                                Your Score: {{ score }}
-                            </div>
-                        </div>
-                        
-            
-                        <!-- Feedback List -->
-                        <div class="results-list">
-                            <div 
-                                v-for="(result, index) in results" 
-                                :key="index"
-                                class="result-item"
-                                :class="{ 'correct': result.isCorrect, 'incorrect': !result.isCorrect }"
-                            >
-                                <div class="question-header">
-                                <h3 class="question-Index">Question {{ index + 1 }}</h3>
-                                <span class="status-badge">
-                                    {{ result.isCorrect ? '✓ Correct' : '✗ Incorrect' }}
-                                </span>
-                                </div>
-                                
-                                <p class="question-text">{{ getQuestionText(result.questionId) }}</p>
-                                
-                                <div class="answer-row">
-                                <span class="answer-label">Your Answer:</span>
-                                <span class="answer-value">{{ result.userAnswer || 'No answer' }}</span>
-                                </div>
-                                
-                                <div class="answer-row">
-                                <span class="answer-label">Correct Answer:</span>
-                                <span class="answer-value">{{ result.correctAnswer }}</span>
-                                </div>
-                            </div>
-                        </div>
-                  </div>
-            </div>
-       </div>
-    </div>
-</div>
-  </template>
-
-
-
-  
-<script>
-  export default {
-    data() {
-      return {
-        currentFeedbackIndex: 0,
-        results: [], // Store the result from the backend
-        questions: [] // Store the question from the users have answers before
-      }
-    },
-    computed: {
-      correctCount() {
-        return this.results.filter(r => r.isCorrect).length;
-      }
-    },
-    async created() {
-      await this.loadResults();
-    },
-    methods: {
-      async loadResults() {
-        try {
-          // Get the result from sessionStorage
-          const savedResults = JSON.parse(sessionStorage.getItem('quizResults'));
           
-          if (savedResults) {
-            this.results = savedResults.details;
-            this.questions = savedResults.questions;
-            this.score = savedResults.score;
-          } 
-        } catch (error) {
-          console.error('Failed to load results:', error);
-        }
-      },
+          <!-- Main Feedback Content -->
+          <div class="feedback-section" v-if="quizResults">
+            <div class="feedback-header">
+              <h1 class="feedback-title">Quiz Results</h1>
+              <div class="score-display">
+                <div class="score-circle">
+                  {{ quizResults.score }}/{{ quizResults.questions.length }}
+                </div>
+                <div class="score-percentage">
+                  {{ calculatePercentage() }}%
+                </div>
+              </div>
+            </div>
+            
+            <!-- Feedback List -->
+            <div class="quiz-feedback">
+              <div 
+                v-for="(detail, index) in quizResults.details" 
+                :key="index" 
+                class="feedback-card"
+                :class="{ 'correct': detail.isCorrect, 'incorrect': !detail.isCorrect }"
+              >
+                <div class="question-header">
+                  <h3 class="question-index">Question {{ index + 1 }}</h3>
+                  <span class="status-badge">
+                    {{ detail.isCorrect ? '✓ Correct' : '✗ Incorrect' }}
+                  </span>
+                </div>
+                
+                <p class="question-text">{{ getQuestionText(index) }}</p>
+                
+                <div class="answer-row">
+                  <span class="answer-label">Your Answer:</span>
+                  <span class="answer-value">{{ formatAnswer(detail.selectedOption) }}</span>
+                </div>
+                
+                <div class="answer-row" v-if="!detail.isCorrect">
+                  <span class="answer-label">Correct Answer:</span>
+                  <span class="answer-value">{{ getCorrectAnswer(index) }}</span>
+                </div>
+                
+                <div class="explanation" v-if="detail.explanation">
+                  <span class="answer-label">Explanation:</span>
+                  <span class="answer-value">{{ detail.explanation }}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="action-buttons">
+              <router-link to="/quiz-bank" class="retake-btn">
+                Take Another Quiz
+              </router-link>
+              <router-link to="/Quiz-Content" class="dashboard-btn">
+                Back to Dashboard
+              </router-link>
+            </div>
+          </div>
+
+          <!-- Loading/Error States -->
+          <div v-if="loading" class="status-message loading">
+            <div class="spinner"></div>
+            Loading your results...
+          </div>
+          <div v-if="error" class="status-message error">
+            <span class="error-icon">⚠️</span>
+            Error loading results. Please try again.
+          </div>
+          <div v-if="!loading && !quizResults" class="status-message empty">
+            <span class="empty-icon">📝</span>
+            No quiz results found. Please complete a quiz first.
+            <router-link to="/quiz-bank" class="take-quiz-link">
+              Take a Quiz Now
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+
+// Reactive data
+const quizResults = ref(null);
+const loading = ref(true);
+const error = ref(null);
+
+// Helper methods
+const getQuestionText = (index) => {
+  return quizResults.value?.questions[index]?.text || 'Question not available';
+};
+
+const formatAnswer = (answer) => {
+  if (!answer) return 'No answer provided';
+  if (Array.isArray(answer)) {
+    return answer.map(a => String.fromCharCode(65 + a)).join(', ');
+  }
+  return String.fromCharCode(65 + answer);
+};
+
+const getCorrectAnswer = (index) => {
+  const question = quizResults.value?.questions[index];
+  if (!question?.correctIndices) return 'Not available';
+  
+  if (Array.isArray(question.correctIndices)) {
+    return question.correctIndices.map(idx => String.fromCharCode(65 + idx)).join(', ');
+  }
+  return String.fromCharCode(65 + question.correctIndices);
+};
+
+const calculatePercentage = () => {
+  if (!quizResults.value) return 0;
+  return Math.round((quizResults.value.score / quizResults.value.questions.length) * 100);
+};
+
+// Load results
+onMounted(() => {
+  try {
+    const stored = sessionStorage.getItem('quizResults');
+    if (stored) {
+      quizResults.value = JSON.parse(stored);
+      console.log("Loaded results:", quizResults.value);
       
-      getQuestionText(questionId) {
-        const question = this.questions.find(q => q.id === questionId);
-        return question ? question.text : 'Question not available';
+      // Ensure details array exists and has isCorrect property
+      if (quizResults.value.details) {
+        quizResults.value.details.forEach(detail => {
+          if (detail.correct === undefined && detail.isCorrect === undefined) {
+            detail.isCorrect = false; // Default to incorrect if not specified
+          } else if (detail.correct !== undefined) {
+            detail.isCorrect = detail.correct; // Map old correct property to isCorrect
+          }
+        });
       }
     }
+  } catch (e) {
+    error.value = "Failed to load results";
+    console.error("Error parsing quiz results:", e);
+  } finally {
+    loading.value = false;
   }
+});
 </script>
 
 <style scoped>
@@ -130,27 +185,22 @@
   right: 0;
   bottom: 0;
   overflow: auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Quiz section styling */
 .quiz-section {
-display: flex;
-background-color: white;
-border-radius: 8px;
-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-padding: 2rem;
-
-/* Responsive sizing */
-width: 90vw;          /* 90% of viewport width */
-max-width: 1400px;    /* Maximum width for desktop */
-height: 80vh;         /* 80% of viewport height */
-max-height: 650px;    /* Maximum height for desktop */
-
-/* Scroll handling */
-overflow: auto;
-
-/* Center alignment */
-margin: 0 auto;
+  display: flex;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  width: 90vw;
+  max-width: 1400px;
+  height: 80vh;
+  max-height: 650px;
+  overflow: auto;
+  margin: 0 auto;
 }
 
 /* Page layout */
@@ -162,8 +212,8 @@ margin: 0 auto;
 /* Left sidebar styling */
 .first-section {
   width: 20%;
-  min-width: 250px; /* Minimum width */
-  max-width: 300px; /* Maximum width */
+  min-width: 250px;
+  max-width: 300px;
   background-color: #f5f5f5;
   height: 100vh;
   display: flex;
@@ -207,19 +257,14 @@ margin: 0 auto;
   box-sizing: border-box;
 }
 
-
-/* Active navigation item */
 .nav-item.active-nav-item {
-  background-color: #ea3f06 ;
-  color: white ;
+  background-color: #ea3f06;
+  color: white;
 }
 
-/* Navigation hover effect */
 .nav-item:hover {
   background-color: #ea3f06;
 }
-
-
 
 /* Main content area */
 .main-section {
@@ -237,7 +282,6 @@ margin: 0 auto;
   max-width: none;
 } 
 
-/* Search input field */
 .search-input { 
   padding: 0.5rem 1rem;
   border: 1px solid #ddd; 
@@ -246,7 +290,6 @@ margin: 0 auto;
   font-size: 1rem; 
 } 
 
-/* Search button */
 .search-button { 
   padding: 0.5rem 3rem;
   background-color: #ea3f06;
@@ -258,7 +301,6 @@ margin: 0 auto;
   white-space: nowrap;
 } 
 
-/* Search button hover */
 .search-button:hover { 
   background-color: #a84307;
 }
@@ -277,17 +319,17 @@ margin: 0 auto;
 }
 
 .quiz-title {
-font-size: 1rem;
-color: #c65209;
-font-weight: 600;
+  font-size: 1rem;
+  color: #c65209;
+  font-weight: 600;
 }
 
 /* Quiz section 1 (title) */
 .quiz-section-1 {
-    width: 20%;
+  width: 20%;
 }
 
-/* Quiz section 2 (questions) */
+/* Feedback section */
 .feedback-section {
   flex: 1;
   display: flex;
@@ -298,28 +340,59 @@ font-weight: 600;
 .feedback-header {
   text-align: center;
   margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #eee;
 }
 
-.feedback-title{
-    font-size: 3rem;
-    color: #c65209;
-    font-weight: 600;
-    text-align: center; 
+.feedback-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 1rem;
 }
 
-
-
-
-.score-summary {
-  font-size: 1.2rem;
-  font-weight: bold;
-  padding: 1rem;
-  background-color: #f5f5f5;
-  border-radius: 5px;
+.score-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
   margin-bottom: 2rem;
-  text-align: center;
+}
+
+.score-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #c65209;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.score-percentage {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Feedback card styling */
+.feedback-card {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-left: 4px solid #ddd;
+}
+
+.feedback-card.correct {
+  border-left-color: #4CAF50;
+  background-color: #f8fff8;
+}
+
+.feedback-card.incorrect {
+  border-left-color: #F44336;
+  background-color: #fff8f8;
 }
 
 .question-header {
@@ -329,58 +402,10 @@ font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
-.question-Index {
-  font-size:  1.2rem;
+.question-index {
+  font-size: 1.2rem;
   font-weight: bold;
   color: #2c3e50;
-  margin-bottom: 12px;
-  text-align: left;
-}
-
-
-
-.results-list {
-  margin-top: 1rem;
-}
-
-.result-item {
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  border-radius: 8px;
-  border-left: 4px solid #ccc;
-}
-
-.question-text {
-font-size: 1.1rem;
-color: #333;
-margin-bottom: 2rem;
-}
-
-.answer-row {
-  display: flex;
-  margin-bottom: 0.5rem;
-}
-
-.answer-label {
-  font-size: 0.9rem;
-  font-weight: bold;
-  min-width: 120px;
-  color: #666;
-}
-
-.answer-value {
-  font-size: 0.9rem;
-  flex-grow: 1;
-}
-
-.correct {
-  border-left-color: #4CAF50;
-  background-color: #f8fff8;
-}
-
-.incorrect {
-  border-left-color: #F44336;
-  background-color: #fff8f8;
 }
 
 .status-badge {
@@ -390,13 +415,130 @@ margin-bottom: 2rem;
   font-weight: bold;
 }
 
-.correct .status-badge {
+.feedback-card.correct .status-badge {
   background-color: #4CAF50;
   color: white;
 }
 
-.incorrect .status-badge {
+.feedback-card.incorrect .status-badge {
   background-color: #F44336;
   color: white;
+}
+
+.question-text {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.answer-row {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.answer-label {
+  font-weight: bold;
+  min-width: 120px;
+  color: #666;
+}
+
+.answer-value {
+  color: #333;
+}
+
+.explanation {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed #ddd;
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.retake-btn, .dashboard-btn {
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.retake-btn {
+  background-color: #c65209;
+  color: white;
+}
+
+.dashboard-btn {
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.retake-btn:hover {
+  background-color: #a84307;
+}
+
+.dashboard-btn:hover {
+  background-color: #e0e0e0;
+}
+
+/* Status messages */
+.status-message {
+  padding: 2rem;
+  text-align: center;
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.status-message.loading {
+  color: #666;
+}
+
+.status-message.error {
+  color: #F44336;
+}
+
+.status-message.empty {
+  color: #666;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid #c65209;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-icon, .empty-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.take-quiz-link {
+  margin-top: 1rem;
+  color: #c65209;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.take-quiz-link:hover {
+  text-decoration: underline;
 }
 </style>

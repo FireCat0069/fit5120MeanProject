@@ -242,7 +242,7 @@ methods: {
         }
 
         return {
-          text: question.text, // Use _id instead of questionId to match API
+          question,
           selectedOption: selectedOption || 'A' // Default to 'A' if empty
         };
       });
@@ -266,16 +266,10 @@ methods: {
     // Store the result
     const quizResults = {
       score: result.filter(r => r.isCorrect).length, // Calculate the score
-      total: this.questions.length,
-      details: result.map(item => ({
-        questionId: item._id,
-        isCorrect: item.isCorrect,
-        correctAnswer: item.correctAnswer,
-        userAnswer: item.selectedOption
-      })),
+      details: result,
       // Store the question
-      questions: this.questions.map(q => ({
-        //id: q.id,
+      questions: this.questions.map((q, index) => ({
+        id: index, // Use index as ID if no proper ID exists
         text: q.text,
         options: q.options
       }))
@@ -286,7 +280,7 @@ methods: {
       path: '/Quiz-Feedback',
       query: {
         score: quizResults.score,
-        total: quizResults.total
+        details: quizResults.details
       }
     });
       
