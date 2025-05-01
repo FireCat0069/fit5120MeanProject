@@ -56,7 +56,7 @@
             <p class="quiz-meta">{{ quiz.meta }}</p>
 
             <!-- 第一张卡片：Start Quiz 导航至 /Quiz-Introduction -->
-            <router-link v-if="index === 0" to="/Quiz-Introduction">
+            <router-link v-if="index === 0" to="/Quiz-Introduction-i1">
               <button class="start-quiz-btn">Start Quiz</button>
             </router-link>
 

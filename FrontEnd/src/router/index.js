@@ -41,17 +41,17 @@ const routes = [
     component: SMP
   },
   {
-    path: '/digital-citi-info',    
+    path: '/digital-citi-info-i2',    
     name: 'DigitalCitiInfo',
     component: DigitalCitiInfo    
   },
   {
-    path: '/quiz-bank',
+    path: '/quiz-bank-i1&i2',
     name: 'QuizBank',
     component: QuizBank
   },
   {
-    path: '/Quiz-Introduction',
+    path: '/Quiz-Introduction-i1',
     name: 'QuizIntroduction',
     component: QuizIntroduction
   },
