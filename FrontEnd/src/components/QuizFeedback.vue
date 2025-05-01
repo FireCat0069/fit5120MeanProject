@@ -19,17 +19,17 @@
         </div>
         
         <!-- Breadcrumb navigation -->
-        <div class="breadcrumb">
+        <div class="breadcrumb" v-if="quizResults">
           <span>Dashboard</span> / 
           <span>Schedule Quizzes</span> / 
-          <span>Protecting the Organisation</span>
+          <span>{{ quizResults.sectionName }}</span>
         </div>
 
         <!-- Feedback Area -->
-        <div class="quiz-section">
+        <div class="quiz-section" v-if="quizResults">
           <!-- Quiz title section -->
           <div class="quiz-section-1">
-            <h1 class="quiz-title">Protecting the Organisation</h1>
+            <h1 class="quiz-title">{{ quizResults.sectionName }}</h1>
           </div>
           
           <!-- Main Feedback Content -->
@@ -47,7 +47,7 @@
             </div>
             
             <!-- Feedback List -->
-            <div class="quiz-feedback">
+            
               <div 
                 v-for="(detail, index) in quizResults.details" 
                 :key="index" 
@@ -78,7 +78,7 @@
                   <span class="answer-value">{{ detail.explanation }}</span>
                 </div>
               </div>
-            </div>
+            
             
             <div class="action-buttons">
               <router-link to="/quiz-bank" class="retake-btn">
@@ -125,23 +125,23 @@ const getQuestionText = (index) => {
   return quizResults.value?.questions[index]?.text || 'Question not available';
 };
 
-const formatAnswer = (answer) => {
-  if (!answer) return 'No answer provided';
-  if (Array.isArray(answer)) {
-    return answer.map(a => String.fromCharCode(65 + a)).join(', ');
-  }
-  return String.fromCharCode(65 + answer);
-};
+// const formatAnswer = (answer) => {
+//   if (!answer) return 'No answer provided';
+//   if (Array.isArray(answer)) {
+//     return answer.map(a => String.fromCharCode(65 + a)).join(', ');
+//   }
+//   return String.fromCharCode(65 + answer);
+// };
 
-const getCorrectAnswer = (index) => {
-  const question = quizResults.value?.questions[index];
-  if (!question?.correctIndices) return 'Not available';
+// const getCorrectAnswer = (index) => {
+//   const question = quizResults.value?.questions[index];
+//   if (!question?.correctIndices) return 'Not available';
   
-  if (Array.isArray(question.correctIndices)) {
-    return question.correctIndices.map(idx => String.fromCharCode(65 + idx)).join(', ');
-  }
-  return String.fromCharCode(65 + question.correctIndices);
-};
+//   if (Array.isArray(question.correctIndices)) {
+//     return question.correctIndices.map(idx => String.fromCharCode(65 + idx)).join(', ');
+//   }
+//   return String.fromCharCode(65 + question.correctIndices);
+// };
 
 const calculatePercentage = () => {
   if (!quizResults.value) return 0;
@@ -165,6 +165,9 @@ onMounted(() => {
             detail.isCorrect = detail.correct; // Map old correct property to isCorrect
           }
         });
+      }
+      if (!quizResults.value.sectionName) {
+        quizResults.value.sectionName = 'Unknown Section';
       }
     }
   } catch (e) {
@@ -380,6 +383,8 @@ margin: 0 auto;
   font-weight: bold;
   color: #333;
 }
+
+
 
 /* Feedback card styling */
 .feedback-card {

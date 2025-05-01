@@ -21,14 +21,14 @@
           <div class="breadcrumb">
               <span>Dashboard</span> / 
               <span>Schedule Quizzes</span> / 
-              <span>Protecting the Organisation</span>
+              <span>Digital Literacy</span>
           </div>
   
           <div class="quiz-section">
                   <!-- Left quiz section -->
                   <div class="quiz-section-1">
                       <!-- Quiz title -->
-                      <h1 class="quiz-title">Protecting the Organisation</h1>
+                      <h1 class="quiz-title">Digital Literacy</h1>
                       
                       <div class="video-container">
                           <video controls width="100%">  <!-- Show video controls -->
@@ -74,8 +74,11 @@
                       </div>
           
                       <!-- Start Quiz button -->
-                      <router-link to="/Quiz-Content">
-                        <button class="start-quiz-btn">Start Quiz</button>
+                      <router-link 
+                        :to="{ path: '/Quiz-Content', query: { section: 'Digital Literacy' } }"
+                        class="start-quiz-btn"
+                      >
+                        Start Quiz
                       </router-link>
                   </div>
               </div>

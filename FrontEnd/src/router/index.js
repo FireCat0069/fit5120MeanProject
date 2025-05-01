@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import homePage from '../components/homePage.vue';
 import QuizBank from '../components/QuizBank.vue';
-import QuizIntroduction from '@/components/QuizIntroduction.vue';
 import QuizContent from '@/components/QuizContent.vue';
 import CzQuiz from '../components/CzQuiz.vue';
 import QuizFeedback from '@/components/QuizFeedback.vue';
@@ -11,6 +10,7 @@ import InfoHubPage from '../components/InfoHubPage.vue'
 import SMP from '../components/SMP.vue'
 import DI from '../components/DI.vue'    
 import DA from '../components/DA.vue'   
+import QuizIntroductionDL from '@/components/QuizIntroductionDL.vue';
 
 
 
@@ -51,9 +51,9 @@ const routes = [
     component: QuizBank
   },
   {
-    path: '/Quiz-Introduction',
-    name: 'QuizIntroduction',
-    component: QuizIntroduction
+    path: '/Quiz-IntroductionDL',
+    name: 'QuizIntroductionDL',
+    component: QuizIntroductionDL
   },
   {
     path: '/cz-quiz',

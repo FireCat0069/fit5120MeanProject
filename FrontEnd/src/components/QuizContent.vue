@@ -27,14 +27,14 @@
               <div class="breadcrumb">
                   <span>Dashboard</span> / 
                   <span>Schedule Quizzes</span> / 
-                  <span>Protecting the Organisation</span>
+                  <span>{{ sectionName }}</span>
               </div>
       
               <!-- Main quiz container -->
               <div class="quiz-section">
                   <!-- Quiz title section -->
                   <div class="quiz-section-1">
-                    <h1 class="quiz-title">Protecting the Organisation</h1>
+                    <h1 class="quiz-title">{{ sectionName }}</h1>
                   </div>
               
                   <!-- Question content section -->
@@ -103,9 +103,11 @@ data() {
     questions: [], // Processed questions
     currentQuestionIndex: 0,
     selectedOption: null,
-    userAnswers: []
+    userAnswers: [],
+     sectionName: ''
   }
 },
+
 computed: {
   currentQuestion() {
     return this.questions[this.currentQuestionIndex] || {}
@@ -115,8 +117,10 @@ computed: {
   }
 },
 async created() {
-  await this.fetchQuestions()
-},
+    this.sectionName = this.$route.query.section || 'Default Section';
+    console.log('Section from URL:', this.sectionName);
+    await this.fetchQuestions();
+  },
 methods: {
     async fetchQuestions() {
       try {
@@ -134,13 +138,13 @@ methods: {
         return;
       }
 
-      const selectedSection = 'Cybersecurity Awareness'; 
+      
 
       
-      const filteredQuestions = this.quizData.filter(item => item.section === selectedSection);
+      const filteredQuestions = this.quizData.filter(item => item.section === this.sectionName);
 
       if (filteredQuestions.length === 0) {
-        console.error('No questions found for section:', selectedSection);
+        console.error('No questions found for section:', this.sectionName);
         return;
       }
 
@@ -225,7 +229,7 @@ methods: {
       try {
         // Prepare answer data in the original format with user's selection
         const submissionData = this.quizData
-          .filter(item => item.section === 'Cybersecurity Awareness') // 保持与processQuestions相同的过滤条件
+          .filter(item => item.section === this.sectionName) // 保持与processQuestions相同的过滤条件
           .map((originalQuestion, index) => {
             const userAnswer = this.userAnswers[index];
             let selectedOption = '';
@@ -268,22 +272,23 @@ methods: {
     const quizResults = {
       score: result.filter(r => r.isCorrect).length, // Calculate the score
       details: result,
+      sectionName: this.sectionName,
       // Store the question
       questions: this.questions.map((q, index) => ({
         id: index, // Use index as ID if no proper ID exists
-        text: q.text,
-        options: q.options
+        text: q.text
       }))
     };
+    console.log('QuizResults before storage:', quizResults);
     sessionStorage.setItem('quizResults', JSON.stringify(quizResults));
-
-    this.$router.push({
-      path: '/Quiz-Feedback',
-      query: {
-        score: quizResults.score,
-        details: quizResults.details
-      }
-    });
+    this.$router.push('/Quiz-Feedback');
+    // this.$router.push({
+    //   path: '/Quiz-Feedback',
+    //   query: {
+    //     score: quizResults.score,
+    //     details: quizResults.details
+    //   }
+    // });
       
       // Handle result - adjust based on your API's actual response
       if (result.score !== undefined) {
