@@ -13,7 +13,7 @@
           Dashboard
         </router-link>
         <router-link
-          to="/info-hub"
+          to="/info-hub-i2"
           class="nav-item"
           :class="{ active: $route.path === '/info-hub-i2' }"
         >
