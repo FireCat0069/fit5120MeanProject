@@ -38,9 +38,9 @@
                         </div>
                         <!-- Quiz description -->
                         <div class="quiz-description">
-                                <h2>Protecting the university students from Cyber Attacks</h2>
+                                <h2>Practicing Respectful Online Communication</h2>
                                 <p>
-                                One of the most efficient ways to protect against cyber attacks and all types of data breaches is to train your employees on cyber attack prevention and
+                                Netiquette refers to proper and respectful behavior online. It includes being polite in messages, avoiding spam, respecting others' opinions, and thinking before posting to maintain a positive digital environment.
                                 </p>
                                 <p>
                                 The quiz consists of questions. To be successful with the quizzes, it's important to conversant with the topic by paying attention to the short video.

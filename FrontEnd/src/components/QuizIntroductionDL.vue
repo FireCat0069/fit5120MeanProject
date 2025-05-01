@@ -38,9 +38,9 @@
                       </div>
                       <!-- Quiz description -->
                       <div class="quiz-description">
-                              <h2>Protecting the university students from Cyber Attacks</h2>
+                              <h2>Mastering the Essentials of Digital Literacy</h2>
                               <p>
-                              One of the most efficient ways to protect against cyber attacks and all types of data breaches is to train your employees on cyber attack prevention and
+                                Digital literacy is the ability to find, evaluate, and use digital information effectively. It helps people navigate technology confidently, communicate online, and make informed decisions in a digital world.
                               </p>
                               <p>
                               The quiz consists of questions. To be successful with the quizzes, it's important to conversant with the topic by paying attention to the short video.
