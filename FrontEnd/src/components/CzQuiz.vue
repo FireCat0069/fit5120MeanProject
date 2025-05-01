@@ -121,6 +121,31 @@
           </div>
         </div>
       </div>
+
+      <!-- 新增：翻页卡片，显示每题解析 -->
+      <div v-if="feedbackList.length" class="explanation-pagination">
+        <div class="feedback-item">
+          <h3>Question {{ currentExplanation.question_order }}</h3>
+          <p><strong>Explanation:</strong> {{ currentExplanation.explanation }}</p>
+        </div>
+        <div class="pagination-controls">
+          <button
+            class="pagination-btn"
+            @click="prevPage"
+            :disabled="explanationPageIndex === 0"
+          >
+            Previous
+          </button>
+          <span>{{ explanationPageIndex + 1 }}/{{ feedbackList.length }}</span>
+          <button
+            class="pagination-btn"
+            @click="nextPage"
+            :disabled="explanationPageIndex === feedbackList.length - 1"
+          >
+            Next
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -160,7 +185,9 @@ export default {
       chartOptionsList: [],
       chartTitles: [],
       currentChartIndex: 0,
-      // 各题号对应的测验路由
+      // 分页索引
+      explanationPageIndex: 0,
+      // 测验路由映射
       categoryRoutes: {
         6: '/Quiz-IntroductionDFP',
         7: '/Quiz-IntroductionDFP',
@@ -177,7 +204,6 @@ export default {
         18: '/Quiz-IntroductionCTO',
         19: '/Quiz-IntroductionCTO'
       },
-      // 各题号对应的类别名称
       categoryNames: {
         6: 'Digital Footprint & Privacy',
         7: 'Digital Footprint & Privacy',
@@ -195,6 +221,11 @@ export default {
         19: 'Critical Thinking Online'
       }
     };
+  },
+  computed: {
+    currentExplanation() {
+      return this.feedbackList[this.explanationPageIndex] || {};
+    }
   },
   methods: {
     fetchQuestions() {
@@ -226,7 +257,7 @@ export default {
     },
     handleSubmit() {
       const payload = [];
-      this.questions.forEach((q, idx) => {
+      this.questions.forEach(q => {
         const type = q.type;
         let ans = this.answers[q.question_order];
         if (ans == null) {
@@ -311,6 +342,16 @@ export default {
           emphasis: { itemStyle: { color: '#f18829' } }
         }]
       };
+    },
+    prevPage() {
+      if (this.explanationPageIndex > 0) {
+        this.explanationPageIndex--;
+      }
+    },
+    nextPage() {
+      if (this.explanationPageIndex < this.feedbackList.length - 1) {
+        this.explanationPageIndex++;
+      }
     }
   },
   mounted() {
@@ -481,4 +522,30 @@ hr {
 .feedback-section * {
   color: #000 !important;
 }
+
+/* 新增分页卡片样式 */
+.explanation-pagination {
+  margin-top: 40px;
+}
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 20px 0;
+}
+.pagination-btn {
+  padding: 8px 16px;
+  font-size: 16px;
+  background: #f18829;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 </style>
+
