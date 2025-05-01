@@ -70,6 +70,15 @@
             <router-link v-if="index === 3" to="/Quiz-IntroductionCA">
               <button class="start-quiz-btn">Start Quiz</button>
             </router-link>
+            <router-link v-if="index === 4" to="/Quiz-IntroductionCA">
+              <button class="start-quiz-btn">Start Quiz</button>
+            </router-link>
+            <router-link v-if="index === 5" to="/Quiz-IntroductionCA">
+              <button class="start-quiz-btn">Start Quiz</button>
+            </router-link>
+            <router-link v-if="index === 6" to="/Quiz-IntroductionCA">
+              <button class="start-quiz-btn">Start Quiz</button>
+            </router-link>
           </div>
         </div>
       </transition-group>
@@ -107,9 +116,9 @@ export default {
         { category: 'Digital Footprint & Privacy', title: 'Track, Trace, and Protect', meta: '12 mins · 25 questions · 780 times', imgSrc: quizBank2 },
         { category: 'Online Etiquette / Netiquette', title: 'Mind Your Manners Online', meta: '10 mins · 20 questions · 601 times', imgSrc: quizBank3 },
         { category: 'Cybersecurity Awareness', title: 'Cyber Shields Up!', meta: '18 mins · 30 questions · 460 times', imgSrc: quizBank4 },
-        { category: 'Digital Literacy', title: 'Think Before You Click', meta: '15 mins · 34 questions · 521 times', imgSrc: quizBank5 },
-        { category: 'Digital Footprint & Privacy', title: 'Track, Trace, and Protect', meta: '12 mins · 25 questions · 780 times', imgSrc: quizBank6 },
-        { category: 'Online Etiquette / Netiquette', title: 'Mind Your Manners Online', meta: '10 mins · 20 questions · 601 times', imgSrc: quizBank7 },
+        { category: 'Digital Wellbeing', title: 'Stay Well, Stay Digital', meta: '15 mins · 34 questions · 521 times', imgSrc: quizBank5 },
+        { category: 'Digital Rights & Responsibilities', title: 'Know Your Digital Rights', meta: '12 mins · 25 questions · 780 times', imgSrc: quizBank6 },
+        { category: 'Critical Thinking Online', title: 'Digital Judgement Matters', meta: '10 mins · 20 questions · 601 times', imgSrc: quizBank7 },
       ],
       pageSize: 4,
       currentPage: 1,
