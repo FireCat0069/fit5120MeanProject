@@ -127,6 +127,18 @@
         <div class="feedback-item">
           <h3>Question {{ currentExplanation.question_order }}</h3>
           <p><strong>Explanation:</strong> {{ currentExplanation.explanation }}</p>
+          <!-- 如果在第一页且答错，则显示推荐 Quiz 按钮 -->
+          <div
+            v-if="explanationPageIndex === 0 && currentExplanation.isCorrect === false"
+            class="first-page-recommendation"
+          >
+            <router-link
+              :to="categoryRoutes[currentExplanation.question_order]"
+              class="quiz-btn"
+            >
+              Review {{ categoryNames[currentExplanation.question_order] }} Quiz
+            </router-link>
+          </div>
         </div>
         <div class="pagination-controls">
           <button
@@ -185,9 +197,7 @@ export default {
       chartOptionsList: [],
       chartTitles: [],
       currentChartIndex: 0,
-      // 分页索引
       explanationPageIndex: 0,
-      // 测验路由映射
       categoryRoutes: {
         6: '/Quiz-IntroductionDFP',
         7: '/Quiz-IntroductionDFP',
@@ -266,10 +276,7 @@ export default {
         }
         if (typeof ans === 'string') {
           ans = ans.trim();
-          const sendOpt =
-            type !== 'fill-in-the-blank'
-              ? ans.charAt(0)
-              : ans;
+          const sendOpt = q.type !== 'fill-in-the-blank' ? ans.charAt(0) : ans;
           payload.push({ question_order: q.question_order, option: sendOpt });
         }
         if (Array.isArray(ans)) {
@@ -344,14 +351,10 @@ export default {
       };
     },
     prevPage() {
-      if (this.explanationPageIndex > 0) {
-        this.explanationPageIndex--;
-      }
+      if (this.explanationPageIndex > 0) this.explanationPageIndex--;
     },
     nextPage() {
-      if (this.explanationPageIndex < this.feedbackList.length - 1) {
-        this.explanationPageIndex++;
-      }
+      if (this.explanationPageIndex < this.feedbackList.length - 1) this.explanationPageIndex++;
     }
   },
   mounted() {
@@ -527,6 +530,21 @@ hr {
 .explanation-pagination {
   margin-top: 40px;
 }
+.first-page-recommendation {
+  margin-top: 12px;
+}
+.quiz-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #f18829;
+  color: #fff;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+}
+.quiz-btn:hover {
+  background: #e65f14;
+}
 .pagination-controls {
   display: flex;
   justify-content: center;
@@ -548,4 +566,3 @@ hr {
   cursor: not-allowed;
 }
 </style>
-
