@@ -109,6 +109,16 @@
             <strong>Explanation:</strong>
             {{ feedback.explanation }}
           </p>
+          <!-- 如果答错，推荐对应类别的测验 -->
+          <div v-if="feedback.isCorrect === false" class="recommendation">
+            <p>
+              We recommend you review the
+              <router-link :to="categoryRoutes[feedback.question_order]">
+                {{ categoryNames[feedback.question_order] }} Quiz
+              </router-link>
+              to improve your understanding.
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -119,10 +129,22 @@
 import { use } from 'echarts/core';
 import VChart from 'vue-echarts';
 import { BarChart } from 'echarts/charts';
-import { TitleComponent, TooltipComponent, LegendComponent, GridComponent } from 'echarts/components';
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  GridComponent
+} from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 
-use([BarChart, TitleComponent, TooltipComponent, LegendComponent, GridComponent, CanvasRenderer]);
+use([
+  BarChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  GridComponent,
+  CanvasRenderer
+]);
 
 export default {
   name: 'CzQuiz',
@@ -137,7 +159,41 @@ export default {
       statsLoaded: false,
       chartOptionsList: [],
       chartTitles: [],
-      currentChartIndex: 0
+      currentChartIndex: 0,
+      // 各题号对应的测验路由
+      categoryRoutes: {
+        6: '/Quiz-IntroductionDFP',
+        7: '/Quiz-IntroductionDFP',
+        8: '/Quiz-IntroductionCTO',
+        9: '/Quiz-IntroductionDL',
+        10: '/Quiz-IntroductionOEN',
+        11: '/Quiz-IntroductionOEN',
+        12: '/Quiz-IntroductionCA',
+        13: '/Quiz-IntroductionCA',
+        14: '/Quiz-IntroductionDW',
+        15: '/Quiz-IntroductionDW',
+        16: '/Quiz-IntroductionDRR',
+        17: '/Quiz-IntroductionDRR',
+        18: '/Quiz-IntroductionCTO',
+        19: '/Quiz-IntroductionCTO'
+      },
+      // 各题号对应的类别名称
+      categoryNames: {
+        6: 'Digital Footprint & Privacy',
+        7: 'Digital Footprint & Privacy',
+        8: 'Critical Thinking Online',
+        9: 'Digital Literacy',
+        10: 'Online Etiquette / Netiquette',
+        11: 'Online Etiquette / Netiquette',
+        12: 'Cybersecurity Awareness',
+        13: 'Cybersecurity Awareness',
+        14: 'Digital Wellbeing',
+        15: 'Digital Wellbeing',
+        16: 'Digital Rights & Responsibilities',
+        17: 'Digital Rights & Responsibilities',
+        18: 'Critical Thinking Online',
+        19: 'Critical Thinking Online'
+      }
     };
   },
   methods: {
@@ -148,7 +204,9 @@ export default {
         .catch(err => console.error(err));
     },
     selectAnswer(qo, opt, type, event) {
-      const buttons = event.currentTarget.closest('.options').querySelectorAll('.option-btn');
+      const buttons = event.currentTarget
+        .closest('.options')
+        .querySelectorAll('.option-btn');
       if (type === 'single-choice') {
         buttons.forEach(btn => btn.classList.remove('selected'));
         event.currentTarget.classList.add('selected');
@@ -177,13 +235,16 @@ export default {
         }
         if (typeof ans === 'string') {
           ans = ans.trim();
-          const sendOpt = type !== 'fill-in-the-blank' ? (idx < 5 ? ans : ans.charAt(0)) : ans;
+          const sendOpt =
+            type !== 'fill-in-the-blank'
+              ? ans.charAt(0)
+              : ans;
           payload.push({ question_order: q.question_order, option: sendOpt });
         }
         if (Array.isArray(ans)) {
           ans.forEach(o => {
             const trimmed = o.trim();
-            const sendOpt = type !== 'fill-in-the-blank' ? (idx < 5 ? trimmed : trimmed.charAt(0)) : trimmed;
+            const sendOpt = trimmed.charAt(0);
             payload.push({ question_order: q.question_order, option: sendOpt });
           });
         }
@@ -216,7 +277,6 @@ export default {
             { title: 'Avg Screen Time Range', data: data.average_screen_time_range }
           ];
           rawGroups.forEach(g => {
-            // 深拷贝并过滤不需要的键
             const filtered = { ...g.data };
             if (g.title === 'Device Type') {
               ['A. Mobile Phone', 'B. Laptop', 'A', 'C. Other'].forEach(k => delete filtered[k]);
@@ -262,37 +322,163 @@ export default {
 </script>
 
 <style>
-/* 样式保持不变 */
-.container { width:100vw; position:absolute; left:0; top:0; padding:40px 60px; font-family:Arial; overflow-y:auto; max-height:100vh; background:#fff; }
-.nav-bar { position:absolute; top:2vh; right:5vw; display:flex; gap:3vw; font-size:24px; color:#1d1d1d; white-space:nowrap; }
-.nav-link, .nav-link:hover { color:#1d1d1d; text-decoration:none; }
-h1 { font-size:36px; font-weight:700; margin-bottom:30px; color:#050c26; }
-.highlight { color:#f18829; }
-.question-block { margin-bottom:40px; }
-.question-text { font-size:20px; font-weight:600; margin-bottom:16px; color:#1d1d1d; }
-.options { display:flex; flex-direction:column; gap:12px; }
-.option-btn { padding:14px 20px; max-width:600px; border:2px solid #e0e0e0; border-radius:12px; background:#fff; cursor:pointer; transition:.2s; font-size:16px; color:#333; box-shadow:0 1px 4px rgba(0,0,0,0.03); text-align:left; }
-.option-btn:hover { background:#fff8f5; border-color:#ff7426; }
-.option-btn.selected { background:#ff7426; color:#fff; border-color:#ff7426; }
-hr { border:none; border-top:1px solid #ddd; margin:30px 0; }
-.submit-section { text-align:center; margin-top:50px; }
-.submit-btn { padding:14px 32px; font-size:18px; background:#f18829; color:#fff; border:none; border-radius:30px; cursor:pointer; font-weight:bold; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-.submit-btn:hover { background:#e65f14; }
-.feedback-section { margin-top:50px; }
-
-/* 图表切换标签 */
-.chart-tabs { display:flex; justify-content:center; gap:1rem; margin-bottom:1rem; }
-.chart-tab { padding:0.5rem 1rem; border:1px solid #ddd; border-radius:4px; cursor:pointer; font-size:14px; background:#fafafa; }
-.chart-tab.active { background:#f18829; color:#fff; border-color:#f18829; }
-
-/* 简化轮播，仅展示当前图表 */
-.stats-charts-carousel { display:flex; flex-direction:column; align-items:center; margin-bottom:30px; }
-.chart-content { text-align:center; }
-.chart-frame { display:flex; align-items:center; justify-content:center; width:1200px; margin:0 auto; transform: translateY(-60px); }
-.chart { width:600px; height:600px; }
-
-general-feedback { margin-bottom:20px; font-size:16px; color:#333; }
-.feedback-item { border:1px solid #ddd; border-radius:8px; padding:15px; margin-bottom:20px; background:#f9f9f9; }
-.feedback-item h3 { margin-top:0; color:#000; }
-.feedback-section * { color:#000!important; }
+.container {
+  width: 100vw;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 40px 60px;
+  font-family: Arial;
+  overflow-y: auto;
+  max-height: 100vh;
+  background: #fff;
+}
+.nav-bar {
+  position: absolute;
+  top: 2vh;
+  right: 5vw;
+  display: flex;
+  gap: 3vw;
+  font-size: 24px;
+  color: #1d1d1d;
+  white-space: nowrap;
+}
+.nav-link, .nav-link:hover {
+  color: #1d1d1d;
+  text-decoration: none;
+}
+h1 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #050c26;
+}
+.highlight {
+  color: #f18829;
+}
+.question-block {
+  margin-bottom: 40px;
+}
+.question-text {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #1d1d1d;
+}
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.option-btn {
+  padding: 14px 20px;
+  max-width: 600px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  transition: .2s;
+  font-size: 16px;
+  color: #333;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  text-align: left;
+}
+.option-btn:hover {
+  background: #fff8f5;
+  border-color: #ff7426;
+}
+.option-btn.selected {
+  background: #ff7426;
+  color: #fff;
+  border-color: #ff7426;
+}
+hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 30px 0;
+}
+.submit-section {
+  text-align: center;
+  margin-top: 50px;
+}
+.submit-btn {
+  padding: 14px 32px;
+  font-size: 18px;
+  background: #f18829;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.submit-btn:hover {
+  background: #e65f14;
+}
+.feedback-section {
+  margin-top: 50px;
+}
+.chart-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.chart-tab {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  background: #fafafa;
+}
+.chart-tab.active {
+  background: #f18829;
+  color: #fff;
+  border-color: #f18829;
+}
+.stats-charts-carousel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.chart-content {
+  text-align: center;
+}
+.chart-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1200px;
+  margin: 0 auto;
+  transform: translateY(-60px);
+}
+.chart {
+  width: 600px;
+  height: 600px;
+}
+.general-feedback {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #333;
+}
+.feedback-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background: #f9f9f9;
+}
+.feedback-item h3 {
+  margin-top: 0;
+  color: #000;
+}
+.recommendation {
+  margin-top: 12px;
+  font-size: 16px;
+}
+.feedback-section * {
+  color: #000 !important;
+}
 </style>
