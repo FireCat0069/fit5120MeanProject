@@ -20,9 +20,9 @@
           Info Hub
         </router-link>
         <router-link
-          to="/quiz-bank"
+          to="/quiz-bank-i1&i2"
           class="nav-item"
-          :class="{ active: $route.path === '/quiz-bank' }"
+          :class="{ active: $route.path === '/quiz-bank-i1&i2' }"
         >
           Quiz Bank
         </router-link>

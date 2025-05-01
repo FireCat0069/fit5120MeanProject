@@ -6,7 +6,7 @@
     <!-- 导航栏 -->
     <div class="nav-bar">
       <router-link to="/" class="nav-link">Home</router-link>
-      <router-link to="/quiz-bank" class="nav-link">Quiz Bank</router-link>
+      <router-link to="/quiz-bank-i1&i2" class="nav-link">Quiz Bank</router-link>
       <span class="nav-link">Contact us</span>
     </div>
 

@@ -11,7 +11,7 @@
                 >
                   Dashboard
                 </router-link>
-                <router-link to="/quiz-bank" class="nav-item">Quiz Bank</router-link>
+                <router-link to="/quiz-bank-i1&i2" class="nav-item">Quiz Bank</router-link>
               </nav>
           </div>
           <!-- Right content area -->
