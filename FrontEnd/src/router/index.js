@@ -21,7 +21,7 @@ const routes = [
     component: homePage
   },
   {
-    path: '/di',
+    path: '/di-i2',
     name: 'DI',
     component: DI
   },

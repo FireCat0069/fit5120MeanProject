@@ -111,7 +111,7 @@
             </router-link>
             <router-link
               v-else-if="index === 2"
-              to="/di"
+              to="/di-i2"
             >
               <button class="start-quiz-btn">
                 Learn more

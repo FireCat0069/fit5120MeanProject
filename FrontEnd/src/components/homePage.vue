@@ -72,7 +72,7 @@
           <p class="quiz-name">Click Smart: Building Your Digital IQ</p>
           <div class="divider"></div>
           <p class="quiz-meta">10 mins · 20 questions · 601 times</p>
-          <router-link to="/di">
+          <router-link to="/di-i2">
             <button class="start-quiz-btn">Learn More</button>
           </router-link>
         </div>
