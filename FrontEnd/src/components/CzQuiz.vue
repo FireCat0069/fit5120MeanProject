@@ -85,43 +85,6 @@
         <p>{{ generalFeedback }}</p>
       </div>
 
-      <div v-if="feedbackList.length === 0">
-        <p>No feedback available.</p>
-      </div>
-      <div v-else>
-        <div
-          v-for="(feedback, index) in feedbackList"
-          :key="feedback.question_order"
-          class="feedback-item"
-        >
-          <h3>Question {{ feedback.question_order }}</h3>
-          <p>
-            <strong>Correct Answer:</strong>
-            {{ feedback.correctAnswer }}
-          </p>
-          <p>
-            <strong>Your Answer:</strong>
-            <span v-if="feedback.isCorrect === null">Not answered</span>
-            <span v-else-if="feedback.isCorrect">Correct</span>
-            <span v-else>Incorrect</span>
-          </p>
-          <p>
-            <strong>Explanation:</strong>
-            {{ feedback.explanation }}
-          </p>
-          <!-- 如果答错，推荐对应类别的测验 -->
-          <div v-if="feedback.isCorrect === false" class="recommendation">
-            <p>
-              We recommend you review the
-              <router-link :to="categoryRoutes[feedback.question_order]">
-                {{ categoryNames[feedback.question_order] }} Quiz
-              </router-link>
-              to improve your understanding.
-            </p>
-          </div>
-        </div>
-      </div>
-
       <!-- 新增：翻页卡片，第一页汇总所有推荐 Quiz -->
       <div v-if="feedbackList.length" class="explanation-pagination">
         <!-- Summary Page -->
@@ -259,15 +222,12 @@ export default {
     };
   },
   computed: {
-    // 总页数 = 1 (summary) + 每题一页
     totalPages() {
       return this.feedbackList.length + 1;
     },
-    // 在非第一页时，取对应的解释
     currentExplanation() {
       return this.feedbackList[this.explanationPageIndex - 1] || {};
     },
-    // 所有答错题目的推荐列表
     recommendedQuizzes() {
       return this.feedbackList.filter(f => f.isCorrect === false);
     }
@@ -303,21 +263,17 @@ export default {
     handleSubmit() {
       const payload = [];
       this.questions.forEach(q => {
-        const type = q.type;
         let ans = this.answers[q.question_order];
         if (ans == null) {
           payload.push({ question_order: q.question_order, option: null });
           return;
         }
         if (typeof ans === 'string') {
-          ans = ans.trim();
-          const sendOpt = type !== 'fill-in-the-blank' ? ans.charAt(0) : ans;
+          const sendOpt = q.type !== 'fill-in-the-blank' ? ans.trim().charAt(0) : ans.trim();
           payload.push({ question_order: q.question_order, option: sendOpt });
-        }
-        if (Array.isArray(ans)) {
+        } else if (Array.isArray(ans)) {
           ans.forEach(o => {
-            const trimmed = o.trim();
-            payload.push({ question_order: q.question_order, option: trimmed.charAt(0) });
+            payload.push({ question_order: q.question_order, option: o.trim().charAt(0) });
           });
         }
       });
@@ -341,14 +297,14 @@ export default {
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/usage/stats')
         .then(res => res.json())
         .then(data => {
-          const rawGroups = [
+          const groups = [
             { title: 'Device Type', data: data.device_type },
             { title: 'Screen Time Period', data: data.screen_time_period },
             { title: 'Screen Activity', data: data.screen_activity },
             { title: 'App Category', data: data.app_category },
             { title: 'Avg Screen Time Range', data: data.average_screen_time_range }
           ];
-          rawGroups.forEach(g => {
+          groups.forEach(g => {
             const filtered = { ...g.data };
             if (g.title === 'Device Type') {
               ['A. Mobile Phone', 'B. Laptop', 'A', 'C. Other'].forEach(k => delete filtered[k]);
@@ -367,18 +323,16 @@ export default {
         .catch(err => console.error(err));
     },
     createBarOption(title, dataObj) {
-      const names = Object.keys(dataObj);
-      const values = Object.values(dataObj).map(v => parseFloat(v));
       return {
         tooltip: { trigger: 'axis' },
         legend: { show: false },
-        xAxis: { type: 'category', data: names, axisLabel: { rotate: 45, interval: 0 } },
+        xAxis: { type: 'category', data: Object.keys(dataObj), axisLabel: { rotate: 45, interval: 0 } },
         yAxis: { type: 'value' },
         grid: { left: '10%', right: '5%', bottom: '15%', containLabel: true },
         series: [{
           name: title,
           type: 'bar',
-          data: values,
+          data: Object.values(dataObj).map(v => parseFloat(v)),
           itemStyle: { barBorderRadius: [4, 4, 0, 0] },
           emphasis: { itemStyle: { color: '#f18829' } }
         }]
