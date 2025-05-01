@@ -58,7 +58,7 @@
           <p class="quiz-name">Building Your Privacy Fortress Online</p>
           <div class="divider"></div>
           <p class="quiz-meta">12 mins · 25 questions · 780 times</p>
-          <router-link to="/smp">
+          <router-link to="/smp-i2">
             <button class="start-quiz-btn">Learn More</button>
           </router-link>
         </div>

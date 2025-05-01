@@ -36,7 +36,7 @@ const routes = [
     component: InfoHubPage
   },
   {
-    path: '/smp',
+    path: '/smp-i2',
     name: 'SMP',
     component: SMP
   },

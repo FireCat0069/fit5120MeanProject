@@ -103,7 +103,7 @@
             <!-- 第二张卡片：Learn more 导航至 /smp -->
             <router-link
               v-else-if="index === 1"
-              to="/smp"
+              to="/smp-i2"
             >
               <button class="start-quiz-btn">
                 Learn more
