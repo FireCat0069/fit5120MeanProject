@@ -60,8 +60,16 @@
               <button class="start-quiz-btn">Start Quiz</button>
             </router-link>
 
+            <router-link v-if="index === 1" to="/Quiz-IntroductionDFP">
+              <button class="start-quiz-btn">Start Quiz</button>
+            </router-link>
+            <router-link v-if="index === 2" to="/Quiz-IntroductionOEN">
+              <button class="start-quiz-btn">Start Quiz</button>
+            </router-link>
             <!-- 其他卡片：普通按钮 -->
-            <button v-else class="start-quiz-btn">Start Quiz</button>
+            <router-link v-if="index === 3" to="/Quiz-IntroductionCA">
+              <button class="start-quiz-btn">Start Quiz</button>
+            </router-link>
           </div>
         </div>
       </transition-group>

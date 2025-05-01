@@ -11,6 +11,9 @@ import SMP from '../components/SMP.vue'
 import DI from '../components/DI.vue'    
 import DA from '../components/DA.vue'   
 import QuizIntroductionDL from '@/components/QuizIntroductionDL.vue';
+import QuizIntroductionDFP from '@/components/QuizIntroductionDFP.vue';
+import QuizIntroductionOEN from '@/components/QuizIntroductionOEN.vue';
+import QuizIntroductionCA from '@/components/QuizIntroductionCA.vue';
 
 
 
@@ -56,12 +59,27 @@ const routes = [
     component: QuizIntroductionDL
   },
   {
+    path: '/Quiz-IntroductionDFP',
+    name: 'QuizIntroductionDFP',
+    component: QuizIntroductionDFP
+  },
+  {
+    path: '/Quiz-IntroductionOEN',
+    name: 'QuizIntroductionOEN',
+    component: QuizIntroductionOEN
+  },
+  {
+    path: '/Quiz-IntroductionCA',
+    name: 'QuizIntroductionCA',
+    component: QuizIntroductionCA
+  },
+  {
     path: '/cz-quiz-i1&i2',
     name: 'CzQuiz',
     component: CzQuiz
   },
   {
-    path: '/Quiz-Content-i1',
+    path: '/Quiz-Content',
     name: 'QuizContent',
     component: QuizContent
   },
