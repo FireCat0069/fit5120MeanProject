@@ -122,24 +122,38 @@
         </div>
       </div>
 
-      <!-- 新增：翻页卡片，显示每题解析 -->
+      <!-- 新增：翻页卡片，第一页汇总所有推荐 Quiz -->
       <div v-if="feedbackList.length" class="explanation-pagination">
-        <div class="feedback-item">
-          <h3>Question {{ currentExplanation.question_order }}</h3>
-          <p><strong>Explanation:</strong> {{ currentExplanation.explanation }}</p>
-          <!-- 如果在第一页且答错，则显示推荐 Quiz 按钮 -->
-          <div
-            v-if="explanationPageIndex === 0 && currentExplanation.isCorrect === false"
-            class="first-page-recommendation"
-          >
-            <router-link
-              :to="categoryRoutes[currentExplanation.question_order]"
-              class="quiz-btn"
+        <!-- Summary Page -->
+        <div v-if="explanationPageIndex === 0" class="feedback-item">
+          <h3>Recommended Quizzes</h3>
+          <div v-if="recommendedQuizzes.length">
+            <div
+              v-for="(item, idx) in recommendedQuizzes"
+              :key="idx"
+              class="recommendation"
             >
-              Review {{ categoryNames[currentExplanation.question_order] }} Quiz
-            </router-link>
+              <router-link
+                :to="categoryRoutes[item.question_order]"
+                class="quiz-btn"
+              >
+                Review {{ categoryNames[item.question_order] }} Quiz
+              </router-link>
+            </div>
+          </div>
+          <div v-else>
+            <p>All answers are correct! No quizzes recommended.</p>
           </div>
         </div>
+        <!-- Individual Explanation Pages -->
+        <div v-else class="feedback-item">
+          <h3>Question {{ currentExplanation.question_order }}</h3>
+          <p>
+            <strong>Explanation:</strong>
+            {{ currentExplanation.explanation }}
+          </p>
+        </div>
+        <!-- 翻页控制 -->
         <div class="pagination-controls">
           <button
             class="pagination-btn"
@@ -148,11 +162,13 @@
           >
             Previous
           </button>
-          <span>{{ explanationPageIndex + 1 }}/{{ feedbackList.length }}</span>
+          <span>
+            {{ explanationPageIndex + 1 }}/{{ totalPages }}
+          </span>
           <button
             class="pagination-btn"
             @click="nextPage"
-            :disabled="explanationPageIndex === feedbackList.length - 1"
+            :disabled="explanationPageIndex === totalPages - 1"
           >
             Next
           </button>
@@ -233,8 +249,17 @@ export default {
     };
   },
   computed: {
+    // 总页数 = 1 (summary) + 每题一页
+    totalPages() {
+      return this.feedbackList.length + 1;
+    },
+    // 在非第一页时，取对应的解释
     currentExplanation() {
-      return this.feedbackList[this.explanationPageIndex] || {};
+      return this.feedbackList[this.explanationPageIndex - 1] || {};
+    },
+    // 所有答错题目的推荐列表
+    recommendedQuizzes() {
+      return this.feedbackList.filter(f => f.isCorrect === false);
     }
   },
   methods: {
@@ -276,14 +301,13 @@ export default {
         }
         if (typeof ans === 'string') {
           ans = ans.trim();
-          const sendOpt = q.type !== 'fill-in-the-blank' ? ans.charAt(0) : ans;
+          const sendOpt = type !== 'fill-in-the-blank' ? ans.charAt(0) : ans;
           payload.push({ question_order: q.question_order, option: sendOpt });
         }
         if (Array.isArray(ans)) {
           ans.forEach(o => {
             const trimmed = o.trim();
-            const sendOpt = trimmed.charAt(0);
-            payload.push({ question_order: q.question_order, option: sendOpt });
+            payload.push({ question_order: q.question_order, option: trimmed.charAt(0) });
           });
         }
       });
@@ -354,7 +378,7 @@ export default {
       if (this.explanationPageIndex > 0) this.explanationPageIndex--;
     },
     nextPage() {
-      if (this.explanationPageIndex < this.feedbackList.length - 1) this.explanationPageIndex++;
+      if (this.explanationPageIndex < this.totalPages - 1) this.explanationPageIndex++;
     }
   },
   mounted() {
@@ -526,12 +550,9 @@ hr {
   color: #000 !important;
 }
 
-/* 新增分页卡片样式 */
+/* 分页卡片样式 */
 .explanation-pagination {
   margin-top: 40px;
-}
-.first-page-recommendation {
-  margin-top: 12px;
 }
 .quiz-btn {
   display: inline-block;
@@ -541,6 +562,7 @@ hr {
   border-radius: 4px;
   text-decoration: none;
   font-weight: 600;
+  margin-bottom: 8px;
 }
 .quiz-btn:hover {
   background: #e65f14;
