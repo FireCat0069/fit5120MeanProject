@@ -93,7 +93,7 @@
             <!-- 第一张卡片：Learn more 导航至 /digital-citi-info -->
             <router-link
               v-if="index === 0"
-              to="/digital-citi-info"
+              to="/digital-citi-info-i2"
             >
               <button class="start-quiz-btn">
                 Learn more

@@ -44,7 +44,7 @@
           <p class="quiz-name">What's the Digital Citizenship?</p>
           <div class="divider"></div>
           <p class="quiz-meta">15 mins · 2 videos · 521 times</p>
-          <router-link to="/digital-citi-info">
+          <router-link to="digital-citi-info-i2">
             <button class="start-quiz-btn">Learn More</button>
           </router-link>
         </div>
