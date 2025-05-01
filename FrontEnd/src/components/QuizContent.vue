@@ -229,26 +229,26 @@ methods: {
       try {
         // Prepare answer data in the original format with user's selection
         const submissionData = this.quizData
-          .filter(item => item.section === this.sectionName) // 保持与processQuestions相同的过滤条件
+          .filter(item => item.section === this.sectionName) 
           .map((originalQuestion, index) => {
             const userAnswer = this.userAnswers[index];
             let selectedOption = '';
 
-            // 转换用户答案为字母格式(A,B,C)
+            // Convert user answers to alphabetical format (A,B,C)
             if (Array.isArray(userAnswer)) {
-              // 多选情况
+              // Multiple choice
               selectedOption = userAnswer
                 .sort((a, b) => a - b)
                 .map(idx => String.fromCharCode(65 + idx))
                 .join(',');
             } else if (typeof userAnswer === 'number') {
-              // 单选情况
+              // Single choice situation
               selectedOption = String.fromCharCode(65 + userAnswer);
             }
 
             return {
-              ...originalQuestion, // 保留所有原始字段
-              selectedOption: selectedOption || 'A' // 添加用户选择的答案
+              ...originalQuestion, //Add question
+              selectedOption: selectedOption || 'A' // Add selected options
             };
         });
 
