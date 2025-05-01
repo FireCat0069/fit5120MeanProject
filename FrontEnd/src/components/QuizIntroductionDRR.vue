@@ -21,14 +21,14 @@
             <div class="breadcrumb">
                 <span>Dashboard</span> / 
                 <span>Schedule Quizzes</span> / 
-                <span>Online Etiquette / Netiquette</span>
+                <span>Digital Rights & Responsibilities</span>
             </div>
     
             <div class="quiz-section">
                     <!-- Left quiz section -->
                     <div class="quiz-section-1">
                         <!-- Quiz title -->
-                        <h1 class="quiz-title">Online Etiquette / Netiquette</h1>
+                        <h1 class="quiz-title">Digital Rights & Responsibilities</h1>
                         
                         <div class="video-container">
                             <video controls width="100%">  <!-- Show video controls -->
@@ -38,9 +38,9 @@
                         </div>
                         <!-- Quiz description -->
                         <div class="quiz-description">
-                                <h2>Practicing Respectful Online Communication</h2>
+                                <h2>Understanding Your Digital Rights and Duties</h2>
                                 <p>
-                                Netiquette refers to proper and respectful behavior online. It includes being polite in messages, avoiding spam, respecting others' opinions, and thinking before posting to maintain a positive digital environment.
+                                Digital rights and responsibilities involve the right to access, express, and protect information online, while respecting others’ privacy, property, and safety in the digital environment.
                                 </p>
                                 <p>
                                 The quiz consists of questions. To be successful with the quizzes, it's important to conversant with the topic by paying attention to the short video.
@@ -75,7 +75,7 @@
             
                         <!-- Start Quiz button -->
                         <router-link 
-                          :to="{ path: '/Quiz-Content', query: { section: 'Online Etiquette / Netiquette' } }"
+                          :to="{ path: '/Quiz-Content', query: { section: 'Digital Rights & Responsibilities' } }"
                           class="start-quiz-btn"
                         >
                           Start Quiz

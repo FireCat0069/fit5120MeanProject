@@ -14,6 +14,9 @@ import QuizIntroductionDL from '@/components/QuizIntroductionDL.vue';
 import QuizIntroductionDFP from '@/components/QuizIntroductionDFP.vue';
 import QuizIntroductionOEN from '@/components/QuizIntroductionOEN.vue';
 import QuizIntroductionCA from '@/components/QuizIntroductionCA.vue';
+import QuizIntroductionDW from '@/components/QuizIntroductionDW.vue';
+import QuizIntroductionDRR from '@/components/QuizIntroductionDRR.vue';
+import QuizIntroductionCTO from '@/components/QuizIntroductionCTO.vue';
 
 
 
@@ -72,6 +75,21 @@ const routes = [
     path: '/Quiz-IntroductionCA',
     name: 'QuizIntroductionCA',
     component: QuizIntroductionCA
+  },
+  {
+    path: '/Quiz-IntroductionDW',
+    name: 'QuizIntroductionDW',
+    component: QuizIntroductionDW
+  },
+  {
+    path: '/Quiz-IntroductionDRR',
+    name: 'QuizIntroductionDRR',
+    component: QuizIntroductionDRR
+  },
+  {
+    path: '/Quiz-IntroductionCTO',
+    name: 'QuizIntroductionCTO',
+    component: QuizIntroductionCTO
   },
   {
     path: '/cz-quiz-i1&i2',

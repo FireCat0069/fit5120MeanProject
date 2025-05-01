@@ -55,28 +55,8 @@
             <div class="divider"></div>
             <p class="quiz-meta">{{ quiz.meta }}</p>
 
-            <!-- 第一张卡片：Start Quiz 导航至 /Quiz-IntroductionDL -->
-            <router-link v-if="index === 0" to="/Quiz-IntroductionDL">
-              <button class="start-quiz-btn">Start Quiz</button>
-            </router-link>
-
-            <router-link v-if="index === 1" to="/Quiz-IntroductionDFP">
-              <button class="start-quiz-btn">Start Quiz</button>
-            </router-link>
-            <router-link v-if="index === 2" to="/Quiz-IntroductionOEN">
-              <button class="start-quiz-btn">Start Quiz</button>
-            </router-link>
-            <!-- 其他卡片：普通按钮 -->
-            <router-link v-if="index === 3" to="/Quiz-IntroductionCA">
-              <button class="start-quiz-btn">Start Quiz</button>
-            </router-link>
-            <router-link v-if="index === 4" to="/Quiz-IntroductionCA">
-              <button class="start-quiz-btn">Start Quiz</button>
-            </router-link>
-            <router-link v-if="index === 5" to="/Quiz-IntroductionCA">
-              <button class="start-quiz-btn">Start Quiz</button>
-            </router-link>
-            <router-link v-if="index === 6" to="/Quiz-IntroductionCA">
+            <!-- 卡片：Start Quiz 导航至 各Quiz-Introduction页面 -->
+            <router-link :to="getQuizRoute(quiz)">
               <button class="start-quiz-btn">Start Quiz</button>
             </router-link>
           </div>
@@ -137,6 +117,19 @@ export default {
     goToPage(page) {
       this.currentPage = page;
     },
+    getQuizRoute(quiz) {
+    const index = this.quizzes.findIndex(q => q.title === quiz.title);
+    const routes = [
+      '/Quiz-IntroductionDL',
+      '/Quiz-IntroductionDFP',
+      '/Quiz-IntroductionOEN',
+      '/Quiz-IntroductionCA',
+      '/Quiz-IntroductionDW',
+      '/Quiz-IntroductionDRR',
+      '/Quiz-IntroductionCTO'
+    ];
+    return routes[index];
+  },
   },
   mounted() {
     document.body.style.overflow = 'hidden';

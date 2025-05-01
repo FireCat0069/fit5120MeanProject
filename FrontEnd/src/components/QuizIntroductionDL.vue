@@ -5,7 +5,7 @@
           <div class="first-section">
           <div class="navbar-brand">DigiWise</div>
           <nav class="nav-links">
-            <router-link to="/Quiz-Content-i1" class="nav-item">Dashboard</router-link>
+            <router-link to="/" class="nav-item">Dashboard</router-link>
             <router-link to="/quiz-bank-i1&i2" class="nav-item">Quiz Bank</router-link>
           </nav>
           </div>
