@@ -54,9 +54,8 @@
 
     <!-- 提交后显示反馈 -->
     <div v-else class="feedback-section">
-      <!-- 统计柱状图：显示图表切换标签和图表 -->
+      <!-- 统计柱状图 -->
       <div v-if="statsLoaded" class="stats-charts-carousel">
-        <!-- 切换模块 -->
         <div class="chart-tabs">
           <div
             v-for="(title, i) in chartTitles"
@@ -68,14 +67,10 @@
             {{ title }}
           </div>
         </div>
-        <!-- 图表内容 -->
         <div class="chart-content">
           <h3>{{ chartTitles[currentChartIndex] }}</h3>
           <div class="chart-frame">
-            <v-chart
-              :option="chartOptionsList[currentChartIndex]"
-              class="chart"
-            />
+            <v-chart :option="chartOptionsList[currentChartIndex]" class="chart" />
           </div>
         </div>
       </div>
@@ -85,22 +80,22 @@
         <p>{{ generalFeedback }}</p>
       </div>
 
-      <!-- 新增：翻页卡片，第一页汇总所有推荐 Quiz -->
+      <!-- 翻页卡片：第一页汇总所有推荐 Quiz -->
       <div v-if="feedbackList.length" class="explanation-pagination">
         <!-- Summary Page -->
         <div v-if="explanationPageIndex === 0" class="feedback-item">
           <h3>Recommended Quizzes</h3>
           <div v-if="recommendedQuizzes.length">
             <div
-              v-for="(item, idx) in recommendedQuizzes"
-              :key="idx"
+              v-for="(rec, idx) in recommendedQuizzes"
+              :key="rec.route"
               class="recommendation"
             >
               <router-link
-                :to="categoryRoutes[item.question_order]"
+                :to="rec.route"
                 class="quiz-btn"
               >
-                Review {{ categoryNames[item.question_order] }} Quiz
+                Review {{ rec.name }} Quiz
               </router-link>
             </div>
           </div>
@@ -229,14 +224,30 @@ export default {
       return this.feedbackList[this.explanationPageIndex - 1] || {};
     },
     recommendedQuizzes() {
-      return this.feedbackList.filter(f => f.isCorrect === false);
+      const recs = this.feedbackList
+        .filter(f => f.isCorrect === false)
+        .map(f => ({
+          route: this.categoryRoutes[f.question_order],
+          name: this.categoryNames[f.question_order]
+        }));
+      const unique = [];
+      const seen = new Set();
+      recs.forEach(r => {
+        if (!seen.has(r.route)) {
+          seen.add(r.route);
+          unique.push(r);
+        }
+      });
+      return unique;
     }
   },
   methods: {
     fetchQuestions() {
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/mbtiquiz/questions')
         .then(res => res.json())
-        .then(data => { this.questions = data; })
+        .then(data => {
+          this.questions = data;
+        })
         .catch(err => console.error(err));
     },
     selectAnswer(qo, opt, type, event) {
@@ -375,7 +386,8 @@ export default {
   color: #1d1d1d;
   white-space: nowrap;
 }
-.nav-link, .nav-link:hover {
+.nav-link,
+.nav-link:hover {
   color: #1d1d1d;
   text-decoration: none;
 }
@@ -513,8 +525,6 @@ hr {
 .feedback-section * {
   color: #000 !important;
 }
-
-/* 分页卡片样式 */
 .explanation-pagination {
   margin-top: 40px;
 }
