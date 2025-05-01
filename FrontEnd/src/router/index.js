@@ -61,7 +61,7 @@ const routes = [
     component: CzQuiz
   },
   {
-    path: '/Quiz-Content',
+    path: '/Quiz-Content-i1',
     name: 'QuizContent',
     component: QuizContent
   },

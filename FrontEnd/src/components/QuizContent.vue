@@ -6,7 +6,7 @@
               <div class="navbar-brand">DigiWise</div>
               <nav class="nav-links">
                 <router-link 
-                  to="/Quiz-Content" 
+                  to="/Quiz-Content-i1" 
                   class="nav-item active-nav-item" 
                 >
                   Dashboard
