@@ -56,7 +56,7 @@ const routes = [
     component: QuizIntroduction
   },
   {
-    path: '/cz-quiz',
+    path: '/cz-quiz-i1&i2',
     name: 'CzQuiz',
     component: CzQuiz
   },

@@ -24,7 +24,7 @@
       <div class="fake-search">
         <!-- 打字机效果目标元素 -->
         <span class="search-label" ref="typed"></span>
-        <router-link to="/cz-quiz">
+        <router-link to="/cz-quiz-i1&i2">
           <button class="go-button">Go test</button>
         </router-link>
       </div>
