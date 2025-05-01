@@ -5,8 +5,8 @@
       <div class="first-section">
         <div class="navbar-brand">DigiWise</div>
         <nav class="nav-links">
-          <router-link to="/Quiz-Content" class="nav-item">Dashboard</router-link>
-          <router-link to="/quiz-bank" class="nav-item">Quiz Bank</router-link>
+          <router-link to="/Quiz-Content-i1" class="nav-item">Dashboard</router-link>
+          <router-link to="/quiz-bank-i1&i2" class="nav-item">Quiz Bank</router-link>
         </nav>
       </div>
 
@@ -81,7 +81,7 @@
             
             
             <div class="action-buttons">
-              <router-link to="/quiz-bank" class="retake-btn">
+              <router-link to="/quiz-bank-i1&i2" class="retake-btn">
                 Take Another Quiz
               </router-link>
               <router-link to="/" class="dashboard-btn">
@@ -102,7 +102,7 @@
           <div v-if="!loading && !quizResults" class="status-message empty">
             <span class="empty-icon">📝</span>
             No quiz results found. Please complete a quiz first.
-            <router-link to="/quiz-bank" class="take-quiz-link">
+            <router-link to="/quiz-bank-i1&i2" class="take-quiz-link">
               Take a Quiz Now
             </router-link>
           </div>

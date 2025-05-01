@@ -3,7 +3,7 @@
   <div class="page-container first-section">
     <div class="nav-bar">
       <router-link to="/" class="nav-link">Home</router-link>
-      <router-link to="/quiz-bank" class="nav-link">Dashboard</router-link>
+      <router-link to="/quiz-bank-i1&i2" class="nav-link">Dashboard</router-link>
       <span>Contact us</span>
     </div>
 
@@ -24,7 +24,7 @@
       <div class="fake-search">
         <!-- 打字机效果目标元素 -->
         <span class="search-label" ref="typed"></span>
-        <router-link to="/cz-quiz">
+        <router-link to="/cz-quiz-i1&i2">
           <button class="go-button">Go test</button>
         </router-link>
       </div>
@@ -44,7 +44,7 @@
           <p class="quiz-name">What's the Digital Citizenship?</p>
           <div class="divider"></div>
           <p class="quiz-meta">15 mins · 2 videos · 521 times</p>
-          <router-link to="/digital-citi-info">
+          <router-link to="digital-citi-info-i2">
             <button class="start-quiz-btn">Learn More</button>
           </router-link>
         </div>
@@ -58,7 +58,7 @@
           <p class="quiz-name">Building Your Privacy Fortress Online</p>
           <div class="divider"></div>
           <p class="quiz-meta">12 mins · 25 questions · 780 times</p>
-          <router-link to="/smp">
+          <router-link to="/smp-i2">
             <button class="start-quiz-btn">Learn More</button>
           </router-link>
         </div>
@@ -72,13 +72,13 @@
           <p class="quiz-name">Click Smart: Building Your Digital IQ</p>
           <div class="divider"></div>
           <p class="quiz-meta">10 mins · 20 questions · 601 times</p>
-          <router-link to="/di">
+          <router-link to="/di-i2">
             <button class="start-quiz-btn">Learn More</button>
           </router-link>
         </div>
       </div>
     </div>
-    <router-link to="/info-hub">
+    <router-link to="/info-hub-i2">
       <button class="learn-more-btn">Explore more</button>
     </router-link>
   </div>

@@ -12,16 +12,16 @@
           Dashboard
         </router-link>
         <router-link
-          to="/info-hub"
+          to="/info-hub-i2"
           class="nav-item"
-          :class="{ active: $route.path === '/info-hub' }"
+          :class="{ active: $route.path === '/info-hub-i2' }"
         >
           Info Hub
         </router-link>
         <router-link
-          to="/quiz-bank"
+          to="/quiz-bank-i1&i2"
           class="nav-item"
-          :class="{ active: $route.path === '/quiz-bank' }"
+          :class="{ active: $route.path === '/quiz-bank-i1&i2' }"
         >
           Quiz Bank
         </router-link>
@@ -93,7 +93,7 @@
             <!-- 第一张卡片：Learn more 导航至 /digital-citi-info -->
             <router-link
               v-if="index === 0"
-              to="/digital-citi-info"
+              to="/digital-citi-info-i2"
             >
               <button class="start-quiz-btn">
                 Learn more
@@ -103,7 +103,7 @@
             <!-- 第二张卡片：Learn more 导航至 /smp -->
             <router-link
               v-else-if="index === 1"
-              to="/smp"
+              to="/smp-i2"
             >
               <button class="start-quiz-btn">
                 Learn more
@@ -111,7 +111,7 @@
             </router-link>
             <router-link
               v-else-if="index === 2"
-              to="/di"
+              to="/di-i2"
             >
               <button class="start-quiz-btn">
                 Learn more
@@ -119,7 +119,7 @@
             </router-link>
             <router-link
               v-else-if="index === 3"
-              to="/da"
+              to="/da-i2"
             >
               <button class="start-quiz-btn">
                 Learn more

@@ -21,32 +21,32 @@ const routes = [
     component: homePage
   },
   {
-    path: '/di',
+    path: '/di-i2',
     name: 'DI',
     component: DI
   },
   {
-    path: '/da',
+    path: '/da-i2',
     name: 'DA',
     component: DA
   },
   {
-    path: '/info-hub',
+    path: '/info-hub-i2',
     name: 'InfoHub',
     component: InfoHubPage
   },
   {
-    path: '/smp',
+    path: '/smp-i2',
     name: 'SMP',
     component: SMP
   },
   {
-    path: '/digital-citi-info',    
+    path: '/digital-citi-info-i2',    
     name: 'DigitalCitiInfo',
     component: DigitalCitiInfo    
   },
   {
-    path: '/quiz-bank',
+    path: '/quiz-bank-i1&i2',
     name: 'QuizBank',
     component: QuizBank
   },
@@ -56,12 +56,12 @@ const routes = [
     component: QuizIntroductionDL
   },
   {
-    path: '/cz-quiz',
+    path: '/cz-quiz-i1&i2',
     name: 'CzQuiz',
     component: CzQuiz
   },
   {
-    path: '/Quiz-Content',
+    path: '/Quiz-Content-i1',
     name: 'QuizContent',
     component: QuizContent
   },
