@@ -6,8 +6,8 @@
               <div class="navbar-brand">DigiWise</div>
               <nav class="nav-links">
                 <router-link 
-                  to="/Quiz-Content" 
-                  class="nav-item active-nav-item" 
+                  to="/" 
+                  class="nav-item" 
                 >
                   Dashboard
                 </router-link>
@@ -221,31 +221,32 @@ methods: {
     }
   },
 
-  async submitQuiz() {
-    try {
-      // Prepare answer data in the exact format the API expects
-      const answers = this.questions.map((question, index) => {
-        const userAnswer = this.userAnswers[index];
-        
-        // Convert user's answer to letter format (A, B, C, etc.)
-        let selectedOption = '';
-        
-        if (question.isMultipleChoice && Array.isArray(userAnswer)) {
-          // Multiple choice: convert to "A,B,C" format
-          selectedOption = userAnswer
-            .sort((a, b) => a - b) // Ensure consistent order
-            .map(idx => String.fromCharCode(65 + idx))
-            .join(',');
-        } else if (!question.isMultipleChoice && typeof userAnswer === 'number') {
-          // Single choice: convert to single letter
-          selectedOption = String.fromCharCode(65 + userAnswer);
-        }
+    async submitQuiz() {
+      try {
+        // Prepare answer data in the original format with user's selection
+        const submissionData = this.quizData
+          .filter(item => item.section === 'Cybersecurity Awareness') // 保持与processQuestions相同的过滤条件
+          .map((originalQuestion, index) => {
+            const userAnswer = this.userAnswers[index];
+            let selectedOption = '';
 
-        return {
-          question,
-          selectedOption: selectedOption || 'A' // Default to 'A' if empty
-        };
-      });
+            // 转换用户答案为字母格式(A,B,C)
+            if (Array.isArray(userAnswer)) {
+              // 多选情况
+              selectedOption = userAnswer
+                .sort((a, b) => a - b)
+                .map(idx => String.fromCharCode(65 + idx))
+                .join(',');
+            } else if (typeof userAnswer === 'number') {
+              // 单选情况
+              selectedOption = String.fromCharCode(65 + userAnswer);
+            }
+
+            return {
+              ...originalQuestion, // 保留所有原始字段
+              selectedOption: selectedOption || 'A' // 添加用户选择的答案
+            };
+        });
 
       // Submit to server
       const response = await fetch('https://fit5120mainprojecttp20backend.onrender.com/api/quiz/validate-answers', {
@@ -253,7 +254,7 @@ methods: {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(answers) // Send the array directly without wrapping
+        body: JSON.stringify(submissionData) // Send the array directly without wrapping
       });
 
       if (!response.ok) {
@@ -391,11 +392,7 @@ margin: 0 auto;
 }
 
 
-/* Active navigation item */
-.nav-item.active-nav-item {
-  background-color: #ea3f06 ;
-  color: white ;
-}
+
 
 /* Navigation hover effect */
 .nav-item:hover {

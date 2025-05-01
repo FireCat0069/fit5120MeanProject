@@ -41,7 +41,7 @@
                   {{ quizResults.score }}/{{ quizResults.questions.length }}
                 </div>
                 <div class="score-percentage">
-                  {{ calculatePercentage() }}%
+                  {{ calculatePercentage() }} points
                 </div>
               </div>
             </div>
@@ -65,12 +65,12 @@
                 
                 <div class="answer-row">
                   <span class="answer-label">Your Answer:</span>
-                  <span class="answer-value">{{ formatAnswer(detail.selectedOption) }}</span>
+                  <span class="answer-value">{{ detail.selectedOption }}</span>
                 </div>
                 
                 <div class="answer-row" v-if="!detail.isCorrect">
                   <span class="answer-label">Correct Answer:</span>
-                  <span class="answer-value">{{ getCorrectAnswer(index) }}</span>
+                  <span class="answer-value">{{ detail.correctAnswer }}</span>
                 </div>
                 
                 <div class="explanation" v-if="detail.explanation">
@@ -84,7 +84,7 @@
               <router-link to="/quiz-bank" class="retake-btn">
                 Take Another Quiz
               </router-link>
-              <router-link to="/Quiz-Content" class="dashboard-btn">
+              <router-link to="/" class="dashboard-btn">
                 Back to Dashboard
               </router-link>
             </div>
@@ -190,17 +190,23 @@ onMounted(() => {
 
 /* Quiz section styling */
 .quiz-section {
-  display: flex;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-  width: 90vw;
-  max-width: 1400px;
-  height: 80vh;
-  max-height: 650px;
-  overflow: auto;
-  margin: 0 auto;
+display: flex;
+background-color: white;
+border-radius: 8px;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+padding: 2rem;
+
+/* Responsive sizing */
+width: 90vw;          /* 90% of viewport width */
+max-width: 1400px;    /* Maximum width for desktop */
+height: 80vh;         /* 80% of viewport height */
+max-height: 650px;    /* Maximum height for desktop */
+
+/* Scroll handling */
+overflow: auto;
+
+/* Center alignment */
+margin: 0 auto;
 }
 
 /* Page layout */
