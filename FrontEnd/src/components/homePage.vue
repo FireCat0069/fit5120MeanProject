@@ -78,7 +78,7 @@
         </div>
       </div>
     </div>
-    <router-link to="/info-hub">
+    <router-link to="/info-hub-i2">
       <button class="learn-more-btn">Explore more</button>
     </router-link>
   </div>

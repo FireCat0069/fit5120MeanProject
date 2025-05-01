@@ -14,7 +14,7 @@
         <router-link
           to="/info-hub"
           class="nav-item"
-          :class="{ active: $route.path === '/info-hub' }"
+          :class="{ active: $route.path === '/info-hub-i2' }"
         >
           Info Hub
         </router-link>

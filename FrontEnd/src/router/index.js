@@ -31,7 +31,7 @@ const routes = [
     component: DA
   },
   {
-    path: '/info-hub',
+    path: '/info-hub-i2',
     name: 'InfoHub',
     component: InfoHubPage
   },
