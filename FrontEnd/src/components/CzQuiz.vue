@@ -149,6 +149,16 @@
         <div v-else class="feedback-item">
           <h3>Question {{ currentExplanation.question_order }}</h3>
           <p>
+            <strong>Correct Answer:</strong>
+            {{ currentExplanation.correctAnswer }}
+          </p>
+          <p>
+            <strong>Your Answer:</strong>
+            <span v-if="currentExplanation.isCorrect === null">Not answered</span>
+            <span v-else-if="currentExplanation.isCorrect">Correct</span>
+            <span v-else>Incorrect</span>
+          </p>
+          <p>
             <strong>Explanation:</strong>
             {{ currentExplanation.explanation }}
           </p>
