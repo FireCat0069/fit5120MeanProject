@@ -42,14 +42,14 @@ export default {
     const error = ref(false)
 
     onMounted(() => {
-      if (localStorage.getItem('digiwise-unlocked') === 'true') {
+      if (sessionStorage.getItem('digiwise-unlocked') === 'true') {
         showPasswordPrompt.value = false
       }
     })
 
     const checkPassword = () => {
       if (inputPassword.value === 'TP20') {
-        localStorage.setItem('digiwise-unlocked', 'true')
+        sessionStorage.setItem('digiwise-unlocked', 'true')
         showPasswordPrompt.value = false
       } else {
         error.value = true
