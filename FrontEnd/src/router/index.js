@@ -7,9 +7,9 @@ import QuizFeedback from '@/components/QuizFeedback.vue';
 import DigitalCitiInfo from '../components/DigitalCitiInfo.vue'
 import CzFeedback from '../components/CzFeedback.vue'
 import InfoHubPage from '../components/InfoHubPage.vue'
-import SMP from '../components/SMP.vue'
-import DI from '../components/DI.vue'    
-import DA from '../components/DA.vue'   
+import MediaPrivacyInfo from '../components/MediaPrivacyInfo.vue'
+import DigitalliteracyInfo from '../components/DigitalliteracyInfo.vue'    
+import DigitalAggressionInfo from '../components/DigitalAggressionInfo.vue'   
 import QuizIntroductionDL from '@/components/QuizIntroductionDL.vue';
 import QuizIntroductionDFP from '@/components/QuizIntroductionDFP.vue';
 import QuizIntroductionOEN from '@/components/QuizIntroductionOEN.vue';
@@ -28,13 +28,13 @@ const routes = [
   },
   {
     path: '/di-i2',
-    name: 'DI',
-    component: DI
+    name: 'DigitalliteracyInfo',
+    component: DigitalliteracyInfo
   },
   {
     path: '/da-i2',
-    name: 'DA',
-    component: DA
+    name: 'DigitalAggressionInfo',
+    component: DigitalAggressionInfo
   },
   {
     path: '/info-hub-i2',
@@ -43,8 +43,8 @@ const routes = [
   },
   {
     path: '/smp-i2',
-    name: 'SMP',
-    component: SMP
+    name: 'MediaPrivacyInfo',
+    component: MediaPrivacyInfo
   },
   {
     path: '/digital-citi-info-i2',    
