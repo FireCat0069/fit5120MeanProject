@@ -277,7 +277,7 @@ export default {
         1: { 'A. Mobile Phone': 'Mobile', 'B. Laptop': 'Laptop', 'C. Other': 'Other' },
         2: { 'A. Evening (6 PM – 10 PM)': 'Evening', 'B. Afternoon (12 PM – 6 PM)': 'Afternoon', 'C. Late Night (10 PM – 6 AM)': 'Late Night' },
         3: { 'A. Work and Study (e.g., working, studying, content creation)': 'Work and Study', 'B. Entertainment (e.g., gaming, social media)': 'Entertainment' },
-        4: { 'Streaming (e.g., YouTube, Netflix)': 'Streaming', 'Social Media (e.g., Facebook, Instagram)': 'Social Media', 'Productivity (e.g., Microsoft Office, Notion)': 'Productivity', 'Messaging (e.g., WhatsApp, Messenger)': 'Messaging' }
+        5: { 'Streaming (e.g., YouTube, Netflix)': 'Streaming', 'Social Media (e.g., Facebook, Instagram)': 'Social Media', 'Productivity (e.g., Microsoft Office, Notion)': 'Productivity', 'Messaging (e.g., WhatsApp, Messenger)': 'Messaging' }
       };
 
       this.questions.forEach(q => {
