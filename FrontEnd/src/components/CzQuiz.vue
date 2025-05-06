@@ -273,6 +273,13 @@ export default {
     },
     handleSubmit() {
       const payload = [];
+      const answerMap = {
+        1: { 'A. Mobile Phone': 'Mobile', 'B. Laptop': 'Laptop', 'C. Other': 'Other' },
+        2: { 'A. Evening (6 PM – 10 PM)': 'Evening', 'B. Afternoon (12 PM – 6 PM)': 'Afternoon', 'C. Late Night (10 PM – 6 AM)': 'Late Night' },
+        3: { 'A. Work and Study (e.g., working, studying, content creation)': 'Work and Study', 'B. Entertainment (e.g., gaming, social media)': 'Entertainment' },
+        4: { 'Streaming (e.g., YouTube, Netflix)': 'Streaming', 'Social Media (e.g., Facebook, Instagram)': 'Social Media', 'Productivity (e.g., Microsoft Office, Notion)': 'Productivity', 'Messaging (e.g., WhatsApp, Messenger)': 'Messaging' }
+      };
+
       this.questions.forEach(q => {
         let ans = this.answers[q.question_order];
         if (ans == null) {
@@ -280,14 +287,16 @@ export default {
           return;
         }
         if (typeof ans === 'string') {
-          const sendOpt = q.type !== 'fill-in-the-blank' ? ans.trim().charAt(0) : ans.trim();
-          payload.push({ question_order: q.question_order, option: sendOpt });
+          const mappedAnswer = answerMap[q.question_order]?.[ans] || ans;
+          payload.push({ question_order: q.question_order, option: mappedAnswer });
         } else if (Array.isArray(ans)) {
           ans.forEach(o => {
-            payload.push({ question_order: q.question_order, option: o.trim().charAt(0) });
+            const mappedAnswer = answerMap[q.question_order]?.[o] || o;
+            payload.push({ question_order: q.question_order, option: mappedAnswer });
           });
         }
       });
+
       fetch('https://fit5120mainprojecttp20backend.onrender.com/api/mbtiquiz/validate-answers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
