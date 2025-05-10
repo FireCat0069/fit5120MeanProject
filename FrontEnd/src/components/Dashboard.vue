@@ -54,7 +54,7 @@
           </div>
         </div>
   
-        <!-- Charts Section: Two Rows -->
+        <!-- Charts Section: actual quiz scores -->
         <div class="chart-area">
           <div class="line-chart-container">
             <div ref="scoreChart" class="chart"></div>
@@ -79,6 +79,8 @@
   import { LineChart } from 'echarts/charts';
   import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/components';
   import { CanvasRenderer } from 'echarts/renderers';
+  import { getScoresForChart } from '../../localS/storage.js';
+
   
   echarts.use([LineChart, TitleComponent, TooltipComponent, GridComponent, CanvasRenderer]);
   
@@ -90,11 +92,11 @@
         userName: 'Michael Clifford',
         userLevel: 'Bonus booster 24lv',
         editingName: false,
-        progress: 60,
-        quizzesPassed: 27,
-        fastestTime: '27min',
-        correctAnswers: 200,
-        scores: []
+        progress: 0,
+        quizzesPassed: 0,
+        fastestTime: '0min',
+        correctAnswers: 0,
+        quizData: []
       };
     },
     methods: {
@@ -106,13 +108,18 @@
         this.editingName = false;
       },
       initChart() {
-        this.scores = Array.from({ length: 5 }, () => Math.floor(Math.random() * 11));
+        // 从 localStorage 获取实际分数数据
+        const records = getScoresForChart();
+        const labels = records.map(r => r.quizId);
+        const data = records.map(r => r.score);
+        this.quizData = records;
+  
         const chart = echarts.init(this.$refs.scoreChart);
         chart.setOption({
           tooltip: { trigger: 'axis' },
-          xAxis: { type: 'category', data: ['1', '2', '3', '4', '5'] },
+          xAxis: { type: 'category', data: labels },
           yAxis: { type: 'value', min: 0, max: 10 },
-          series: [{ data: this.scores, type: 'line', smooth: true }],
+          series: [{ data: data, type: 'line', smooth: true }],
           grid: { left: '10%', right: '10%', bottom: '15%', containLabel: true }
         });
         window.addEventListener('resize', () => chart.resize());
