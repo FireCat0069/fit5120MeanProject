@@ -80,7 +80,6 @@
   import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/components';
   import { CanvasRenderer } from 'echarts/renderers';
   import { getScoresForChart } from '../../localS/storage.js';
-
   
   echarts.use([LineChart, TitleComponent, TooltipComponent, GridComponent, CanvasRenderer]);
   
@@ -113,6 +112,9 @@
         const labels = records.map(r => r.quizId);
         const data = records.map(r => r.score);
         this.quizData = records;
+  
+        // 计算 "通过" 次数（每次满分 10 分算一次）
+        this.quizzesPassed = data.filter(score => score === 10).length;
   
         const chart = echarts.init(this.$refs.scoreChart);
         chart.setOption({
@@ -149,8 +151,6 @@
   .search-input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; }
   .search-button { margin-left:16px; padding: 10px 24px; background: #ff7426; color: #fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer; }
   .search-button:hover { background: #e65f14; }
-  
-  /* Profile */
   .profile-section { display: flex; align-items: center; margin-top: 5vh; }
   .avatar-wrapper { position: relative; width:100px; height:100px; }
   .avatar-img { width:100%; height:100%; border-radius:50%; object-fit:cover; transition: opacity .2s; }
@@ -168,8 +168,6 @@
   .stat-card { background:#fff; padding:12px 16px; border-radius:8px; display:flex; align-items:center; gap:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
   .icon { font-size:20px; font-weight:bold; }
   .stat-text { font-size:14px; color:#333; }
-  
-  /* Charts Section: two rows */
   .chart-area { display: flex; flex-direction: column; gap:20px; margin-top:30px; }
   .line-chart-container, .achieve-image-container { width: 100%; height: 250px; background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; }
   .line-chart-container .chart { width: 100%; height: 100%; }

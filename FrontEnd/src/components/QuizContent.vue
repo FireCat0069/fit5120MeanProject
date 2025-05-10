@@ -77,10 +77,13 @@
               </div>
             </div>
           </div>
-          <!-- Progress indicator section -->
+          <!-- Progress and Full Marks Count section -->
           <div class="quiz-section-3">
             <div class="quiz-progress">
               Question {{ currentQuestionIndex + 1 }}/{{ questions.length }}
+            </div>
+            <div class="pass-count">
+              Full marks achieved: {{ passCount }} times
             </div>
           </div>
         </div>
@@ -91,7 +94,7 @@
 </template>
 
 <script>
-import { setQuizScore } from '../../localS/storage.js';
+import { setQuizScore, getPassCount } from '../../localS/storage.js';
 
 export default {
   data() {
@@ -102,7 +105,8 @@ export default {
       currentQuestionIndex: 0,
       selectedOption: null,
       userAnswers: [],
-      sectionName: ''
+      sectionName: '',
+      passCount: 0 // Count of full-score attempts
     }
   },
 
@@ -119,6 +123,11 @@ export default {
     this.sectionName = this.$route.query.section || 'Default Section';
     console.log('Section from URL:', this.sectionName);
     await this.fetchQuestions();
+  },
+
+  mounted() {
+    // Initialize full-mark count from storage
+    this.passCount = getPassCount(this.sectionName);
   },
 
   methods: {
@@ -237,18 +246,16 @@ export default {
         };
         console.log('QuizResults before storage:', quizResults);
 
-        // 保存分数到 localStorage
+        // Save score to localStorage
         setQuizScore(this.sectionName, quizResults.score);
+        // Update full-score count display
+        this.passCount = getPassCount(this.sectionName);
 
         // 原有逻辑：保存到 sessionStorage 并导航
         sessionStorage.setItem('quizResults', JSON.stringify(quizResults));
         this.$router.push('/Quiz-Feedback');
-        // this.$router.push({
-        //   path: '/Quiz-Feedback',
-        //   query: { score: quizResults.score, details: quizResults.details }
-        // });
 
-        // 兼容原有判断
+        // Compatibility check
         if (result.score !== undefined) {
           this.$router.push('/Quiz-Feedback');
         } else {
@@ -408,7 +415,7 @@ export default {
 /* Quiz layout sections */
 .quiz-section-1 { flex: 1; }
 .quiz-section-2 { flex: 2; display: flex; justify-content: center; align-items: center; }
-.quiz-section-3 { flex: 1; display: flex; justify-content: flex-end; align-items: flex-start; }
+.quiz-section-3 { flex: 1; display: flex; justify-content: space-between; align-items: flex-start; }
 
 /* Progress indicator */
 .quiz-progress {
@@ -416,6 +423,14 @@ export default {
   color: #c65209;
   font-weight: 600;
   border-radius: 20px;
+}
+
+/* Pass count display */
+.pass-count {
+  font-size: 0.9rem;
+  color: #333;
+  margin-top: 0.5rem;
+  font-weight: 500;
 }
 
 /* Quiz title */
