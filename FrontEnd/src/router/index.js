@@ -17,6 +17,7 @@ import QuizIntroductionCA from '@/components/QuizIntroductionCA.vue';
 import QuizIntroductionDW from '@/components/QuizIntroductionDW.vue';
 import QuizIntroductionDRR from '@/components/QuizIntroductionDRR.vue';
 import QuizIntroductionCTO from '@/components/QuizIntroductionCTO.vue';
+import Dashboard from '@/components/Dashboard.vue';
 
 
 
@@ -30,6 +31,11 @@ const routes = [
     path: '/di-i2',
     name: 'DigitalliteracyInfo',
     component: DigitalliteracyInfo
+  },
+  {
+    path: '/dashboard-i3',
+    name: 'Dashboard',
+    component: Dashboard
   },
   {
     path: '/da-i2',

@@ -5,9 +5,9 @@
       <div class="logo">DigiWise</div>
       <nav class="nav">
         <router-link
-          to="/"
+          to="/dashboard-i3"
           class="nav-item"
-          :class="{ active: $route.path === '/' }"
+          :class="{ active: $route.path === '/dashboard-i3' }"
         >
           Dashboard
         </router-link>
