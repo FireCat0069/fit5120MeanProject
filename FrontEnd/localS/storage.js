@@ -1,13 +1,14 @@
-// storage.js
-// Utility module for saving and retrieving quiz scores in localStorage
+// Utility module for saving and retrieving quiz scores and user profile in localStorage
 
 // Key under which all quiz scores are stored
 const STORAGE_KEY = 'quizScores';
 
+// Key under which user profile is stored
+const USER_KEY = 'userProfile';
+
 /**
  * Retrieve the entire scores object from localStorage.
- * @returns {Record<string, number[]>} 
- *   An object mapping quiz IDs to an array of scores (history).
+ * @returns {Record<string, number[]>}
  */
 function getAllScores() {
   const json = localStorage.getItem(STORAGE_KEY) || '{}';
@@ -26,7 +27,7 @@ function getAllScores() {
 
 /**
  * Save the entire scores object back to localStorage.
- * @param {Record<string, number[]>} scores 
+ * @param {Record<string, number[]>} scores
  */
 function saveAllScores(scores) {
   try {
@@ -76,7 +77,7 @@ export function getScoresForChart() {
 
 /**
  * Count how many times a quiz has achieved full marks (10).
- * @param {string} quizId 
+ * @param {string} quizId
  * @returns {number} Number of attempts with score === 10
  */
 export function getPassCount(quizId) {
@@ -103,7 +104,7 @@ export function getAllPassCounts() {
 
 /**
  * Remove the score history for a specific quiz.
- * @param {string} quizId 
+ * @param {string} quizId
  */
 export function clearQuizScore(quizId) {
   const scores = getAllScores();
@@ -120,4 +121,67 @@ export function clearAllScores() {
   localStorage.removeItem(STORAGE_KEY);
 }
 
+/**
+ * Retrieve the user profile object from localStorage.
+ * @returns {Object}
+ */
+function getUserProfile() {
+  const json = localStorage.getItem(USER_KEY) || '{}';
+  try {
+    return JSON.parse(json);
+  } catch (e) {
+    console.error('Failed to parse user profile from localStorage:', e);
+    return {};
+  }
+}
+
+/**
+ * Save the user profile object to localStorage.
+ * @param {Object} profile
+ */
+function saveUserProfile(profile) {
+  try {
+    localStorage.setItem(USER_KEY, JSON.stringify(profile));
+  } catch (e) {
+    console.error('Failed to save user profile to localStorage:', e);
+  }
+}
+
+/**
+ * Get the stored user name.
+ * @returns {string}
+ */
+export function getUserName() {
+  return getUserProfile().name || 'Input name';
+}
+
+/**
+ * Set the user name and save to localStorage.
+ * @param {string} name
+ */
+export function setUserName(name) {
+  const profile = getUserProfile();
+  profile.name = name;
+  saveUserProfile(profile);
+}
+
+/**
+ * Get the stored user avatar URL or Base64 string.
+ * @returns {string|null}
+ */
+export function getUserAvatar() {
+  return getUserProfile().avatarUrl || null;
+}
+
+/**
+ * Set the user avatar URL or Base64 string and save to localStorage.
+ * @param {string} url
+ */
+export function setUserAvatar(url) {
+  const profile = getUserProfile();
+  profile.avatarUrl = url;
+  saveUserProfile(profile);
+}
+
+// Export the quiz storage key (optional use)
 export const QUIZ_STORAGE_KEY = STORAGE_KEY;
