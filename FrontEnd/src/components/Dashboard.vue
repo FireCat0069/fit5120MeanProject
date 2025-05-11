@@ -80,12 +80,24 @@
           </div>
         </div>
   
-        <!-- Charts Section: actual quiz scores -->
+        <!-- Charts Section: radar chart and scores, then image -->
         <div class="chart-area">
-          <div class="line-chart-container">
-            <div ref="scoreChart" class="chart"></div>
+          <!-- Modules row -->
+          <div class="modules-row">
+            <div class="radar-chart-container">
+              <div ref="scoreChart" class="chart"></div>
+            </div>
+            <div class="score-list-container">
+              <ul class="score-list">
+                <li v-for="(name, idx) in indicators" :key="name">
+                  <span class="score-name">{{ name }}</span>
+                  <span class="score-value">{{ values[idx] }}</span>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div class="achieve-image-container">
+          <!-- Full-width image below -->
+          <div class="image-under-modules">
             <img src="@/assets/achieve.png" alt="Achievements" />
           </div>
         </div>
@@ -115,7 +127,7 @@
   
   <script>
   import * as echarts from 'echarts/core';
-  import { LineChart } from 'echarts/charts';
+  import { RadarChart } from 'echarts/charts';
   import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/components';
   import { CanvasRenderer } from 'echarts/renderers';
   import Cropper from 'cropperjs';
@@ -130,7 +142,7 @@
   import defaultAvatar from '@/assets/user.png';
   
   echarts.use([
-    LineChart,
+    RadarChart,
     TitleComponent,
     TooltipComponent,
     GridComponent,
@@ -151,6 +163,8 @@
         fastestTime: '0min',
         correctAnswers: 0,
         quizData: [],
+        indicators: [],
+        values: [],
         showCropModal: false,
         rawAvatarUrl: '',
         cropper: null
@@ -167,19 +181,37 @@
       },
       initChart() {
         const records = getScoresForChart();
-        const labels = records.map(r => r.quizId);
-        const data = records.map(r => r.score);
-        this.quizData = records;
-  
-        this.quizzesPassed = data.filter(score => score === 10).length;
+        const indicators = [
+          'Digital Literacy',
+          'Digital Footprint & Privacy',
+          'Online Etiquette / Netiquette',
+          'Cybersecurity Awareness',
+          'Digital Wellbeing',
+          'Digital Rights & Responsibilities',
+          'Critical Thinking Online'
+        ];
+        const values = indicators.map(name => {
+          const rec = records.find(r => r.quizId === name);
+          return rec ? rec.score : 0;
+        });
+        this.indicators = indicators;
+        this.values = values;
+        this.quizzesPassed = values.filter(v => v === 10).length;
   
         const chart = echarts.init(this.$refs.scoreChart);
         chart.setOption({
-          tooltip: { trigger: 'axis' },
-          xAxis: { type: 'category', data: labels },
-          yAxis: { type: 'value', min: 0, max: 10 },
-          series: [{ data: data, type: 'line', smooth: true }],
-          grid: { left: '10%', right: '10%', bottom: '15%', containLabel: true }
+          tooltip: {},
+          radar: {
+            indicator: indicators.map(name => ({ name, max: 10 })),
+            radius: '70%',
+            splitNumber: 5
+          },
+          series: [{
+            name: 'Quiz Scores',
+            type: 'radar',
+            data: [{ value: values, name: 'Scores' }],
+            areaStyle: {}
+          }]
         });
         window.addEventListener('resize', () => chart.resize());
       },
@@ -189,9 +221,7 @@
       onFileChange(e) {
         const file = e.target.files[0];
         if (!file) return;
-        if (file.size > 4 * 1024 * 1024) {
-          return alert('Image must be smaller than 4MB');
-        }
+        if (file.size > 4 * 1024 * 1024) return alert('Image must be smaller than 4MB');
         const reader = new FileReader();
         reader.onload = () => {
           this.rawAvatarUrl = reader.result;
@@ -212,7 +242,6 @@
         const dataUrl = canvas.toDataURL('image/png');
         setUserAvatar(dataUrl);
         this.userAvatar = dataUrl;
-  
         this.cropper.destroy();
         this.cropper = null;
         this.showCropModal = false;
@@ -228,7 +257,6 @@
     mounted() {
       this.userName = getUserName();
       this.userAvatar = getUserAvatar() || defaultAvatar;
-  
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
       this.initChart();
@@ -286,7 +314,11 @@
     flex-direction: column;
     background: #fbf9f9;
   }
-  .search-bar { display: flex; align-items: center; margin-bottom: 20px; }
+  .search-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
   .search-input {
     flex: 1;
     padding: 10px;
@@ -304,9 +336,19 @@
     font-weight: bold;
     cursor: pointer;
   }
-  .search-button:hover { background: #e65f14; }
-  .profile-section { display: flex; align-items: center; margin-top: 5vh; }
-  .avatar-wrapper { position: relative; width: 100px; height: 100px; }
+  .search-button:hover {
+    background: #e65f14;
+  }
+  .profile-section {
+    display: flex;
+    align-items: center;
+    margin-top: 5vh;
+  }
+  .avatar-wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+  }
   .avatar-img {
     width: 100%;
     height: 100%;
@@ -326,49 +368,155 @@
     border: none;
     border-radius: 4px;
   }
-  .avatar-wrapper:hover .avatar-img { opacity: 0.6; }
-  .avatar-wrapper:hover .change-btn { display: block; }
-  .user-info { margin-left: 20px; flex: 1; }
-  .name-level { display: flex; align-items: center; gap: 12px; }
-  .user-name { font-size: 24px; color: #1e3a8a; cursor: pointer; margin: 0; }
-  .user-level { color: #757575; }
-  .name-input { font-size: 24px; padding: 4px 8px; }
+  .avatar-wrapper:hover .avatar-img {
+    opacity: 0.6;
+  }
+  .avatar-wrapper:hover .change-btn {
+    display: block;
+  }
+  .user-info {
+    margin-left: 20px;
+    flex: 1;
+  }
+  .name-level {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .user-name {
+    font-size: 24px;
+    color: #1e3a8a;
+    cursor: pointer;
+    margin: 0;
+  }
+  .user-level {
+    color: #757575;
+  }
+  .name-input {
+    font-size: 24px;
+    padding: 4px 8px;
+  }
   .progress-bar {
-    width: 100%; height: 8px; background: #e0e0e0;
-    border-radius: 4px; margin: 10px 0;
+    width: 100%;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    margin: 10px 0;
   }
-  .progress { height: 100%; background: #3b4cca; border-radius: 4px; }
-  .stats { display: flex; gap: 20px; margin-top: 10px; }
+  .progress {
+    height: 100%;
+    background: #3b4cca;
+    border-radius: 4px;
+  }
+  .stats {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+  }
   .stat-card {
-    background: #fff; padding: 12px 16px;
-    border-radius: 8px; display: flex; align-items: center;
-    gap: 8px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
-  .icon { font-size: 20px; font-weight: bold; }
-  .stat-text { font-size: 14px; color: #333; }
-  .chart-area { display: flex; flex-direction: column; gap: 20px; margin-top: 30px; }
-  .line-chart-container,
-  .achieve-image-container {
-    width: 100%; height: 250px;
-    background: #fff; border-radius: 8px;
+    background: #fff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    display: flex; align-items: center; justify-content: center;
   }
-  .line-chart-container .chart { width: 100%; height: 100%; }
-  .achieve-image-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .icon {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .stat-text {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  /* Charts Section */
+  .chart-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 30px;
+  }
+  .modules-row {
+    display: flex;
+    gap: 20px;
+  }
+  .radar-chart-container,
+  .score-list-container {
+    width: 50%;
+    height: 250px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    padding: 16px;
+  }
+  .radar-chart-container .chart {
+    width: 100%;
+    height: 100%;
+  }
+  .score-list-container .score-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .score-list-container .score-list li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  .score-name {
+    font-weight: bold;
+    color:#1d1d1d
+  }
+  .score-value {
+    color: #1e3a8a;
+  }
+  .image-under-modules {
+    width: 100%;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .image-under-modules img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
   
   /* Crop Modal */
   .modal-overlay {
-    position: fixed; inset: 0;
+    position: fixed;
+    inset: 0;
     background: rgba(0, 0, 0, 0.6);
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 1000;
   }
   .modal-content {
-    background: #fff; padding: 20px; border-radius: 8px;
-    max-width: 90vw; max-height: 90vh; overflow: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
   }
-  .crop-container img { max-width: 100%; max-height: 70vh; }
-  .modal-actions { margin-top: 12px; display: flex; gap: 12px; }
+  .crop-container img {
+    max-width: 100%;
+    max-height: 70vh;
+  }
+  .modal-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 12px;
+  }
   </style>
   
