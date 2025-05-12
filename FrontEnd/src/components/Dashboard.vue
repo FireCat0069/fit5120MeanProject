@@ -112,15 +112,31 @@
     >
       <button class="view-btn">View</button>
     </div>
-    <div class="module-item item-2">
-      <button class="view-btn">View</button>
-    </div>
-    <div class="module-item item-3">
-      <button class="view-btn">View</button>
-    </div>
-    <div class="module-item item-4">
-      <button class="view-btn">View</button>
-    </div>
+    <div
+    :class="[
+      'module-item',
+      'item-2',
+      { greyed: !hasCompletedAll }
+    ]"
+  >
+    <button class="view-btn">View</button>
+  </div>
+  <div
+   :class="[
+     'module-item','item-3',
+     { greyed: !hasAllAboveFive }
+   ]"
+ >
+    <button class="view-btn">View</button>
+  </div>
+  <div
+   :class="[
+    'module-item','item-4',
+    { greyed: !hasAllPerfect }
+  ]"
+ >
+    <button class="view-btn">View</button>
+  </div>
     <div class="module-item item-5">
       <button class="view-btn">View</button>
     </div>
@@ -197,7 +213,19 @@
     hasCompletedAny() {
       const records = getScoresForChart();
       return records.some(r => r.score !== null);
-    }
+    },
+    hasCompletedAll() {
+    const rec = getScoresForChart()
+    return rec.length > 0 && rec.every(r => r.score !== null)
+  },
+  hasAllAboveFive() {
+     const rec = getScoresForChart()
+    return rec.length > 0 && rec.every(r => r.score !== null && r.score >= 5)
+  },
+  hasAllPerfect() {
+     const rec = getScoresForChart();
+     return rec.length > 0 && rec.every(r => r.score === 10);
+     }
   },
     name: 'QuizBank',
     data() {
