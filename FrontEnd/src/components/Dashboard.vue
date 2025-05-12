@@ -245,13 +245,16 @@
     return rec.length > 0 && rec.every(r => r.score !== null)
   },
   hasAllAboveFive() {
-     const rec = getScoresForChart()
-    return rec.length > 0 && rec.every(r => r.score !== null && r.score >= 5)
-  },
-  hasAllPerfect() {
-     const rec = getScoresForChart();
-     return rec.length > 0 && rec.every(r => r.score === 10);
-  },
+     // 确保已经对 7 个 quiz 都有评分，并且每个分数都 ≥ 5
+     return this.values.length === this.indicators.length
+         && this.values.every(v => v !== null && v >= 5)
+   },
+   hasAllPerfect() {
+     return (
+       this.values.length === this.indicators.length &&
+       this.values.every(v => v === 10)
+     );
+   },
   hasNameChanged() {
     return this.userName && this.userName !== 'Input name';
   },
