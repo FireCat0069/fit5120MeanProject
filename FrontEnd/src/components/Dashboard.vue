@@ -137,12 +137,22 @@
  >
     <button class="view-btn">View</button>
   </div>
-    <div class="module-item item-5">
-      <button class="view-btn">View</button>
-    </div>
-    <div class="module-item item-6">
-      <button class="view-btn">View</button>
-    </div>
+  <div
+   :class="[
+     'module-item','item-5',
+     { greyed: !hasNameChanged }
+   ]"
+ >
+    <button class="view-btn">View</button>
+  </div>
+  <div
+   :class="[
+     'module-item','item-6',
+     { greyed: !hasUnlockedSixth }
+   ]"
+ >
+    <button class="view-btn">View</button>
+  </div>
   </div>
 
   <!-- 右侧：文字容器 -->
@@ -153,7 +163,23 @@
       tasks. Each badge represents a milestone in your journey toward becoming
       a responsible and empowered digital citizen.
     </p>
-    <button class="learn-more-btn">Learn More</button>
+    <button class="learn-more-btn" @click="showLearnMore">Learn More</button>
+
+<!-- right below your existing Crop Modal, add: -->
+<div v-if="showLearnMoreModal" class="modal-overlay">
+  <div class="modal-content unlock-guide">
+    <h2>How to Unlock Your Badges</h2>
+    <ul>
+      <li><strong>Trailblazer</strong>: Complete any quiz.</li>
+      <li><strong>Pathfinder</strong>: Complete all quizzes at least once.</li>
+      <li><strong>High Achiever</strong>: Score 5 or more on every quiz.</li>
+      <li><strong>Perfectionist</strong>: Get a full 10 on every quiz.</li>
+      <li><strong>Identity Forge</strong>: Change your display name from “Input name.”</li>
+      <li><strong>Legendary Champion</strong>: Achieve all of the above!</li>
+    </ul>
+    <button class="close-btn" @click="closeLearnMore">Got it!</button>
+  </div>
+</div>
   </div>
 </div>
         </div>
@@ -225,7 +251,17 @@
   hasAllPerfect() {
      const rec = getScoresForChart();
      return rec.length > 0 && rec.every(r => r.score === 10);
-     }
+  },
+  hasNameChanged() {
+    return this.userName && this.userName !== 'Input name';
+  },
+  hasUnlockedSixth() {
+     return this.hasCompletedAny
+         && this.hasCompletedAll
+         && this.hasAllAboveFive
+         && this.hasAllPerfect
+         && this.hasNameChanged;
+  }
   },
     name: 'QuizBank',
     data() {
@@ -241,6 +277,7 @@
         correctAnswers: 0,
         quizData: [],
         indicators: [],
+        showLearnMoreModal: false,
         values: [],
         showCropModal: false,
         rawAvatarUrl: '',
@@ -248,6 +285,12 @@
       };
     },
     methods: {
+      showLearnMore() {
+     this.showLearnMoreModal = true;
+   },
+   closeLearnMore() {
+     this.showLearnMoreModal = false;
+   },
       clearStorage() {
       // 清空整个 localStorage
       localStorage.clear();
@@ -668,6 +711,45 @@
     justify-content: center;
     z-index: 1000;
   }
+  .modal-content.unlock-guide {
+  background: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  max-width: 400px;
+  text-align: left;
+}
+
+.modal-content.unlock-guide h2 {
+  margin-top: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.modal-content.unlock-guide ul {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+}
+
+.modal-content.unlock-guide li {
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.modal-content.unlock-guide .close-btn {
+  display: block;
+  margin: 0 auto;
+  padding: 8px 16px;
+  background: #ff7426;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-content.unlock-guide .close-btn:hover {
+  background: #e65f14;
+}
   .modal-content {
     background: #fff;
     padding: 20px;
