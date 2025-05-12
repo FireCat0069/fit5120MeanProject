@@ -96,10 +96,47 @@
               </ul>
             </div>
           </div>
-          <!-- Full-width image below -->
-          <div class="image-under-modules">
-            <img src="@/assets/achieve.png" alt="Achievements" />
-          </div>
+<!-- 修改后的 HTML 结构（保持不变） -->
+<div class="image-under-modules">
+  <!-- 左侧：6 个图片模块 -->
+  <div class="modules-grid">
+    <div
+      :class="[
+        'module-item',
+        'item-1',
+        { greyed: !hasCompletedAny }
+      ]"
+    >
+      <button class="view-btn">View</button>
+    </div>
+    <div class="module-item item-2">
+      <button class="view-btn">View</button>
+    </div>
+    <div class="module-item item-3">
+      <button class="view-btn">View</button>
+    </div>
+    <div class="module-item item-4">
+      <button class="view-btn">View</button>
+    </div>
+    <div class="module-item item-5">
+      <button class="view-btn">View</button>
+    </div>
+    <div class="module-item item-6">
+      <button class="view-btn">View</button>
+    </div>
+  </div>
+
+  <!-- 右侧：文字容器 -->
+  <div class="text-container">
+    <h2>Earn Your Digital Badges</h2>
+    <p>
+      Unlock achievements by completing digital citizenship quizzes and related
+      tasks. Each badge represents a milestone in your journey toward becoming
+      a responsible and empowered digital citizen.
+    </p>
+    <button class="learn-more-btn">Learn More</button>
+  </div>
+</div>
         </div>
   
         <!-- Quiz Cards (empty) -->
@@ -150,6 +187,15 @@
   ]);
   
   export default {
+    computed: {
+    /**
+     * 用户是否至少完成过一次 quiz
+     */
+    hasCompletedAny() {
+      const records = getScoresForChart();
+      return records.some(r => r.score !== null);
+    }
+  },
     name: 'QuizBank',
     data() {
       return {
@@ -474,23 +520,97 @@
   .score-value {
     color: #1e3a8a;
   }
-  .image-under-modules {
-    width: 100%;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-    padding: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .image-under-modules img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-  
+/* 原有父容器样式，保持不变并加上背景图 */
+/* 父容器：指定固定高度，让子方格根据它来撑开 */
+.image-under-modules {
+  width: 100%;
+  height: 400px;
+  background: #fff url('@/assets/achieve.png') center/contain no-repeat;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  padding: 16px;
+
+  display: flex;
+  align-items: stretch;
+}
+
+.modules-grid {
+  width: 50%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.module-item {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  background-color: transparent; /* 去掉底色 */
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.item-1 { background-image: url('@/assets/a1.png'); }
+.item-2 { background-image: url('@/assets/a2.png'); }
+.item-3 { background-image: url('@/assets/a3.png'); }
+.item-4 { background-image: url('@/assets/a4.png'); }
+.item-5 { background-image: url('@/assets/a5.png'); }
+.item-6 { background-image: url('@/assets/a6.png'); }
+
+.text-container {
+  width: 50%;
+  height: 100%;
+  padding: 16px;
+  text-align: center;
+  color: #000;
+  box-sizing: border-box;
+  background-color: transparent;
+  border-radius: 4px;
+  overflow-y: auto;
+}
+
+.learn-more-btn {
+  background-color: #ff7426;
+  color: #ffffff;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 28px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 12vh;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease;
+}
+
+.learn-more-btn:hover {
+  background-color: #e65f14;
+}
+
+.view-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;         /* 默认隐藏 */
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.module-item:hover .view-btn {
+  display: block;        /* 悬停时显示按钮 */
+}
   /* Crop Modal */
   .modal-overlay {
     position: fixed;
@@ -513,6 +633,9 @@
     max-width: 100%;
     max-height: 70vh;
   }
+  .module-item.greyed {
+  filter: grayscale(100%);
+}
   .modal-actions {
     margin-top: 12px;
     display: flex;
