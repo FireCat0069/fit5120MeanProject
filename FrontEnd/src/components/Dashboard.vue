@@ -76,6 +76,9 @@
                 <div class="icon">3</div>
                 <div class="stat-text">{{ correctAnswers }} correct answers</div>
               </div>
+              <button class="clear-storage-btn" @click="clearStorage">
+    Clear Storage
+  </button>
             </div>
           </div>
         </div>
@@ -217,6 +220,22 @@
       };
     },
     methods: {
+      clearStorage() {
+      // 清空整个 localStorage
+      localStorage.clear();
+
+      // 重置组件中所有和存储相关的数据
+      this.userName = '';
+      this.userAvatar = defaultAvatar;
+      this.progress = 0;
+      this.quizzesPassed = 0;
+      this.fastestTime = '0min';
+      this.correctAnswers = 0;
+
+      // 将雷达图数据清零并重绘
+      this.values = this.indicators.map(() => 0);
+      this.initChart();
+    },
       enableEdit() {
         this.editingName = true;
         this.$nextTick(() => this.$el.querySelector('.name-input').focus());
@@ -635,6 +654,21 @@
   }
   .module-item.greyed {
   filter: grayscale(100%);
+}
+.clear-storage-btn {
+  margin-left: 5vw;
+  padding: 8px 16px;
+  background: #ff7426;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.clear-storage-btn:hover {
+  background: #e65f14;
 }
   .modal-actions {
     margin-top: 12px;
