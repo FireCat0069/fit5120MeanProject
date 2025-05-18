@@ -85,15 +85,19 @@
 
   <!-- 第三屏：大标题 Data Visualization -->
   <div class="page-container third-section">
-    <h1 class="third-title">Data Visualization</h1>
+  <div class="data-viz-container">
+    <h1 class="data-viz-title">Data Visualization</h1>
+      <DataVisualization />
+    
   </div>
+</div>
 </template>
 
 <script>
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Typed from 'typed.js';
-
+import DataVisualization from '@/components/DataVisualization.vue';
 export default {
   name: 'HomePage',
   mounted() {
@@ -113,10 +117,16 @@ export default {
     };
     this.typed = new Typed(this.$refs.typed, options);
   },
+  name: 'HomePage',
+  components: { DataVisualization },
+
   beforeDestroy() {
     if (this.typed) this.typed.destroy();
   }
 };
+
+
+
 </script>
 
 <style scoped>
@@ -129,7 +139,33 @@ export default {
 .page-container { width: 100vw; height: 100vh; position: absolute; left: 0; }
 .first-section { top: 0; background-image: url('@/assets/background1.png'); background-size: cover; background-position: center; overflow: hidden; box-sizing: border-box; }
 .second-section { top: 100vh; background-color: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 5vh; }
-.third-section { top: 200vh; background-color: #ffffff; display: flex; align-items: center; justify-content: center; }
+.third-section {
+  top: 200vh;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 5vh;
+}
+
+.data-viz-container {
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.data-viz-title {
+  font-size: 48px;
+  font-weight: 700;
+  color: #050c26;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+
 
 .quiz-title { font-size: 48px; font-weight: 700; color: #050c26; margin-bottom: 10px; }
 .quiz-subtitle { font-size: 20px; font-weight: 500; color: #4a4a4a; margin-bottom: 40px; }
@@ -155,7 +191,7 @@ export default {
 .learn-more-btn:hover { background-color: #e65f14; }
 
 /* 第三屏大标题样式 */
-.third-title { font-size: 64px; font-weight: 700; color: #050c26; }
+.third-title { font-size: 8px; font-weight: 700; color: #050c26; }
 
 /* 链接与按钮高亮复写 */
 a, a:link, a:visited, a:hover, a:focus, a:active { background-color: transparent !important; -webkit-tap-highlight-color: transparent; outline: none; }
