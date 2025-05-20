@@ -2,7 +2,7 @@
   <div class="container">
     <div class="nav-bar">
       <router-link to="/" class="nav-link">Home</router-link>
-      <router-link to="/quiz-bank-i1&i2" class="nav-link">Quiz Bank</router-link>
+      <router-link to="/dashboard-i3" class="nav-link">DashBoard</router-link>
       <span>Contact us</span>
     </div>
 
@@ -10,7 +10,7 @@
       Digital <span class="highlight">Citizenship</span> Survey
     </h1>
 
-    <!-- 如果未提交反馈，则显示答题内容 -->
+
     <div v-if="!feedbackDisplayed">
       <div
         v-for="(question, index) in questions"

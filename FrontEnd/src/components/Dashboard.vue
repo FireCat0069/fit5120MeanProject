@@ -2,7 +2,7 @@
     <div class="quizbank-container" @touchmove.prevent>
       <!-- Sidebar -->
       <aside class="sidebar">
-        <div class="logo">DigiWise</div>
+        <router-link to="/" class="logo">DigiWise</router-link>
         <nav class="nav">
           <router-link
             to="/dashboard-i3"
@@ -24,12 +24,6 @@
   
       <!-- Main Area -->
       <main class="main-area">
-        <!-- Search Bar -->
-        <div class="search-bar">
-          <input type="text" placeholder="Search news" class="search-input" />
-          <button class="search-button">Search</button>
-        </div>
-  
         <!-- Profile Section -->
         <div class="profile-section">
           <div class="avatar-wrapper">
@@ -453,6 +447,14 @@
     flex-direction: column;
     background: #fbf9f9;
   }
+  .logo {
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  color: #f97316;
+  margin-bottom: 40px;
+  text-decoration: none;
+}
   .search-bar {
     display: flex;
     align-items: center;

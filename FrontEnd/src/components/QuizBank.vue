@@ -2,7 +2,6 @@
   <div class="quizbank-container" @touchmove.prevent>
     <!-- Sidebar -->
     <aside class="sidebar">
-      <!-- Logo 跳转主页 -->
       <router-link to="/" class="logo">DigiWise</router-link>
       <nav class="nav">
         <router-link
