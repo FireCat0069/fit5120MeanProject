@@ -274,6 +274,7 @@ export default {
           name: 'Screen Time (hours)',
           nameGap: 25,
           data: screenBins,
+          axisLabel: { rotate: 45 },
           axisLabel: { interval: 0, color: '#666' },
           axisLine: { lineStyle: { color: '#999' } }
         },
@@ -492,7 +493,7 @@ export default {
 
 @media (min-width: 1000px) {
   .viz-content {
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); 
     grid-template-rows: auto 70px;
   }
 }
@@ -500,11 +501,17 @@ export default {
 .main-viz-area {
   padding: 5px;
   position: relative;
+  min-height: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .echarts-container {
   width: 100%;
   height: 600px;
+  flex: 1; 
+  min-width: 0; 
 }
 
 .tableau-container {
@@ -519,6 +526,7 @@ export default {
   padding: 20px;
   background: #f9fafc;
   border-left: 1px solid #eaeaea;
+  color: #333;
   overflow-y: auto;
 }
 
@@ -526,6 +534,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: #333;
   margin-bottom: 20px;
   padding-bottom: 15px;
   border-bottom: 1px solid #eee;
