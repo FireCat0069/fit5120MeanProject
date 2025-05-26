@@ -30,7 +30,7 @@
 
         <!-- Tableau Attack Severity container -->
         <TableauViz
-          v-if="currentViz.isTableau && currentIndex === 1"
+          v-if="currentViz.isTableau && currentIndex === 0"
           ref="tableauViz"
           class="tableau-container"
           @loaded="handleTableauLoaded"
@@ -39,7 +39,7 @@
 
         <!-- Tableau Industry Distribution container -->
         <TableauIndustry
-          v-if="currentViz.isTableau && currentIndex === 2"
+          v-if="currentViz.isTableau && currentIndex === 1"
           ref="tableauIndustry"
           class="tableau-container"
           @loaded="handleTableauLoaded"
@@ -58,34 +58,8 @@
         </div>
 
         <div class="info-content">
-          <!-- Student Focus Data Info (index 0) -->
+          <!-- Attack Severity Info (index 0) -->
           <div v-if="currentIndex === 0">
-            <div class="metrics-grid">
-              <div class="metric-card">
-                <div class="metric-value">6.82</div>
-                <div class="metric-label">Peak Focus Score</div>
-                <div class="metric-condition">
-                  (0-3h screen time, 8+h sleep)
-                </div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-value">5.31</div>
-                <div class="metric-label">Lowest Focus Score</div>
-                <div class="metric-condition">(9+h screen time)</div>
-              </div>
-            </div>
-            <div class="info-section">
-              <h4>Patterns Observed</h4>
-              <p>
-                By instilling digital citizenship early, we empower students to
-                balance technology with well-being, transforming passive scrolling
-                into productive engagement for academic success.
-              </p>
-            </div>
-          </div>
-
-          <!-- Attack Severity Info (index 1) -->
-          <div v-else-if="currentIndex === 1">
             <div class="info-section">
               <h4>User Role Analysis</h4>
               <p>
@@ -100,8 +74,8 @@
             </div>
           </div>
 
-          <!-- Industry Distribution Info (index 2) -->
-          <div v-else>
+          <!-- Industry Distribution Info (index 1) -->
+          <div v-else-if="currentIndex === 1">
             <div class="info-section">
               <h4>Industry Attack Patterns</h4>
               <p>Distribution of cyber attacks across different industry sectors.</p>
@@ -126,6 +100,32 @@
                   All industries face significant cyber threats; none are immune.
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Student Focus Data Info (index 2) -->
+          <div v-else>
+            <div class="metrics-grid">
+              <div class="metric-card">
+                <div class="metric-value">6.82</div>
+                <div class="metric-label">Peak Focus Score</div>
+                <div class="metric-condition">
+                  (0-3h screen time, 8+h sleep)
+                </div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-value">5.31</div>
+                <div class="metric-label">Lowest Focus Score</div>
+                <div class="metric-condition">(9+h screen time)</div>
+              </div>
+            </div>
+            <div class="info-section">
+              <h4>Patterns Observed</h4>
+              <p>
+                By instilling digital citizenship early, we empower students to
+                balance technology with well-being, transforming passive scrolling
+                into productive engagement for academic success.
+              </p>
             </div>
           </div>
         </div>
@@ -215,41 +215,38 @@ export default {
     prepareVisualizations(studentData) {
       this.visualizations = [
         {
-          title: 'Student Screen Time vs Focus Level',
-          options: this.createStudentOptions(studentData),
-          isTableau: false
-        },
-        {
           title: 'Attack Severity by User Role',
           isTableau: true
         },
         {
           title: 'Industry-Wise Attack Distribution',
           isTableau: true
+        },
+        {
+          title: 'Student Screen Time vs Focus Level',
+          options: this.createStudentOptions(studentData),
+          isTableau: false
         }
       ];
     },
 
     createStudentOptions(data) {
-      // 预处理数据
+      // preprocess data
       const processedData = data.map(item => ({
         screen_bin: item.screen_bin,
         sleep_bin: item.sleep_bin,
         average_focus: Number(item.average_focus) || 0
       }));
 
-      // 分类轴刻度
       const screenBins = [...new Set(processedData.map(d => d.screen_bin))];
       const sleepBins = [...new Set(processedData.map(d => d.sleep_bin))];
 
-      // 构造 heatmap 所需数据 [xIndex, yIndex, value]
       const heatmapData = processedData.map(d => [
         screenBins.indexOf(d.screen_bin),
         sleepBins.indexOf(d.sleep_bin),
         d.average_focus
       ]);
 
-      // 计算色阶上下限
       const focusValues = processedData.map(d => d.average_focus);
       const focusMin = Math.min(...focusValues);
       const focusMax = Math.max(...focusValues);
@@ -274,8 +271,7 @@ export default {
           name: 'Screen Time (hours)',
           nameGap: 25,
           data: screenBins,
-          axisLabel: { rotate: 45 },
-          axisLabel: { interval: 0, color: '#666' },
+          axisLabel: { interval: 0, color: '#666', rotate: 45 },
           axisLine: { lineStyle: { color: '#999' } }
         },
         yAxis: {
@@ -493,7 +489,7 @@ export default {
 
 @media (min-width: 1000px) {
   .viz-content {
-    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); 
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
     grid-template-rows: auto 70px;
   }
 }
@@ -510,8 +506,8 @@ export default {
 .echarts-container {
   width: 100%;
   height: 600px;
-  flex: 1; 
-  min-width: 0; 
+  flex: 1;
+  min-width: 0;
 }
 
 .tableau-container {
