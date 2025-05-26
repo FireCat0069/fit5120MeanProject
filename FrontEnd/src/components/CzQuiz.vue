@@ -2,7 +2,7 @@
   <div class="container">
     <div class="nav-bar">
       <router-link to="/" class="nav-link">Home</router-link>
-      <router-link to="/dashboard-i3" class="nav-link">DashBoard</router-link>
+      <router-link to="/dashboard-i3" class="nav-link">Dashboard</router-link>
       <span>Contact us</span>
     </div>
 
@@ -279,7 +279,10 @@ export default {
         3: { 'A. Work and Study (e.g., working, studying, content creation)': 'Work and Study', 'B. Entertainment (e.g., gaming, social media)': 'Entertainment' },
         5: { 'Streaming (e.g., YouTube, Netflix)': 'Streaming', 'Social Media (e.g., Facebook, Instagram)': 'Social Media', 'Productivity (e.g., Microsoft Office, Notion)': 'Productivity', 'Messaging (e.g., WhatsApp, Messenger)': 'Messaging' }
       };
+const chart = echarts.init(this.$refs.chart)  
+chart.setOption(this.chartOptions)         
 
+    
       this.questions.forEach(q => {
         let ans = this.answers[q.question_order];
         if (ans == null) {
@@ -571,3 +574,5 @@ hr {
   cursor: not-allowed;
 }
 </style>
+
+
