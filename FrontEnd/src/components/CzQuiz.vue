@@ -2,7 +2,7 @@
   <div class="container">
     <div class="nav-bar">
       <router-link to="/" class="nav-link">Home</router-link>
-      <router-link to="/dashboard-i3" class="nav-link">DashBoard</router-link>
+      <router-link to="/dashboard-i3" class="nav-link">Dashboard</router-link>
       <span>Contact us</span>
     </div>
 
