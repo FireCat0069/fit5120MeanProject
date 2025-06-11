@@ -1,16 +1,16 @@
 <template>
   <div class="page-container">
-    <!-- 背景图：绝对定位贴左上，宽铺满，按 70vh 显示 -->
+    <!-- Background image: absolutely positioned on the upper left, full width, displayed at 70vh -->
     <img class="bg-img" src="@/assets/DCInfo.png" alt="Background" />
 
-    <!-- 导航栏 -->
+    <!-- Navigation Bar -->
     <div class="nav-bar">
       <router-link to="/" class="nav-link">Home</router-link>
       <router-link to="/quiz-bank-i1&i2" class="nav-link">Quiz Bank</router-link>
       <span class="nav-link">Contact us</span>
     </div>
 
-    <!-- 覆盖层内容 -->
+    <!-- Overlay Content -->
     <div class="overlay-content">
       <h1 class="info-title">What is Digital Citizenship?</h1>
       <p class="info-text">
@@ -18,7 +18,7 @@
       </p>
     </div>
 
-    <!-- 详情文字区域 -->
+    <!-- Details text area -->
     <div class="detail-section">
       <h2 class="detail-title">What is Digital Citizenship?</h2>
       <div class="detail-text-block">
@@ -40,7 +40,7 @@
         </p>
       </div>
 
-      <!-- Rights, Privacy & Ethics 扩展区 -->
+      <!-- Rights, Privacy & Ethics extension -->
       <div class="rights-section">
         <h2 class="detail-title">Rights, Privacy &amp; Ethics</h2>
         <ul class="rights-list">
@@ -52,7 +52,7 @@
         </ul>
       </div>
 
-      <!-- 卡片区，独立容器，放置于 rights-section 下面 5vh -->
+      <!-- Card area, independent container, placed below rights-section 5vh -->
       <div class="cards-container">
         <div class="card">
           <h4 class="card-title">Empathy &amp; Community</h4>
@@ -94,7 +94,7 @@
         </div>
       </div>
 
-      <!-- 视频 wrapper -->
+      <!-- Video wrapper -->
       <div class="videos-wrapper">
         <div class="detail-video1">
           <iframe
@@ -118,7 +118,7 @@
         </div>
       </div>
 
-      <!-- 评论区 -->
+      <!-- Comments section -->
       <div class="comments-section">
         <CommentFunction />
       </div>
@@ -136,13 +136,13 @@ export default {
 </script>
 
 <style scoped>
-/* 页面进入动画 */
+/* Page entry animation */
 @keyframes fadeInUp {
   0% { opacity: 0; transform: translateY(30px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* 容器 */
+/* Container */
 .page-container {
   position: absolute;
   top: 0; left: 0;
@@ -152,7 +152,7 @@ export default {
   box-sizing: border-box;
 }
 
-/* 背景图 */
+/* Background image */
 .bg-img {
   position: absolute; top: 0; left: 0;
   width: 100vw; height: 70vh;
@@ -160,7 +160,7 @@ export default {
   pointer-events: none;
 }
 
-/* 导航栏 */
+/* Navigation bar */
 .nav-bar {
   position: absolute; top: 2vh; right: 5vw;
   display: flex; gap: 3vw;
@@ -173,7 +173,7 @@ export default {
   text-decoration: underline;
 }
 
-/* 覆盖层 */
+/* Overlay */
 .overlay-content {
   position: absolute;
   top: 10vh; left: 5vw;
@@ -191,7 +191,7 @@ export default {
   line-height: 1.6;
 }
 
-/* 详情区 */
+/* Details area */
 .detail-section {
   position: absolute;
   top: 73vh; left: 5vw;
@@ -273,14 +273,14 @@ export default {
   color: #000;
 }
 
-/* 视频 wrapper 定位 */
+/* Video wrapper positioning */
 .videos-wrapper {
   position: absolute;
   left: 55vw;
   top: 10vh;
 }
 
-/* video1 & video2 共享尺寸 */
+/* video1 & video2 shared size */
 .detail-video1,
 .detail-video2 {
   width: 560px;
@@ -288,7 +288,7 @@ export default {
   position: relative;
 }
 
-/* video2 顶部相对于 video1 底部偏移 */
+/* Video2 top is offset relative to video1 bottom */
 .detail-video2 {
   top: 15vh;
 }
@@ -298,7 +298,7 @@ export default {
   width: 100%; height: 100%;
 }
 
-/* 评论区 样式 */
+/* Comment area style */
 .comments-section {
   margin-top: 5vh;
   width: 55vw;

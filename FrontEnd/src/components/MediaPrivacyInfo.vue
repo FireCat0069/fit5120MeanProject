@@ -1,18 +1,18 @@
 <template>
   <div class="page-container">
-    <!-- 背景图：绝对定位贴左上，宽铺满，按 70vh 显示 -->
+    <!-- Background image: absolutely positioned on the upper left, full width, displayed at 70vh -->
     <img class="bg-img" src="@/assets/SMP.png" alt="Background" />
 
-    <!-- 导航栏 -->
+    <!-- Navigation Bar -->
     <div class="nav-bar">
       <router-link to="/" class="nav-link">Home</router-link>
       <router-link to="/quiz-bank-i1&i2" class="nav-link">Quiz Bank</router-link>
       <span class="nav-link">Contact us</span>
     </div>
 
-    <!-- 覆盖层内容 -->
+    <!-- Overlay Content -->
     <div class="overlay-content">
-      <!-- 给标题加上 glitch 类以应用故障效果 -->
+      <!-- Add the glitch class to the title to apply the glitch effect -->
       <h1 class="info-title glitch">
         Building Your Privacy Fortress Online
       </h1>
@@ -21,7 +21,7 @@
       </p>
     </div>
 
-    <!-- 详情文字区域 -->
+    <!-- Add the glitch class to the title to apply the glitch effect -->
     <div class="detail-section">
       <h2 class="detail-title">What is Social Media Privacy?</h2>
       <div class="detail-text-block">
@@ -40,7 +40,6 @@
         </p>
       </div>
 
-      <!-- Rights, Privacy & Ethics 扩展区 -->
       <div class="rights-section">
         <h2 class="detail-title">Tips for Protecting Your Privacy</h2>
         <ul class="rights-list">
@@ -52,7 +51,6 @@
         </ul>
       </div>
 
-      <!-- 卡片区，独立容器，放置于 Tips for Protecting Your Privacy 区块之后 -->
       <div class="cards-container">
         <div class="card">
           <h4 class="card-title">Compassion & Online Community</h4>
@@ -94,7 +92,6 @@
         </div>
       </div>
 
-      <!-- 视频封装 -->
       <div class="videos-wrapper">
         <div class="detail-video1">
           <iframe
@@ -118,7 +115,6 @@
         </div>
       </div>
 
-      <!-- 评论区 -->
       <div class="comments-section">
         <CommentFunction />
       </div>
@@ -150,13 +146,11 @@ export default {
 </script>
 
 <style scoped>
-/* 页面进入动画 */
 @keyframes fadeInUp {
   0% { opacity: 0; transform: translateY(30px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* 容器 */
 .page-container {
   position: absolute;
   top: 0; left: 0;
@@ -166,7 +160,6 @@ export default {
   box-sizing: border-box;
 }
 
-/* 背景图 */
 .bg-img {
   position: absolute; top: 0; left: 0;
   width: 100vw; height: 70vh;
@@ -174,7 +167,6 @@ export default {
   pointer-events: none;
 }
 
-/* 导航栏 */
 .nav-bar {
   position: absolute; top: 2vh; right: 5vw;
   display: flex; gap: 3vw;
@@ -187,7 +179,6 @@ export default {
   text-decoration: underline;
 }
 
-/* 覆盖层 */
 .overlay-content {
   position: absolute;
   top: 10vh; left: 5vw;
@@ -205,7 +196,6 @@ export default {
   line-height: 1.6;
 }
 
-/* 详情区 */
 .detail-section {
   position: absolute;
   top: 73vh; left: 5vw;
@@ -232,7 +222,6 @@ export default {
   font-style: italic;
 }
 
-/* Rights, Privacy & Ethics 扩展区 */
 .rights-section {
   margin-top: 3vh;
   width: 55vw; max-width: 800px;
@@ -248,7 +237,6 @@ export default {
   line-height: 1.6;
 }
 
-/* 卡片布局 */
 .cards-container {
   display: flex;
   width: 100vw;
@@ -286,14 +274,12 @@ export default {
   color: #000;
 }
 
-/* 视频 wrapper 定位 */
 .videos-wrapper {
   position: absolute;
   top: 8vh;
   left: 55vw;
 }
 
-/* video1 & video2 共享尺寸 */
 .detail-video1,
 .detail-video2 {
   position: relative;
@@ -301,7 +287,6 @@ export default {
   height: 315px;
 }
 
-/* video2 顶部相对于 video1 底部偏移 */
 .detail-video2 {
   top: 10vh;
 }
@@ -311,7 +296,6 @@ export default {
   width: 100%; height: 100%;
 }
 
-/* 评论区 */
 .comments-section {
   margin-top: 3vh;
   width: 55vw;

@@ -1,5 +1,5 @@
 <template>
-  <!-- 第一屏 -->
+  <!-- First screen -->
   <div class="page-container first-section">
     <div class="nav-bar">
       <router-link to="/" class="nav-link">Home</router-link>
@@ -22,7 +22,7 @@
       </p>
 
       <div class="fake-search">
-        <!-- 打字机效果目标元素 -->
+        <!-- Typewriter effect target element -->
         <span class="search-label" ref="typed"></span>
         <router-link to="/cz-quiz-i1&i2">
           <button class="go-button">Go test</button>
@@ -31,12 +31,12 @@
     </div>
   </div>
 
-  <!-- 第二屏：白色卡片区域 -->
+  <!-- Second screen: white card area -->
   <div class="page-container second-section">
     <p class="quiz-title">Foster Digital Citizenship InfoHub</p>
     <p class="quiz-subtitle">Work together to create a safe and better online world.</p>
     <div class="red-card-container">
-      <!-- 卡片 1 -->
+      <!-- Card 1 -->
       <div class="red-card" data-aos="fade-up" data-aos-delay="100">
         <div class="card-content">
           <img class="quiz-img" src="@/assets/DCInfo.png" alt="Quiz 1" />
@@ -50,7 +50,7 @@
         </div>
       </div>
 
-      <!-- 卡片 2 -->
+      <!-- Card 2 -->
       <div class="red-card" data-aos="fade-up" data-aos-delay="200">
         <div class="card-content">
           <img class="quiz-img" src="@/assets/SMP.png" alt="Quiz 2" />
@@ -64,7 +64,7 @@
         </div>
       </div>
 
-      <!-- 卡片 3 -->
+      <!-- Card 3 -->
       <div class="red-card" data-aos="fade-up" data-aos-delay="300">
         <div class="card-content">
           <img class="quiz-img" src="@/assets/di.png" alt="Quiz 3" />
@@ -83,7 +83,7 @@
     </router-link>
   </div>
 
-  <!-- 第三屏：大标题 Data Visualization -->
+  <!-- Third screen: Big title Data Visualization -->
   <div class="page-container third-section">
   <div class="data-viz-container">
     <h1 class="data-viz-title">Data Visualization</h1>
@@ -130,7 +130,7 @@ export default {
 </script>
 
 <style scoped>
-/* 页面进入动画：淡入向上 */
+/* Page entry animation: fade in upwards */
 @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
 .main-title, .fake-search { animation: fadeInUp 1s ease-out both; }
 .main-title { animation-delay: 0.3s; }
@@ -190,10 +190,10 @@ export default {
 .learn-more-btn { background-color: #ff7426; color: #ffffff; border: none; padding: 14px 32px; border-radius: 28px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 12vh; box-shadow: 0 2px 6px rgba(0,0,0,0.1); transition: background-color 0.3s ease; }
 .learn-more-btn:hover { background-color: #e65f14; }
 
-/* 第三屏大标题样式 */
+/* The third screen title style */
 .third-title { font-size: 8px; font-weight: 700; color: #050c26; }
 
-/* 链接与按钮高亮复写 */
+/* Link and button highlight copy */
 a, a:link, a:visited, a:hover, a:focus, a:active { background-color: transparent !important; -webkit-tap-highlight-color: transparent; outline: none; }
 button:focus, button:active { background-color: transparent !important; outline: none; box-shadow: none; }
 .go-button, .go-button:focus, .go-button:active { background-color: #f18829 !important; }

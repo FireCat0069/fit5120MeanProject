@@ -272,7 +272,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  height: calc(90vh - 110px); /* 减去搜索栏和 padding */
+  height: calc(90vh - 110px); /* minus the seekbar and padding */
   overflow-y: auto;
   scrollbar-width: none;
 }

@@ -33,7 +33,7 @@
           </button>
         </div>
 
-        <!-- 填空题 -->
+        <!-- Fill in the blanks -->
         <div v-else>
           <input
             type="text"
@@ -52,9 +52,9 @@
       </div>
     </div>
 
-    <!-- 提交后显示反馈 -->
+    <!-- Display feedback after submission -->
     <div v-else class="feedback-section">
-      <!-- 统计柱状图 -->
+      <!-- Statistical bar chart -->
       <div v-if="statsLoaded" class="stats-charts-carousel">
         <div class="chart-tabs">
           <div
@@ -75,12 +75,12 @@
         </div>
       </div>
 
-      <!-- 通用反馈 -->
+      <!-- General Feedback -->
       <div v-if="generalFeedback" class="general-feedback">
         <p>{{ generalFeedback }}</p>
       </div>
 
-      <!-- 翻页卡片：第一页汇总所有推荐 Quiz -->
+      <!-- Flip card: The first page summarizes all recommended quizzes -->
       <div v-if="feedbackList.length" class="explanation-pagination">
         <!-- Summary Page -->
         <div v-if="explanationPageIndex === 0" class="feedback-item">
@@ -121,7 +121,7 @@
             {{ currentExplanation.explanation }}
           </p>
         </div>
-        <!-- 翻页控制 -->
+        <!-- Page turning control -->
         <div class="pagination-controls">
           <button
             class="pagination-btn"
@@ -217,6 +217,19 @@ export default {
     };
   },
   computed: {
+  /**
+ * Computed properties for dynamically generating quiz feedback content.
+ *
+ * Includes:
+ * - `totalPages`: Calculates the total number of feedback/explanation pages.
+ * - `currentExplanation`: Retrieves the explanation data for the current page.
+ * - `recommendedQuizzes`: Generates a deduplicated list of recommended quizzes
+ *    based on incorrectly answered questions, using predefined routes and names.
+ *
+ * These properties are automatically updated when underlying data changes,
+ * helping to drive the UI logic for feedback navigation and recommendations.
+ */
+
     totalPages() {
       return this.feedbackList.length + 1;
     },

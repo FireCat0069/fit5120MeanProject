@@ -17,7 +17,7 @@
   .quiz-overview-container {
     padding: 80px 10vw 40px;
     text-align: center;
-    background-color: #ffffff; /* 暂时纯白背景 */
+    background-color: #ffffff; 
   }
   
   .section-title {

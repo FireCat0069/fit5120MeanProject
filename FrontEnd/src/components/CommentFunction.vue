@@ -2,7 +2,7 @@
     <div class="comment-section">
       <h2 class="comment-title">Community Discussion</h2>
       
-      <!-- 评论表单 -->
+      <!-- Comment form -->
       <div class="comment-form">
         <textarea 
           v-model="newComment" 
@@ -18,7 +18,7 @@
         </button>
       </div>
       
-      <!-- 评论列表 -->
+      <!-- Comments list -->
       <div v-if="loadingComments" class="loading-comments">
         Loading comments...
       </div>
@@ -57,6 +57,20 @@
       this.fetchComments();
     },
     methods: {
+    /**
+ * Asynchronously fetches comments from the backend API.
+ *
+ * Functionality:
+ * - Sends a GET request to the backend endpoint to retrieve all comment data.
+ * - Sets `loadingComments` to true during the request to indicate a loading state.
+ * - On success, stores the fetched comments in the `comments` array.
+ * - On failure, logs the error and sets a user-friendly error message.
+ * - In all cases, resets `loadingComments` to false after the request completes.
+ *
+ * Usage:
+ * - Typically called when the component is mounted or when the comments list needs to be refreshed.
+ */
+
       async fetchComments() {
         try {
           this.loadingComments = true;
@@ -77,19 +91,19 @@
         
         try {
           this.submitting = true;
-          // 替换为你的实际API端点
+          // Replace with your actual API endpoint
           const response = await axios.post(
             'https://fit5120mainprojecttp20backend.onrender.com/api/comments',
             {
               page: 'digital-aggression',
               content: this.newComment,
-              // 在实际应用中，你可能需要添加用户认证
-              author: 'Current User' // 替换为实际用户名
+              // In actual applications, you may need to add user authentication
+              author: 'Current User' // Replace with actual username
             }
           );
           
-          this.comments.unshift(response.data); // 将新评论添加到列表顶部
-          this.newComment = ''; // 清空输入框
+          this.comments.unshift(response.data); // Add the new comment to the top of the list
+          this.newComment = ''; // Clear the input box
         } catch (err) {
           console.error('Failed to post comment:', err);
           this.error = 'Failed to post comment. Please try again.';
@@ -115,14 +129,9 @@
   
   <style scoped>
 .comment-section {
-  /* 取消这两行 */
-  /* position: absolute; */
-  /* top: 240vh; */
   
-  /* 加上下面这行，让它在父级文档流里距上方 5vh */
+/* Add the following line to make it 5vh above the parent document flow */
   margin-top: 5vh;
-
-  /* 其他样式保持 */
   padding: 30px;
   background-color: #f9f9f9;
   border-radius: 10px;

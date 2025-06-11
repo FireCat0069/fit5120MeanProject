@@ -54,7 +54,7 @@
             <div class="divider"></div>
             <p class="quiz-meta">{{ quiz.meta }}</p>
 
-            <!-- 卡片：Start Quiz 导航至 各Quiz-Introduction页面 -->
+            <!-- Card: Start Quiz Navigate to each Quiz-Introduction page -->
             <router-link :to="getQuizRoute(quiz)">
               <button class="start-quiz-btn">Start Quiz</button>
             </router-link>
@@ -189,7 +189,7 @@ export default {
 
 .main-area {
   flex: 1;
-  height: 90vh; /* 为底部按钮预留10vh */
+  height: 90vh;
   padding: 30px 40px 10px 40px;
   box-sizing: border-box;
   overflow: hidden;
@@ -236,7 +236,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  height: calc(90vh - 110px); /* 减去搜索栏和 padding */
+  height: calc(90vh - 110px); /* minus the seekbar and padding */
   overflow-y: auto;
   scrollbar-width: none;
 }

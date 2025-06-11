@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 密码输入遮罩层 -->
+    <!-- Password input mask layer -->
     <div v-if="showPasswordPrompt" class="password-overlay">
       <div class="password-box">
         <h2>Please enter access code</h2>
@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <!-- 页面内容 -->
+    <!-- Page Content -->
     <router-view v-else />
   </div>
 </template>
@@ -23,7 +23,7 @@ export default {
   setup() {
     const route = useRoute()
 
-    // 监听路由切换，控制页面滚动行为
+    // Listen for route switching and control page scrolling behavior
     watch(
       () => route.path,
       (newPath) => {
@@ -36,7 +36,7 @@ export default {
       { immediate: true }
     )
 
-    // 密码验证功能
+    // Password verification function
     const showPasswordPrompt = ref(true)
     const inputPassword = ref('')
     const error = ref(false)
@@ -89,7 +89,7 @@ html, body {
   opacity: 0;
 }
 
-/* 密码验证样式 */
+/* Password verification style */
 .password-overlay {
   position: fixed;
   top: 0;

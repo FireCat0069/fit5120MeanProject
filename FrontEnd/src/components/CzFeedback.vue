@@ -42,6 +42,23 @@ export default {
       .catch(err => console.error("Failed to load questions", err));
   },
   methods: {
+  /**
+ * Submits the user's MBTI quiz answers to the backend for validation.
+ *
+ * Functionality:
+ * - Iterates over the user's selected answers stored in `userAnswers`.
+ * - Converts the answers into an array of objects, each containing:
+ *   - `question_order`: the question index (as a number).
+ *   - `option`: the selected answer option.
+ * - Sends a POST request with the answer array to the backend validation API.
+ * - On success, navigates to the feedback page (`/cz-feedback`) and passes the
+ *   response data as state for rendering personalized feedback.
+ * - Logs any errors that occur during submission.
+ *
+ * Usage:
+ * - Called when the user submits the quiz, typically via a "Submit" button.
+ */
+
     submitQuiz() {
       const answerArray = [];
 

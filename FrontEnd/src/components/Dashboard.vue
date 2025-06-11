@@ -93,9 +93,9 @@
               </ul>
             </div>
           </div>
-<!-- 修改后的 HTML 结构（保持不变） -->
+<!-- Modified HTML structure (remains unchanged) -->
 <div class="image-under-modules">
-  <!-- 左侧：6 个图片模块 -->
+  <!-- Left: 6 image modules -->
   <div class="modules-grid">
     <div
       :class="[
@@ -149,7 +149,7 @@
   </div>
   </div>
 
-  <!-- 右侧：文字容器 -->
+  <!-- Right: Text container -->
   <div class="text-container">
     <h2>Earn Your Digital Badges</h2>
     <p>
@@ -228,7 +228,7 @@
   export default {
     computed: {
     /**
-     * 用户是否至少完成过一次 quiz
+     * Whether the user has completed the quiz at least once
      */
     hasCompletedAny() {
       const records = getScoresForChart();
@@ -239,7 +239,7 @@
     return rec.length > 0 && rec.every(r => r.score !== null)
   },
   hasAllAboveFive() {
-     // 确保已经对 7 个 quiz 都有评分，并且每个分数都 ≥ 5
+     // Make sure all 7 quizzes have been scored and each score is ≥ 5
      return this.values.length === this.indicators.length
          && this.values.every(v => v !== null && v >= 5)
    },
@@ -289,10 +289,10 @@
      this.showLearnMoreModal = false;
    },
       clearStorage() {
-      // 清空整个 localStorage
+      // Clear the entire localStorage
       localStorage.clear();
 
-      // 重置组件中所有和存储相关的数据
+      // Reset all storage-related data in the component
       this.userName = '';
       this.userAvatar = defaultAvatar;
       this.progress = 0;
@@ -300,7 +300,7 @@
       this.fastestTime = '0min';
       this.correctAnswers = 0;
 
-      // 将雷达图数据清零并重绘
+      // Clear the radar chart data and redraw
       this.values = this.indicators.map(() => 0);
       this.initChart();
     },
